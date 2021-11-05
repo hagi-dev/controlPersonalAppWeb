@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
+import Menu from './components/Menu';
+import './assets/Styles/App.scss';
+import Usuario from './components/Usuario';
 
 const App = () => {
     return (
-        <div>
-            <h1>Hello World</h1>
+        <div className="contenedor">
+            <Menu/>
+            <Usuario/>
         </div>
     )
 }

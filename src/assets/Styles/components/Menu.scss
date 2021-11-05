@@ -1,0 +1,162 @@
+.Menu{
+    width: 220px;
+    height: 98vh;
+    background-color:#FCDC3C;
+    margin: 1vh 0px 1vh 40px;
+    display: grid;
+    grid-template-rows: 17% 68% 15%;
+    border-radius: 40px;
+    overflow: hidden;
+   
+
+    .Menu__imgLogo{
+        padding-top: 37px;
+        width: 100%;
+        height: 100%;
+        display:flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        img{
+            width: 180px;
+            height: auto;
+            margin: 0;
+        }
+    }
+
+    .Menu__navBar{
+        width: 100%;
+        height: 100%;
+
+        nav{
+            width: 100%;
+            height: 85%;
+            margin: 0;
+            ul{
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                list-style: none;
+                flex-direction: column;
+                justify-content: space-around;
+                padding: 0px;
+                margin: 0px;
+                margin-left: 38px;
+    
+                li{
+                    width: 100%;
+                    height: 30px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 0px;
+                    margin: 0px;
+                    border-left: 7px solid #7D0F2E;
+                    padding: 10px;
+                    padding-left: 25px;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    transition: 0.3s;
+    
+                    a{
+                        width: 100%;
+                        height: 20px;
+                        display:inline-block;
+                        margin: 0;
+                        font-family: 'Mulish', sans-serif;
+                        font-weight: 700;
+                        text-decoration: none;
+                        color: #7D0F2E;
+                    }
+    
+                    &:hover{
+                        background-color: #fff;
+                    }
+                }
+            }
+        }
+
+    }
+    
+    .Menu__contactoPersonal{
+        width:100%;
+        height: 100%;
+
+        .Menu__contactoPersonal__SubTitle{
+
+            margin-bottom: 5px;
+            text-align: center;
+
+            a{
+                text-decoration: none;
+                font-family: 'Mulish', sans-serif;
+                font-weight: 700;
+                color:#7D0F2E;
+            }
+        }
+        
+        .Menu__contactoPersonal__imgs{
+            width: 100%;
+            height: 90%;
+            display:flex;
+            justify-content: center;
+        }
+        
+        .Menu__contactoPersonal__imgs-WhatsApp{
+            width: 30%;
+            height:100%;
+            margin:0;
+
+            a
+            {
+                width: 100%;
+                height:50%;
+                display:flex;
+                justify-content: flex-end;
+                margin:0;
+
+                svg{
+                    width: 100%;
+                    height: 90%;
+                    right: 0;
+                    fill: #7D0F2E;
+                    transition: 0.3s;
+                    &:hover{
+                        opacity: 0.7;
+                    }
+                }
+            }
+        }
+        
+        .Menu__contactoPersonal__imgs-Messenger{
+            width: 30%;
+            height: 100%; 
+            margin:0;
+            
+            a{
+                width: 100%;
+                display:flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                height:50%;
+                margin:0;
+
+                svg{
+                    width: 100%;
+                    height: 90%;
+                    left: 0px;
+                    fill: #7D0F2E;
+                    transition: 0.3s;
+                    &:hover{
+                        opacity: 0.7;
+                    }
+                }
+            }
+        }
+
+    }
+    
+}
+
+
