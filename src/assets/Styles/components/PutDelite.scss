@@ -1,0 +1,19 @@
+.modificar{
+    svg{
+        fill: #2EA39D;
+        width: 60px;
+        transition:all .3s ease-in-out;
+        &:hover{
+            opacity: 0.8;
+        }
+    }
+}
+.eliminar{
+    svg{
+        fill: #2EA39D;
+        transition:all .3s ease-in-out;
+        &:hover{
+            opacity: 0.8;
+        }
+    }
+}

@@ -1,0 +1,42 @@
+//contenedor de icono buscar
+.MuiIcon-root{
+    padding-right: 27px;
+}
+
+//contenedor del titulo
+.MTableToolbar-root-5 {
+    display: none;
+    padding-left: 0 !important;
+    h6{
+        color: #7D0F2E;
+        font-family: "mulish" sans-serif;
+        font-weight: 500;
+    }
+}
+
+
+
+
+//botones de la paginacion o navegacion
+.MuiButtonBase-root.MuiIconButton-root{
+    color: #7D0F2E;
+    font-family: "mulish" sans-serif;
+}
+.MuiIconButton-root.Mui-disabled{
+    color: #7D0F2E !important;
+    font-family: "mulish" sans-serif;
+}
+
+.MuiTypography-caption{
+    color: #7D0F2E;
+    font-family: "mulish" sans-serif;
+    font-weight:700;
+}
+
+.Component-horizontalScrollContainer-12 ::-webkit-scrollbar-thumb {
+    background-color: #7D0F2E !important;
+}
+
+.MuiIconButton-colorInherit {
+    color: #2EA39D;
+}

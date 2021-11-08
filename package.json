@@ -1,31 +1,40 @@
 {
   "name": "controlpersonalappweb",
   "version": "1.0.0",
-  "description": "aplicativo para control de personal",
-  "main": "index.js",
+  "description": "",
+  "main": "webpack.config.js",
   "scripts": {
-    "test": "dev",
-    "start": "webpack serve --open",
-    "build": "webpack --mode production"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development --env development --host 0.0.0.0"
   },
-  "keywords": [
-    "react",
-    "webpack"
-  ],
-  "author": "H y J",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hagi-dev/controlPersonalAppWeb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hagi-dev/controlPersonalAppWeb/issues"
+  },
+  "homepage": "https://github.com/hagi-dev/controlPersonalAppWeb#readme",
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "babel-eslint": "^10.1.0",
-    "eslint": "^8.1.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
     "html-loader": "^3.0.1",
     "html-webpack-plugin": "^5.5.0",
+    "jspdf-autotable": "^3.5.23",
+    "material-table": "^1.63.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "webpack": "^5.61.0",
+    "react-router-dom": "^6.0.1",
+    "webpack": "^5.62.1",
     "webpack-cli": "^4.9.1"
   },
   "devDependencies": {
@@ -35,9 +44,8 @@
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
     "file-loader": "^6.2.0",
-    "mini-css-extract-plugin": "^2.4.3",
+    "mini-css-extract-plugin": "^2.4.4",
     "node-sass": "^6.0.1",
-    "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
     "webpack-dev-server": "^4.4.0"
