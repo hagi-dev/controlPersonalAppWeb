@@ -1,14 +1,17 @@
 import React from 'react';
 import Menu from './components/Menu';
 import './assets/Styles/App.scss';
-import Usuario from './components/Usuario';
 import Tabla from './components/Tabla';
+import {ComboBox_C} from './components/ComboBox.jsx'
 
 const App = () => {
+
     return (
-        <div className="contenedor">
-            <Tabla/>
-        </div>
+        <React.Fragment>
+
+            <ComboBox_C/>
+
+        </React.Fragment>
     )
 }
 

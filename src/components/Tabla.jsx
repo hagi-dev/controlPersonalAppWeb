@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import "../assets/Styles/components/Tabla.scss";
 import MaterialTable from 'material-table';
-import Perfil22 from '../assets/static/Perfil.jpg'
+/* import Perfil22 from '../assets/static/Perfil.jpg' */
 import IconModificar from './vectors/Modificar';
 import IconEliminar from './vectors/Eliminar';
 
@@ -24,7 +24,7 @@ const Tabla = (props) => {
         ])
     const columns = [
         { title: "Name", field: "name", filterPlaceholder:"ingrese nombre" ,align:"left",filtering: StateName,
-        render: (rowData) => <div style={{display:"flex", justifyContent:"center"}}><img src={Perfil22} style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.name}</p></div>},
+        render: (rowData) => <div style={{display:"flex", justifyContent:"center"}}><img src="" style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.name}</p></div>},
         { title: "Email", field: "email",filtering:false },
         { title: "Phone", field: "phone", align: "center", grouping: false },
         {
