@@ -20,6 +20,7 @@
   "homepage": "https://github.com/hagi-dev/controlPersonalAppWeb#readme",
   "dependencies": {
     "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",

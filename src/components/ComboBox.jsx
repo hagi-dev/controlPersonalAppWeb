@@ -5,11 +5,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+import IconButton from '@material-ui/core/IconButton'; 
+import DeleteIcon from '@material-ui/icons/AddCircle';
 
 
 function ComboBox_C (props) {
+ 
 
-  
   const useStyles = makeStyles((theme) => ({
     select: {
       fontFamily  : "mulish",
@@ -37,7 +39,7 @@ function ComboBox_C (props) {
     setTodoList(event.target.value);
     console.log(event.target.value);
   };
-
+ 
   return ( 
     <FormControl  
       className={classes.formControl}>
@@ -67,68 +69,19 @@ function ComboBox_C (props) {
 
           <MenuItem key={fAux.id} value={fAux.id}>{fAux.text }</MenuItem>
 
-        ))}
-        {/* <MenuItem value={20}>Twenty</MenuItem>  */}
+        ))} 
 
       </Select>
+
+          <div>
+            <IconButton aria-label="delete" className={classes.margin}>
+              <DeleteIcon fontSize="large" />
+            </IconButton> 
+          </div>
     </FormControl> 
-  );
+    
+  ); 
 }
 
 export default ComboBox_C;
-
-/*import * as React from 'react';
-
-import Box from '@material-ui/core/Box';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import '../assets/Styles/components/ComboBox.scss' 
-
-
-
-function ComboBox_C () {
-
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event) => {
-      setAge(event.target.value);
-    };
-
-    return (
-        <Box 
-             
-            width="25%"
-            margin="20px"
-        >
-            <FormControl 
-                fullWidth
-                variant="outlined"
-            >
-                
-                <InputLabel
-                borderColor="primary.main"
-                id="demo-simple-select-label">Age</InputLabel>
-                <Select 
-                fullWidth 
-
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={age}
-                label="Age"
-                onChange={handleChange}
-                >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-            </FormControl>
  
-
-        </Box>
-    );
-}
-
-export {ComboBox_C};
-*/ 
