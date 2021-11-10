@@ -74,7 +74,7 @@ function ComboBox_C (props) {
       </Select>
 
           <div>
-            <IconButton aria-label="delete" className={classes.margin}>
+            <IconButton aria-label="delete">
               <DeleteIcon fontSize="large" />
             </IconButton> 
           </div>
