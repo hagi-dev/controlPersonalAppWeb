@@ -1,13 +1,11 @@
 import React from 'react';
-import Menu from './components/Menu';
 import './assets/Styles/App.scss';
-import Usuario from './components/Usuario';
-import Tabla from './components/Tabla';
+import RegistrarHorario from './containers/RegistrarHorario'
 
 const App = () => {
     return (
         <div className="contenedor">
-            <Tabla/>
+            <RegistrarHorario/>
         </div>
     )
 }

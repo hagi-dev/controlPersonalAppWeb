@@ -9,9 +9,10 @@ body{
     height: 100%;
     position: relative;
     background: rgba(255,255,255,0.7);
+    overflow: hidden;
 }
 
 .contenedor{
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    height: 100vh;
 }
