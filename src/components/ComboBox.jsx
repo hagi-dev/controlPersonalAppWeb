@@ -4,6 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem'; 
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import '../assets/Styles/components/ComboBox.scss';
 
 
 
@@ -12,6 +13,7 @@ function ComboBox_C (props) {
   
   const useStyles = makeStyles((theme) => ({
     select: {
+      margin:"0",
       fontFamily  : "mulish",
       color       : "#666666",
       '&:before'  : {borderColor: "#2EA39D"},
@@ -68,7 +70,6 @@ function ComboBox_C (props) {
           <MenuItem key={fAux.id} value={fAux.id}>{fAux.text }</MenuItem>
 
         ))}
-        {/* <MenuItem value={20}>Twenty</MenuItem>  */}
 
       </Select>
     </FormControl> 
