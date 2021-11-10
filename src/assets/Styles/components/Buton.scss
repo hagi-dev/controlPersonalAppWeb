@@ -1,0 +1,26 @@
+.Conteiner1__Boton{
+    button{
+        background-color: #7D0F2E;
+        border-radius: 5px;
+        border:0px;
+        padding: 10px;
+        transition: all .3s ease;
+
+        &:hover{
+            cursor: pointer;
+            h4{
+                transform: scale(1.1);
+            }
+        }
+        h4{
+            transition: all .3s ease;
+            transform: scale(1);
+            font-size: 1.2rem;
+            font-weight: 500;
+            font-family: 'mulish',sans-serif;
+            color: white;
+            margin: 0;
+        }
+        
+    }
+}
