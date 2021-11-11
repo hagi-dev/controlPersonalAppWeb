@@ -36,13 +36,13 @@ const Tabla = (props) => {
       ]
     return (
         <div style={{width:"93%", height:"101%",overflow: "hidden"}}>
-          <MaterialTable columns={columns} data={tableData} title= 'Lista de Horario'
+          <MaterialTable columns={columns} data={tableData} title= 'Lista de Tipos de Trabajador'
 
           options={{
             sorting: true,iconsSearch:false,search: false, paging: true,hideFilterIcons: true,pageSize:4,exportButton:true,exportAllData: true,exportFileName: "TableData",
             rowStyle:{fontFamily:"mulish" ,fontSize:"13px",border: "0px",color:"#2EA39D" },
             headerStyle:{color:"#7D0F2E",fontFamily:"mulish" ,fontSize:"16px",border: "0px",background:"#E9F8F7",fontWeight:"700" },
-            titleStyle:{align:"left",paddingLeft:"0px !importan",fontFamily: "mulish !important" }
+            titleStyle:{},
           }}
           actions={[
             {

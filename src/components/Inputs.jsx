@@ -2,6 +2,7 @@ import React from 'react';
 import '../assets/Styles/components/Inputs.scss'
 
 const Inputs = (props) => {
+    
     const ancho=props.configInput.ancho;
     const title=props.configInput.title;
     const type=props.configInput.type;

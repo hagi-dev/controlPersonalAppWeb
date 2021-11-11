@@ -13,18 +13,18 @@ import '../assets/Styles/components/Tabla.scss'
 
 const RegistrarPermiso = () => {
     const configInput = {
-        ancho: '100%',
+        ancho: '90%',
         title: 'Trabajador',
         type: 'text'
     }
     const configInput2 = {
-        ancho: '84%',
+        ancho: '90%',
         title: 'Fecha de Inicio',
         type: 'date'
     }
     const configButon = {
         title: 'Guardar',
-        ancho: '100%'
+        ancho: '90%'
     }
     const todoList = [
         { text: '10:00 AM', id:'500'},
@@ -61,7 +61,7 @@ const RegistrarPermiso = () => {
                             <ComboBox
                                 text = {"Motivo"}
                                 todoList = {todoList}
-                                width = {'84%'}
+                                width = {'90%'}
                             />   
                             <Inputs
                                 configInput={configInput2}
@@ -69,7 +69,7 @@ const RegistrarPermiso = () => {
                             <ComboBox
                                 text = {"Motivo"}
                                 todoList = {todoList}
-                                width = {'84%'}
+                                width = {'90%'}
                             />  
                             <Boton configButon={configButon}/> 
                         </div>                        
