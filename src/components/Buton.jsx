@@ -6,7 +6,7 @@ const Buton = (props) => {
     const title=props.configButon.title;
     return (
         <div className="Conteiner1__Boton">
-            <button style={{width:ancho,height:"45px"}}><h4>{title}</h4></button>
+            <button style={{width:ancho,height:"30px", marginTop:"10px"}}><h5>{title}</h5></button>
         </div>
     )
 }

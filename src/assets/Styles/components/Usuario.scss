@@ -1,9 +1,15 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
 .Usuario{
     width: 238px;
-    height: 73px;
+    height: 49px;
     right: 0px;
     top: 0px;
-    display: flex;
+    display: flex; 
+    align-items: center;
 
     .Usuario__navBar{
         visibility: hidden;
@@ -28,7 +34,7 @@
     .Usuario__imgPerfil{
         width: 55px;
         img{
-            width: 60px;
+            width: 40px;
             border-radius: 50%;
             border: solid 3px #7D0F2E;
         }

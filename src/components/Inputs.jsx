@@ -11,7 +11,7 @@ const Inputs = (props) => {
     return (
         <div className="Conteiner">
             <h3>{title}</h3>
-            <input style={{width:ancho}} className="input" type={type} name="nombre" placeholder={placeholder}/>
+            <input style={{width:ancho , marginRight:"19px"}} className="input" type={type} name="nombre" placeholder={placeholder}/>
         </div>
     )
 }
