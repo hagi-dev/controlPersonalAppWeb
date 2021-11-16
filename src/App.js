@@ -1,13 +1,12 @@
 import React from 'react';
 import './assets/Styles/App.scss';
 import RegistrarHorario from './containers/RegistrarHorario'
-import RegistrarPermiso from './containers/RegistrarPermiso'
+import {Asistencias} from './containers/Asistencias.js';
 
 const App = () => {
     return (
         <div className="contenedor">
-            {/* <RegistrarHorario/> */}
-            <RegistrarPermiso/>
+            <Asistencias/>
         </div>
     )
 }

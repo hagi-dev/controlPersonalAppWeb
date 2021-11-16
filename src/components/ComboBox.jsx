@@ -25,8 +25,9 @@ function ComboBox_C (props) {
       fill: "#2EA39D", 
     },
     formControl: {
-      margin: theme.spacing(1),
+      /* margin: theme.spacing(1), */
       minWidth: props.width,
+      margin: "0px !important"
     },
     selectEmpty: {
       marginTop: theme.spacing(2),

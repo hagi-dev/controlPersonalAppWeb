@@ -1,10 +1,15 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
 .Usuario{
     width: 238px;
-    height: 73px;
-    right: 1%;
-    top: 0.5%;
-    display: flex;
-    position: fixed;
+    height: 49px;
+    right: 0px;
+    top: 0px;
+    display: flex; 
+    align-items: center;
 
     .Usuario__navBar{
         visibility: hidden;
