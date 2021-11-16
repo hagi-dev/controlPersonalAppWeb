@@ -21,17 +21,42 @@
     font-weight:700;
 }
 
-.Component-horizontalScrollContainer-12 ::-webkit-scrollbar-thumb {
-    background: #351572 !important;
+//style scrollbar horizontal
+.Component-horizontalScrollContainer-36 ::-webkit-scrollbar-thumb{
+    background-color: #2EA39D !important;
+}
+
+.Component-horizontalScrollContainer-20 ::-webkit-scrollbar-thumb{
+    background-color: #2EA39D !important;
 }
 
 .MuiIconButton-colorInherit {
-    color: #2EA39D;
+    color: #2EA39D !important;
 }
 
-.MuiToolbar-root.MuiToolbar-regular.MTableToolbar-root-29.MuiToolbar-gutters{
+//titulo de la lista de la tabla
+.MuiTypography-root.MuiTypography-h6{
     padding:0 !important;
     font-weight: 500 !important;
+    font-size: 1rem !important;
     font-family: "mulish" !important;
+    color: #7D0F2E !important;
+}
+
+.MuiToolbar-root.MuiToolbar-regular{
+    padding:0 !important;
+}
+
+//sombra de la tabla parte bootom
+.MuiPaper-elevation2{
+
+    box-shadow: 0px 3px 1px -2px #2EA39D, 0px 2px 2px 0px #2EA39D, 0px 1px 5px 0px #2EA39D !important;
+}
+
+
+
+
+//estilos de filtro
+.MuiInputBase-input{
     color: #7D0F2E !important;
 }

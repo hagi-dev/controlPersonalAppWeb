@@ -20,24 +20,25 @@
             height: 10%;
             width: 24%;
             margin: 0;
-            margin-top: 1.5%;
+            margin-top: 1%;
             float: right;
             margin-right: 1%;
         }
 
         .RegistrarHorario__cuerpo-titulo{
-            height: 5%;
-            margin-top: 4%;
+            height: 3%;
+            margin-top: 2%;
             font-family: 'Mulish';
-            font-size:1.1rem;
             font-weight: 900;
-            margin-bottom: 3.5%;
             color: #7D0F2E;
+            h1{
+                font-size: 1.5rem !important;
+            }
         }
 
         .RegistrarHorario__cuerpo-contenido{
             width: 100%;
-            height: 70%;
+            height: 100%;
             display: flex;
             justify-content:space-between;
             align-items: center;
@@ -56,7 +57,7 @@
 
                     h2{
                         font-family: 'Mulish';
-                        font-size: 1.15rem;
+                        font-size: 1rem;
                         font-weight: 500;
                         color: #7D0F2E;
                         text-align:start ;
@@ -72,6 +73,8 @@
                     .RegistrarHorario__fila{
                         width: 100%;
                         display: flex;
+                        justify-content: space-between;
+                        margin-top: 10px;
                     }
 
                     .RegistrarHorario__fila1{
