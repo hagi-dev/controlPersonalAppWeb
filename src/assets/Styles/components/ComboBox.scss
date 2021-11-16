@@ -2,3 +2,8 @@
 .MuiFormControl-root{
     margin: 0 !important;
 }
+//estilo de colores de los textos del input ingresado
+
+.MuiSelect-root.MuiSelect-select.MuiSelect-selectMenu.MuiInputBase-input.MuiInput-input{
+    color: #666666 !important;
+}

@@ -6,7 +6,7 @@ import RegistrarTipo from './containers/RegistrarTipo';
 const App = () => {
     return (
         <div className="contenedor">
-            <RegistrarTipo/>
+            <RegistrarHorario/>
         </div>
     )
 }
