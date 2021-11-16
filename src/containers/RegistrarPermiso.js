@@ -100,7 +100,7 @@ const RegistrarPermiso = () => {
                                 configInput={configInput2}
                             /> 
                             <ComboBox
-                                text = {"Motivo"}
+                                text = {"Dias"}
                                 todoList = {todoList}
                                 width = {'90%'}
                             />  

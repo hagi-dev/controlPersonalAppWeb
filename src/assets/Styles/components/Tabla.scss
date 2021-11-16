@@ -2,8 +2,10 @@
 .MuiIcon-root{
     padding-right: 27px;
 }
-
-
+//fondo de la tabla
+.MuiPaper-root{
+    background-color: transparent !important;
+}
 
 //botones de la paginacion o navegacion
 .MuiButtonBase-root.MuiIconButton-root{
@@ -51,6 +53,11 @@
 .MuiPaper-elevation2{
 
     box-shadow: 0px 3px 1px -2px #2EA39D, 0px 2px 2px 0px #2EA39D, 0px 1px 5px 0px #2EA39D !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(2px) !important;
+    border: 1px solid  rgba(255, 255, 255, 0.4) !important;
+    border-bottom: 1px solid  rgba(255, 255, 255, 0.2) !important;
+    border-right: 1px solid  rgba(255, 255, 255, 0.2) !important;
 }
 
 
@@ -59,4 +66,9 @@
 //estilos de filtro
 .MuiInputBase-input{
     color: #7D0F2E !important;
+}
+
+//diseño del heador del la tabla para
+.MuiTableRow-root.MuiTableRow-head{
+    backdrop-filter: blur(2px) !important;
 }

@@ -42,19 +42,19 @@ const Tabla = (props) => {
     const {title,data,columnas}=props.tabla;
     const [filtro, setFiltro] = React.useState(0);
     const downloadExcel = () => {
-      const ws = XLSX.utils.json_to_sheet(tableData);
+      const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "datosTabla");
       XLSX.writeFile(wb, "datosTabla.xlsx");
     }
     return (
         <div className="contenedor-tabla" style={{width:"93%", height:"101%",overflow: "hidden"}}>
-          <MaterialTable columns={columnas} data={data} title={title}  icons={tableIcons}
+          <MaterialTable columns={columnas} data={data} title={title}  icons={tableIcons} style={{background:'transparent'}}
 
           options={{
             sorting: true,iconsSearch:false,search: false, paging: true,hideFilterIcons: true,pageSize:4,
-            rowStyle:{fontFamily:"mulish" ,fontSize:"13px",border: "0px",color:"#666666" },
-            headerStyle:{color:"#7D0F2E",fontFamily:"mulish" ,fontSize:"14px",border: "0px",background:"#E9F8F7",fontWeight:"700" },
+            rowStyle:{fontFamily:"mulish" ,fontSize:"13px",border: "0px",color:"#4E4D4D",height:"30px" },
+            headerStyle:{color:"#7D0F2E",fontFamily:"mulish",backdropFilter: blur("2px") ,fontSize:"14px",border: "0px",background:"#E9F8F7",fontWeight:"700" },
             titleStyle:{padding:"0px"},paginationType:"stepped",pageSizeOptions:[4],filtering: false, showFirstLastPageButtons: false,
             filtering: filtro%2==0 ? false : true,
           }}
@@ -67,21 +67,26 @@ const Tabla = (props) => {
             },
             {
               icon: tableIcons.Export,
-              tooltip: 'exportar datos' ,
+              tooltip: 'Descargar Datos' ,
               onClick: () => downloadExcel(),
               isFreeAction: true,
             },
             {
               icon: tableIcons.Edit,
               tooltip: 'Modificar' ,
-              onClick: (event, rowData) => alert("¿deseas modificar? " + rowData.name)
-
+              onClick: (event, rowData) => alert("¿deseas modificar? " + rowData.name),
             },
             {
               icon: tableIcons.Delete,
               tooltip: 'Desactivar',
-              onClick: (event, rowData) => confirm("¿deseas eliminar?" + rowData.name)
-            }
+              onClick: (event, rowData) => confirm("¿deseas eliminar?" + rowData.name),
+            },
+            {
+              icon: tableIcons.Add,
+              tooltip: 'Nuevo Registro' ,
+              onClick: (event, rowData) => confirm("¿deseas eliminar?" + rowData.name),
+              isFreeAction: true,
+            },
           ]}
           />
         </div>
