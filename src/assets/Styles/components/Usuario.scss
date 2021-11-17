@@ -6,10 +6,11 @@
 .Usuario{
     width: 238px;
     height: 49px;
-    right: 0px;
-    top: 0px;
+    right: 1%;
+    top: 0.5%;
     display: flex; 
     align-items: center;
+    position: fixed;
 
     .Usuario__navBar{
         visibility: hidden;

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../assets/Styles/components/Asistencia.scss';
+import '../assets/Styles/components/Contrato.scss';
 import Menu from '../components/Menu';
 import Tabla from '../components/Tabla';
 import Perfil from '../components/Usuario';
@@ -7,7 +7,7 @@ import '../assets/Styles/components/Tabla.scss';
 import perfil from '../assets/static/perfil.jpg';
 
 
-const Asistencia = () => {
+const Contrato = () => {
     const data =[
         { name: "Raj ", email: "Raj@gmail.com", phone: 7894561230, age: null, gender: "M", city: "Chennai", school:"madrid"},
         { name: "Mohainos", email: "mohan@gmail.com", phone: 7845621590, age: 35, gender: "M", city: "Delhi", school:"madrid" },
@@ -25,7 +25,7 @@ const Asistencia = () => {
         
     const columns = [
         { title: "Name", field: "name", filterPlaceholder:"ingrese nombre" ,align:"left",
-        render: (rowData) => <div style={{display:"flex", justifyContent:"center",alignItems:"center"}}><img src={perfil} style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.name}</p></div>},
+        render: (rowData) => <div style={{display:"flex", justifyContent:"flex-start",alignItems:"center"}}><img src={perfil} style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.name}</p></div>},
         { title: "Email", field: "email" },
         { title: "Phone", field: "phone", align: "center"},
         {
@@ -36,24 +36,24 @@ const Asistencia = () => {
         { title: "School", field: "school", lookup: { madrid: "madrid", barcelona: "barcelona", london: "london" } ,selectedField:"london"},
       ]
     const tabla={
-        title:'Lista de Asistencia',
+        title:'Lista de Contrato',
         data: data,
         columnas: columns,
     }
     return (
-        <div className="Asistencia">
-             <div className="Asistencia__menu">
+        <div className="Contrato">
+             <div className="Contrato__menu">
                 <Menu/> 
             </div>
-            <div className="Asistencia__cuerpo" style={{backgroundColor:"white",width:"100%",height:"100%"}}>
-                <div className="Asistencia__cuerpo-perfil">
+            <div className="Contrato__cuerpo" style={{backgroundColor:"white",width:"100%",height:"100%"}}>
+                <div className="Contrato__cuerpo-perfil">
                  <Perfil/>
                 </div>
-                <div className="Asistencia__cuerpo-titulo">
-                    <h1>Asistencias</h1>
+                <div className="Contrato__cuerpo-titulo">
+                    <h1>Contratos</h1>
                 </div>
-                <div className="Asistencia__cuerpo-contenido">
-                    <div className="Asistencia__lista" style={{margin:"0"}}>
+                <div className="Contrato__cuerpo-contenido">
+                    <div className="Contrato__lista" style={{margin:"0"}}>
                         <Tabla tabla={tabla}/>
                     </div>
                 </div>
@@ -61,4 +61,4 @@ const Asistencia = () => {
         </div>
     )
 }
-export default Asistencia;
+export default Contrato;

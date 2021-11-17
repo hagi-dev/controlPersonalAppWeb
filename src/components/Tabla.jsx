@@ -48,7 +48,7 @@ const Tabla = (props) => {
       XLSX.writeFile(wb, "datosTabla.xlsx");
     }
     return (
-        <div className="contenedor-tabla" style={{width:"93%", height:"101%",overflow: "hidden"}}>
+        <div className="contenedor-tabla" style={{width:"100%", height:"101%",overflow: "hidden"}}>
           <MaterialTable columns={columnas} data={data} title={title}  icons={tableIcons} style={{background:'transparent'}}
 
           options={{

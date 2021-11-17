@@ -42,7 +42,7 @@
                 justify-content: space-around;
                 padding: 0px;
                 margin: 0px;
-                margin-left: 38px;
+                margin-left: 25px;
     
                 li{
                     width: 100%;
@@ -52,7 +52,6 @@
                     align-items: center;
                     padding: 0px;
                     margin: 0px;
-                    border-left: 7px solid #7D0F2E;
                     padding: 10px;
                     padding-left: 25px;
                     font-size: 0.88rem;
@@ -72,6 +71,7 @@
     
                     &:hover{
                         background-color: #fff;
+                        border-left: 8px solid #7D0F2E;
                     }
                 }
             }
