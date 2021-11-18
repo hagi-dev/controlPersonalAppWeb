@@ -1,7 +1,10 @@
-import React from 'react';
+import React,{forwardRef} from 'react';
 import '../assets/Styles/components/TablaContrato.scss';
+import IconButton from '@material-ui/core/IconButton';
+import Remove from '@material-ui/icons/Remove';
 
 const TablaContrato = () => {
+    //var yea=document.getElementById("tabla1").rows.length;
     return (
         <table id="tabla-contrato" className="Tabla__contrato">
             <thead>

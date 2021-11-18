@@ -10,6 +10,7 @@ import Inputs from '../components/Inputs';
 import SearchIcon from '@material-ui/icons/Search';
 import '../assets/Styles/components/Tabla.scss';
 import perfil from '../assets/static/perfil.jpg';
+import TablaContrato from '../components/TablaContrato';
 
 const RegistrarContrato = () => {
 
@@ -71,54 +72,55 @@ const RegistrarContrato = () => {
                 <div className="RegistrarContrato__cuerpo-contenido">
                     <div className="RegistrarContrato__registrar">
                         <div className="RegistrarContrato__registrar-titulo"><h2>Registrar Contratos</h2></div>
-                        <div className="RegistrarContrato__Combos">
-                            <div className="RegistrarContrato__fila1">
-                                <Inputs
-                                    configInput={configInput}
-                                />
-                                <div>
-                                    <IconButton aria-label="Agregar">
-                                        <SearchIcon fontSize="large" />
-                                    </IconButton> 
-                                </div>
-                            </div> 
-                            <div className="RegistrarContrato__fila">
-                                <ComboBox
-                                    text = {"Area"}
-                                    todoList = {todoList}
-                                    width = {'45%'}
-                                />
-                                <ComboBox
-                                    text = {"Cargo"}
-                                    todoList = {todoList}
-                                    width = {'45%'}
-                                />     
-                            </div>  
-                            <div className="RegistrarContrato__fila">
-                                <Inputs
-                                    configInput={configInput2}
-                                /> 
-                                <Inputs
-                                    configInput={configInput3}
-                                />
-                            </div>
-                            <div className="RegistrarContrato__fila">
-                                <ComboBox
-                                    text = {"Horario"}
-                                    todoList = {todoList}
-                                    width = {'70%'}
-                                />   
-                                <Boton configButon={configButon2}/>   
-                            </div>
-                            <div className="RegistrarContrato__fila"></div>
-                            <div className="RegistrarContrato__fila">
-                                <Boton configButon={configButon}/> 
-                                <Boton configButon={configButon3}/> 
-                            </div> 
-                            
-                        </div>                        
+                            <div className="RegistrarContrato__Combos">
+                                <div className="RegistrarContrato__fila1">
+                                    <Inputs
+                                        configInput={configInput}
+                                    />
+                                    <div>
+                                        <IconButton aria-label="Agregar">
+                                            <SearchIcon fontSize="large" />
+                                        </IconButton> 
+                                    </div>
+                                </div> 
+                                <div className="RegistrarContrato__fila2">
+                                    <ComboBox
+                                        text = {"Area"}
+                                        todoList = {todoList}
+                                        width = {'45%'}
+                                    />
+                                    <ComboBox
+                                        text = {"Cargo"}
+                                        todoList = {todoList}
+                                        width = {'45%'}
+                                    />     
+                                </div>  
+                                <div className="RegistrarContrato__fila2">
+                                    <Inputs
+                                        configInput={configInput2}
+                                    /> 
+                                    <Inputs
+                                        configInput={configInput3}
+                                    />
+                                </div>                                
+                            </div>                        
+                    </div>
+                    <div className="RegistrarContrato__tabla">
+                        <div className="RegistrarContrato__fila">
+                            <ComboBox
+                                text = {"Horario"}
+                                todoList = {todoList}
+                                width = {'70%'}
+                            />   
+                            <Boton configButon={configButon2}/>   
+                        </div>
+                        <TablaContrato/>
                     </div>
                 </div>
+                <div className="RegistrarContrato__botones">
+                    <Boton configButon={configButon}/> 
+                    <Boton configButon={configButon3}/> 
+                </div> 
             </div>
         </div>
     )

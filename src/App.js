@@ -13,7 +13,7 @@ import TablaContrato from './components/TablaContrato';
 const App = () => {
     return (
         <div className="contenedor">
-            <TablaContrato/>
+            <RegistrarContrato/>
         </div>
     )
 }

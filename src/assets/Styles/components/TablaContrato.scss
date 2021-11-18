@@ -1,6 +1,6 @@
 table {
-    table-layout: fixed;
-    width: 30%;
+    position: sticky;
+    width: 100%;
     border-spacing: 0;
     font-size: 13px;
   }
@@ -24,12 +24,14 @@ table {
   }
   thead th {
     font-family: 'Mulish';
-    background-color: #7D0F2E;
+    background-color: #E9F8F7;
+    color:#7D0F2E;
+    
   }
   
   tbody td {
     text-align: center;
-    border: 1px solid  #7D0F2E 
+    color:#666666;
   }
   
   tfoot th {
@@ -44,4 +46,10 @@ table {
     background-color: white;
     font-family: 'Mulish';
     
+  }
+  button{
+      background-color: #2EA39D;
+      color: white;
+      font-family: 'Mulish';
+      font-size: 13px;
   }
