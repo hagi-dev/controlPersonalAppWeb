@@ -25,7 +25,6 @@ const RegistrarHorario = () => {
         { name: "Raj" , email: "Raj@gmail.com", phone: 7894561230, age: null, gender: "M", city: "Chennai", school:"madrid"},
         { name: "Mohan", email: "mohan@gmail.com", phone: 7845621590, age: 35, gender: "M", city: "Delhi", school:"madrid" },
         { name: "Sweety", email: "sweety@gmail.com", phone: 741852912, age: 17, gender: "F", city: "Noida", school:"madrid" },
-        { name: "Vikas", email: "vikas@gmail.com", phone: 9876543210, age: 20, gender: "M", city: "Mumbai", school:"madrid" },
     ];
         
     const columns = [
@@ -47,7 +46,8 @@ const RegistrarHorario = () => {
     }
     const configButon = {
         title: 'Guardar',
-        ancho: '100%'
+        ancho: '100%',
+        marginTop:'50px'
     }
     const todoList = [
         { text: '10:00 AM', id:'500'},

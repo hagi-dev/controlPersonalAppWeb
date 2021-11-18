@@ -1,26 +1,26 @@
-.Conteiner1__Boton{
-    button{
-        background-color: #7D0F2E;
-        border-radius: 5px;
-        border:0px;
-        padding: 7px;
-        transition: all .3s ease;
+button{
+    background-color: #7D0F2E;
+    border-radius: 5px;
+    border:0px;
+    padding: 7px;
+    transition: all .3s ease;
+    height: 100%;
+    
 
-        &:hover{
-            cursor: pointer;
-            h5{
-                transform: scale(1.1);
-            }
-        }
+    &:hover{
+        cursor: pointer;
         h5{
-            transition: all .3s ease;
-            transform: scale(1);
-            font-size: 0.9rem;
-            font-weight: 500;
-            font-family: 'mulish',sans-serif;
-            color: white;
-            margin: 0;
+            transform: scale(1.1);
         }
-        
     }
+    h5{
+        transition: all .3s ease;
+        transform: scale(1);
+        font-size: 0.9rem;
+        font-weight: 500;
+        font-family: 'mulish',sans-serif;
+        color: white;
+        margin: 0;
+    }
+    
 }

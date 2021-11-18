@@ -17,6 +17,7 @@ const Menu = () => {
                         <li><a href="">Personal</a></li>
                         <li><a href="">Contratos</a></li>
                         <li><a href="">Asistencias</a></li>
+                        <li><a href="">Permisos</a></li>
                         <li><a href="">Tipo de personal</a></li>
                         <li><a href="">Horario</a></li>
                         <li><a href="">Sanciones </a></li>

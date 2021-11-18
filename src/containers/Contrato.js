@@ -24,7 +24,7 @@ const Contrato = () => {
     ];
         
     const columns = [
-        { title: "Name", field: "name", filterPlaceholder:"ingrese nombre" ,align:"left",
+        { title: "Name", field: "name", filterPlaceholder:"Ejemplo: juan" ,align:"left",
         render: (rowData) => <div style={{display:"flex", justifyContent:"flex-start",alignItems:"center"}}><img src={perfil} style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.name}</p></div>},
         { title: "Email", field: "email" },
         { title: "Phone", field: "phone", align: "center"},
