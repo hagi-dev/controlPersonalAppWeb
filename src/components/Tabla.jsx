@@ -50,13 +50,13 @@ const Tabla = (props) => {
     return (
         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
           <MaterialTable columns={columnas} data={data} title={title}  icons={tableIcons} style={{background:'transparent'}}
-
+          StickyHeader={true}
           options={{
-            sorting: true,iconsSearch:false,search: false, paging: true,hideFilterIcons: true,pageSize:4,
+            sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,
             rowStyle:{fontFamily:"mulish" ,fontSize:"13px",border: "0px",color:"#4E4D4D",height:"30px" },
-            headerStyle:{color:"#7D0F2E",fontFamily:"mulish",backdropFilter: blur("2px") ,fontSize:"14px",border: "0px",background:"#E9F8F7",fontWeight:"700" },
-            titleStyle:{padding:"0px"},paginationType:"normal",pageSizeOptions:[4],filtering: false, showFirstLastPageButtons: false,
-            filtering: filtro%2==0 ? false : true,
+            headerStyle:{position: 'sticky', top: "0",color:"#7D0F2E",fontFamily:"mulish",backdropFilter: blur("2px") ,fontSize:"14px",border: "0px",background:"#E9F8F7",fontWeight:"700" },
+            titleStyle:{padding:"0px"},paginationType:"normal",pageSizeOptions:[4,10,20],filtering: false, showFirstLastPageButtons: false,
+            filtering: filtro%2==0 ? false : true,maxBodyHeight: '400px'
           }}
           actions={[
             {
@@ -64,6 +64,7 @@ const Tabla = (props) => {
               tooltip: 'filtrar tabla' ,
               onClick: () => setFiltro(filtro + 1),
               isFreeAction: true,
+              
             },
             {
               icon: tableIcons.Export,
@@ -75,11 +76,13 @@ const Tabla = (props) => {
               icon: tableIcons.Edit,
               tooltip: 'Modificar' ,
               onClick: (event, rowData) => alert("¿deseas modificar? " + rowData.name),
+              style: {zIndex:-1}
             },
             {
               icon: tableIcons.Delete,
               tooltip: 'Desactivar',
               onClick: (event, rowData) => confirm("¿deseas eliminar?" + rowData.name),
+              style: {zIndex:-1,position: 'absolute', top: 0,right: 0}
             },
             {
               icon: tableIcons.Add,
