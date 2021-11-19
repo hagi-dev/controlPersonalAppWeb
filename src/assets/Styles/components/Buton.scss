@@ -4,7 +4,6 @@ button{
     border:0px;
     padding: 7px;
     transition: all .3s ease;
-    height: 100%;
     
 
     &:hover{
@@ -23,4 +22,37 @@ button{
         margin: 0;
     }
     
+}
+.button{
+    background-color: #7D0F2E;
+    border-radius: 5px;
+    border:0px;
+    padding: 7px;
+    transition: all .3s ease;
+    
+
+    &:hover{
+        cursor: pointer;
+        h5{
+            transform: scale(1.1);
+        }
+    }
+    h5{
+        transition: all .3s ease;
+        transform: scale(1);
+        font-size: 0.9rem;
+        font-weight: 500;
+        font-family: 'mulish',sans-serif;
+        color: white;
+        margin: 0;
+    }
+    
+}
+
+.h1{
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: 'mulish';
+    color: #2EA39D;
+    margin: 0;
 }

@@ -39,6 +39,7 @@ const Contrato = () => {
         title:'Lista de Contrato',
         data: data,
         columnas: columns,
+        ruta:"/registro%20contratos"
     }
     return (
         <div className="Contrato">

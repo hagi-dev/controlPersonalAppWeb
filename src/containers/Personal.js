@@ -39,6 +39,7 @@ const Personal = () => {
         title:'Lista de Personal',
         data: data,
         columnas: columns,
+        ruta:"/registrar%20personal"
     }
     return (
         <div className="Personal">

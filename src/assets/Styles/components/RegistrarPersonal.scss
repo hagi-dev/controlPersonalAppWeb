@@ -1,0 +1,91 @@
+.RegistrarPersonal__cuerpo-contenido{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content:center;
+    padding-left: 4%;
+    padding-right: 4%;
+
+    .RegistrarPersonal__registrar{
+        width: 50%;
+        height: 100%;
+        margin: 0;
+
+        .RegistrarPersonal__registrar-titulo{
+            width: 100%;
+            height: 30px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+
+            h2{
+                font-family: 'Mulish';
+                font-size: 0.88rem;
+                font-weight: 700;
+                color: #7D0F2E;
+                text-align:start ;
+                margin: 0;
+
+            }
+        }                
+
+        .RegistrarPersonal__Combos{
+            width: 100%;
+            height: 60%;
+
+            .RegistrarPersonal__fila1{
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                height: 50px;
+                margin-top: 10px;
+            }
+            .RegistrarPersonal__fila2{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                height: 50px;
+                margin-top: 10px;
+            }
+        }
+
+    }
+
+    .RegistrarPersonal__tabla{
+        width: 50%;
+        height: 90%;
+        margin: 0;
+        padding-top: 2%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        .RegistrarPersonal__fila{
+            width: 70%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            align-items: flex-end;
+        }
+    }
+}
+.RegistrarPersonal__botones{
+    padding-left: 20%;
+    padding-right: 20%;
+    width: 100%;
+    display: flex;
+    margin-top: 50px;
+    justify-content: space-between;
+}
+
+.RegistrarPersonal__Cerrar{
+    position: absolute;
+    font-size:30px;
+    color:rgb(114, 117, 117);
+    top: 5px;
+    right: 5px;
+    opacity: 0.87;
+    display:none;
+}   
+
+

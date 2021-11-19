@@ -1,6 +1,57 @@
-.home{
-    box-sizing: border-box;
+.Home{
     margin: 0;
-    width: 100vw;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 17% 83%; 
+    .Home__menu{
+        margin: 0;
+        padding: 1vh 1.2vw;
+    }
+
+    .Home__cuerpo{
+
+        background-color: transparent !important;
+        width: 100%;
+        height: 100%;
+        padding: 0 20px 0 20px;
+
+        .Home__cuerpo-perfil{
+            height: 10%;
+            width: 24%;
+            margin: 0;
+            margin-top: 1%;
+            float: right;
+            margin-right: 1%;
+        }
+
+        .Home__cuerpo-titulo{
+            height: 3%;
+            margin-top: 2%;
+            font-family: 'Mulish';
+            font-weight: 900;
+            color: #7D0F2E;
+            h1{
+                font-size: 1.5rem !important;
+            }
+        }
+
+        .Home__cuerpo-contenido{
+            width: 100%;
+            height: 50%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content:center;
+            align-items: flex-start;
+            img{
+                width: 90%;
+                height: 100%;
+            }
+        
+            h1{
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
 }

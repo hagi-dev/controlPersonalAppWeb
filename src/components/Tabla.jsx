@@ -1,4 +1,5 @@
 import React,{useState,forwardRef} from 'react';
+import { Link } from "react-router-dom";
 import "../assets/Styles/components/Tabla.scss";
 import MaterialTable from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
@@ -39,7 +40,7 @@ const tableIcons = {
 };
 const StateName= false;
 const Tabla = (props) => {
-    const {title,data,columnas}=props.tabla;
+    const {title,data,columnas,ruta}=props.tabla;
     const [filtro, setFiltro] = React.useState(0);
     const downloadExcel = () => {
       const ws = XLSX.utils.json_to_sheet(data);
@@ -87,7 +88,7 @@ const Tabla = (props) => {
             {
               icon: tableIcons.Add,
               tooltip: 'Nuevo Registro' ,
-              onClick: (event, rowData) => confirm("¿deseas eliminar?" + rowData.name),
+              onClick: (event, rowData) => window.location.href=ruta,
               isFreeAction: true,
             },
           ]}

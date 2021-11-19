@@ -1,12 +1,11 @@
 import React,{forwardRef} from 'react';
-import '../assets/Styles/components/TablaContrato.scss';
-import IconButton from '@material-ui/core/IconButton';
-import Remove from '@material-ui/icons/Remove';
+import '../assets/Styles/components/TablaContratoHuella.scss';
 
-const TablaContrato = () => {
+const TablaContrato = (props) => {
     //var yea=document.getElementById("tabla1").rows.length;
+    // const {ancho} = props.config;
     return (
-        <table id="tabla-contrato" className="Tabla__contrato">
+        <table id="tabla-contrato" className="Tabla__contrato" style={{width:"100%"}}>
             <thead>
                 <tr>
                     <th>Dias</th>
