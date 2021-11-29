@@ -26,7 +26,7 @@ const Personal = () => {
     useEffect(() => {
         fetch('http://127.0.0.1:3000/api/personal')
         .then(response => response.json())
-        .then(data=> setData(data));
+        .then(data=> setData(data));;
     },[]);
         
     const columns = [

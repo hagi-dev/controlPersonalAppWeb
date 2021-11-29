@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem'; 
@@ -9,8 +9,6 @@ import '../assets/Styles/components/ComboBox.scss';
 
 
 function ComboBox_C (props) {
-
-  
   const useStyles = makeStyles((theme) => ({
     select: {
       margin:"0",
@@ -33,13 +31,10 @@ function ComboBox_C (props) {
       marginTop: theme.spacing(2),
     },
   }));
-
   const classes = useStyles();
-  const [todoList, setTodoList] = React.useState('');
-
+  const [data, setData] = useState('');
   const handleChange = (event) => {
-    setTodoList(event.target.value);
-    console.log(event.target.value);
+    setData(event.target.value);
   };
 
   return ( 
@@ -49,10 +44,9 @@ function ComboBox_C (props) {
       <InputLabel 
           style = {{color : "#2EA39D", 
           fontFamily: "mulish",}}
-          fullWidth 
-          id="demo-simple-select-label">{props.text}</InputLabel>
+          fullWidth>{props.text}</InputLabel>
       <Select         
-
+          name={props.name}
           value="1"
           className={classes.select}
           inputProps={{
@@ -64,17 +58,17 @@ function ComboBox_C (props) {
           fullWidth
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={todoList}
+          value={data}
           onChange={handleChange}
       >
-        {props.todoList.map(fAux =>(
+        {props.data2.map(fAux =>(
 
-          <MenuItem key={fAux.id} value={fAux.id}>{fAux.text }</MenuItem>
+          <MenuItem key={fAux.id} value={props.valor ==='nombre' ? fAux.nombre : fAux.id }>{fAux.nombre}</MenuItem>
 
         ))}
-
       </Select>
     </FormControl> 
+    
   );
 }
 

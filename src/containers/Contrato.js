@@ -1,48 +1,58 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import '../assets/Styles/components/Contrato.scss';
 import Menu from '../components/Menu';
 import Tabla from '../components/Tabla';
 import Perfil from '../components/Usuario';
 import '../assets/Styles/components/Tabla.scss';
 import perfil from '../assets/static/perfil.jpg';
+import { DateRange } from '@material-ui/icons';
 
 
 const Contrato = () => {
-    const data =[
-        { name: "Raj ", email: "Raj@gmail.com", phone: 7894561230, age: null, gender: "M", city: "Chennai", school:"madrid"},
-        { name: "Mohainos", email: "mohan@gmail.com", phone: 7845621590, age: 35, gender: "M", city: "Delhi", school:"madrid" },
-        { name: "Sweety", email: "sweety@gmail.com", phone: 741852912, age: 17, gender: "F", city: "Noida", school:"madrid" },
-        { name: "Vikas", email: "vikas@gmail.com", phone: 9876543210, age: 20, gender: "M", city: "Mumbai", school:"madrid" },
-        { name: "Neha", email: "neha@gmail.com", phone: 7845621301, age: 25, gender: "F", city: "Patna", school:"madrid" },
-        { name: "Mohan", email: "mohan@gmail.com", phone: 7845621590, age: 35, gender: "M", city: "Delhi", school:"madrid" },
-        { name: "Sweety", email: "sweety@gmail.com", phone: 741852912, age: 17, gender: "F", city: "Noida", school:"madrid" },
-        { name: "Vikas", email: "vikas@gmail.com", phone: 9876543210, age: 20, gender: "M", city: "Mumbai", school:"madrid" },
-        { name: "Raj" , email: "Raj@gmail.com", phone: 7894561230, age: null, gender: "M", city: "Chennai", school:"madrid"},
-        { name: "Mohan", email: "mohan@gmail.com", phone: 7845621590, age: 35, gender: "M", city: "Delhi", school:"madrid" },
-        { name: "Sweety", email: "sweety@gmail.com", phone: 741852912, age: 17, gender: "F", city: "Noida", school:"madrid" },
-        { name: "Vikas", email: "vikas@gmail.com", phone: 9876543210, age: 20, gender: "M", city: "Mumbai", school:"madrid" },
-    ];
+    const [data, setData ] = useState([]);
+    const hoy = new Date();
+    const formatearFecha = (fecha) => {
+        let fecha1= new Date(fecha);
+        let dia = fecha1.getDate();
+        let mes = fecha1.getMonth() + 1;
+        let anio = fecha1.getFullYear();
+        if (dia < 10) {
+            dia = '0' + dia;
+        }
+        if (mes < 10) {
+            mes = '0' + mes;
+        }
+        return anio + '/' + mes + '/' + dia;
+    }
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:3000/api/contrato')
+        .then(response => response.json())
+        .then(data=> setData(data));
+    },[]);
         
     const columns = [
-        { title: "Name", field: "name", filterPlaceholder:"Ejemplo: juan" ,align:"left",
-        render: (rowData) => <div style={{display:"flex", justifyContent:"flex-start",alignItems:"center"}}><img src={perfil} style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.name}</p></div>},
-        { title: "Email", field: "email" },
-        { title: "Phone", field: "phone", align: "center"},
+        { title: "N°", field: "contratoid",align:"left",width: "50px" ,filtering: false},
+        { title: "Personal", field: "nombre" ,
+        render: (rowData) => <p>{`${rowData.nombre} ${rowData.apellido}`}</p>},
+        { title: "Puesto", field: "tipoTrabajador", align: "left"},
         {
-          title: "Age", field: "age",
-        },
-        { title: "Gender", field: "gender", lookup: { M: "Male", F: "Female" } },
-        { title: "City", field: "city",filterPlaceholder:"filter"},
-        { title: "School", field: "school", lookup: { madrid: "madrid", barcelona: "barcelona", london: "london" } ,selectedField:"london"},
+          title: "Horario", field: "horaEntrada",
+          render: (rowData) => <p>{`${rowData.dias}: ${rowData.horaEntrada}-${rowData.horaSalida}`}</p>,width:'200px'},
+        { title: "Incio", field: "inicioContrato",render: (rowData) => <p>{ formatearFecha(rowData.inicioContrato)}</p>},
+        { title: "Finaliza", field: "finalContrato",render: (rowData) => <p>{ formatearFecha(rowData.finalContrato)}</p>},
+        { title: "Estado", field: "estado", lookup: { 0: "finalizado", 1: "vigente", 2: "cancelado" } ,},
       ]
     const tabla={
         title:'Lista de Contrato',
-        data: data,
+        data: data[0],
         columnas: columns,
-        ruta:"/registro%20contratos"
+        ruta:"/registro%20contratos",
+        btnVerAsistencia:true,
     }
     return (
         <div className="Contrato">
+            {console.log(data[0])}
              <div className="Contrato__menu">
                 <Menu/> 
             </div>
