@@ -1,7 +1,5 @@
 import React,{useState,useEffect} from 'react';
 import '../assets/Styles/components/RegistrarHorario.scss';
-import ComboBox from '../components/ComboBox';
-import { makeStyles } from '@material-ui/styles';
 import {TextField,MenuItem} from '@material-ui/core';
 import Menu from '../components/Menu';
 import Tabla from '../components/Tabla';
@@ -10,27 +8,34 @@ import IconButton from '@material-ui/core/IconButton';
 import Boton from '../components/Buton';
 import AddCircle  from '@material-ui/icons/AddCircle';
 import '../assets/Styles/components/Tabla.scss';
-import perfil from '../assets/static/perfil.jpg';
 import Inputs from '../components/Inputs';
-import TimePicker from '@mui/lab/TimePicker';
+import DateFnsUtils from '@date-io/date-fns';
+import 'date-fns';
+import {KeyboardTimePicker,MuiPickersUtilsProvider} from '@material-ui/pickers';
 
-const usesStyles = makeStyles((theme)=>({
-    inputMaterial:{
-        width:'90%',
-    }
-}));
 const RegistrarHorario = () => {
-    const styles=usesStyles();
+    const dias=[
+        {detalle:'L-V',id:'1'},
+        {detalle:'Lunes',id:'2'},
+        {detalle:'Martes',id:'3'},       
+        {detalle:'Miercoles',id:'4'},        
+        {detalle:'Jueves',id:'5'},    
+        {detalle:'Viernes',id:'6'},
+    ]
     const [data, setData ] = useState([]);
     const [valorTipoTrabajador, setValorTipoTrabajador] =useState('');
-    const [horaEntrada, setHoraEntrada] = useState('');
-    const [horaSalida, setHoraSalida] = useState('');
+    const [dias1, setDias1] =useState('');
+    const [horaEntrada, setHoraEntrada] = useState(new Date('2014-08-18T08:00:00'));
+    const [horaSalida, setHoraSalida] = useState(new Date('2014-08-18T18:00:00'));
+    const [inicioReceso, setInicioReceso] = useState(new Date('2014-08-18T12:00:00'));
+    const [finReceso, setfinReceso] = useState(new Date('2014-08-18T13:00:00'));
     const [getData , setGetData ] = useState({
         tipoTrabajador: '',
-        horaEntrada: '',
-        horaSalida: '',
-        inicioReceso: '',
-        finReceso: '',
+        horaEntrada: horaEntrada.toLocaleTimeString(),
+        horaSalida: horaSalida.toLocaleTimeString(),
+        inicioReceso:inicioReceso.toLocaleTimeString(),
+        finReceso: finReceso.toLocaleTimeString(),
+        dias: '',
     });
     const [data2, setData2 ] = useState([]);
     const hoy = new Date();
@@ -72,53 +77,38 @@ const RegistrarHorario = () => {
         data: data[0],
         columnas: columns,
     } 
-    const configButon = {
-        title: 'Guardar',
-        ancho: '100%',
-        marginTop:'50px'
-    }
-    const configInput = {
-        ancho: '95%',
-        title: 'Hora entrada',
-        type: 'time',
-        name: 'horaEntrada',
-        paddingLetf:"0%",
-        paddingRight:"0%",
-    }
-    const configInput2 = {
-        ancho: '100%',
-        title: 'Hora Salida',
-        type: 'time',
-        name: 'horaSalida',
-        paddingLetf:"9%",
-        paddingRight:"0%",
-    }
-    const configInput3 = {
-        ancho: '95%',
-        title: 'Inicio Receso',
-        type: 'time',
-        name: 'inicioReceso',
-        paddingLetf:"0%",
-        paddingRight:"0%",
-    }
-    const configInput4 = {
-        ancho: '100%',
-        title: 'fin Receso',
-        type: 'time',
-        name: 'finReceso',
-        paddingLetf:"9%",
-        paddingRight:"0%",
-    }
-    const prueba = e => {
+    const prueba = async e => {
+        console.log(`este es el evento: ${e}`);
         const {name,value} = e.target;
         setValorTipoTrabajador(e.target.value);
-        setHoraEntrada(e.target.value); 
-        setHoraSalida(e.target.value);
         setGetData((prevState)=>({ ...prevState, [name]: value}));  
+    }
+    const prueba2 = async e => {
+        await console.log(`este es el evento: ${e}`);
+        await setHoraEntrada(e);
+        await setGetData((prevState)=>({ ...prevState, ['horaEntrada']: e.toLocaleTimeString()}));  
+    }
+    const prueba3 = async e => {
+        await console.log(`este es el evento: ${e}`);
+        await setHoraSalida(e);
+        await setGetData((prevState)=>({ ...prevState, ['horaSalida']: e.toLocaleTimeString()}));  
+    }
+    const prueba4 = async e => {
+        await console.log(`este es el evento: ${e}`);
+        await setInicioReceso(e);
+        await setGetData((prevState)=>({ ...prevState, ['inicioReceso']: e.toLocaleTimeString()}));  
+    }
+    const prueba5 = async e => {
+        await console.log(`este es el evento: ${e}`);
+        await setfinReceso(e);
+        await setGetData((prevState)=>({ ...prevState, ['finReceso']: e.toLocaleTimeString()}));  
+    }
+    const prueba6 = async e => {
+        setDias1(e.target.value);
+        setGetData((prevState)=>({ ...prevState, ['dias']: e.target.value}));  
     }
     return (
         <div className="RegistrarHorario">
-            {console.log(data[0])}
              <div className="RegistrarHorario__menu">
                 <Menu/> 
             </div>
@@ -157,38 +147,81 @@ const RegistrarHorario = () => {
                                 </div>
                             </div>
                             <div className="RegistrarHorario__fila">
-                            <TimePicker
-                                label="Hora Entrada"
-                                name="horaEntrada"
-                                value={horaEntrada}
-                                onChange={handleChange}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                            <TimePicker
-                                label="Hora Salida"
-                                name="horaSalida"
-                                value={horaSalida}
-                                onChange={handleChange}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
+                            <MuiPickersUtilsProvider style={{width:'100%'}} utils={DateFnsUtils} >
+                                <KeyboardTimePicker
+                                    name="horaEntrada"
+                                    margin="normal"
+                                    id="time-picker"
+                                    label="Hora de Entrada"
+                                    style={{width:'48%'}}
+                                    value={horaEntrada}
+                                    onChange={prueba2}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change time',
+                                    }}
+                                />
+                                <KeyboardTimePicker
+                                    name="horaSalida"
+                                    margin="normal"
+                                    style={{width:'48%'}}
+                                    id="time-picker"
+                                    label="Hora de Salida"
+                                    value={horaSalida}
+                                    onChange={prueba3}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change time',
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
                             </div>
                             <div className="RegistrarHorario__fila">
-                                <Inputs
-                                    configInputs={configInput3}
-                                />
-                                <Inputs
-                                    configInputs={configInput4}
-                                />
+                                <MuiPickersUtilsProvider style={{width:'100%'}} utils={DateFnsUtils} >
+                                    <KeyboardTimePicker
+                                        name="inicioReceso"
+                                        margin="normal"
+                                        id="time-picker"
+                                        label="Inicio Receso"
+                                        style={{width:'48%'}}
+                                        value={inicioReceso}
+                                        onChange={prueba4}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change time',
+                                        }}
+                                    />
+                                    <KeyboardTimePicker
+                                        name="finReceso"
+                                        margin="normal"
+                                        style={{width:'48%'}}
+                                        id="time-picker"
+                                        label="Fin Receso"
+                                        value={finReceso}
+                                        onChange={prueba5}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change time',
+                                        }}
+                                    />
+                                </MuiPickersUtilsProvider>
                             </div>
-                            {/* <div className="RegistrarHorario__fila">
-                                <ComboBox
-                                    text = {"Días"}
- 
-                                    width = {'45%'}
-                                /> 
-                            </div> */}
-                            <div className="RegistrarHorario__fila1">
-                                <button className="button" onClick={prueba}><h5>Guardar</h5></button>
+                            <div className="RegistrarHorario__fila">
+                                <TextField
+                                    id="outlined-select"
+                                    select
+                                    label="día(s)"
+                                    value={dias1}
+                                    width="100%"
+                                    helperText="selecciona por favor los dias de trabajo"
+                                    name="dias"
+                                    onChange={prueba6}
+                                    >
+                                    {dias.map((option) => (
+                                        <MenuItem key={option.id} value={option.detalle}>
+                                        {option.detalle}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </div>
+                            <div className="RegistrarHorario__fila1" width='100%'>
+                                <button className="button" style={{width:'100%'}} ><h5>Guardar</h5></button>
                             </div>
                         </div>                        
                     </div>
