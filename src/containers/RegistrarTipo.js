@@ -323,7 +323,16 @@ const RegistrarTipo = () => {
                                 {
                                 icon: tableIcons.Delete,
                                 tooltip: 'Desactivar',
-                                onClick: (event, rowData) => confirm("¿deseas eliminar?" + rowData.id),
+                                onClick: async (event, rowData) => {
+                                    await axios.delete(`http://127.0.0.1:3000/api/TipoTrabajador/delete/${rowData.id}`)
+                                    .then(res => {
+                                        setRespuesta(res.data);})
+                                    .catch(err => {
+                                        console.log(err);
+                                    });
+                                    await setConsulta(1);
+                                    await console.log(data);
+                                },
                                 style: {zIndex:'0',position: 'absolute'}
                                 },
                                 {
