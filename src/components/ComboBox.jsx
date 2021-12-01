@@ -30,6 +30,9 @@ function ComboBox_C (props) {
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
+   input: {
+     
+   }
   }));
   const classes = useStyles();
   const [data, setData] = useState('');

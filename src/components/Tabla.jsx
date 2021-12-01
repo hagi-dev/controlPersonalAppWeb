@@ -41,7 +41,7 @@ const tableIcons = {
 };
 const StateName= false;
 const Tabla = (props) => {
-    const {title,data,columnas,ruta,btnVerAsistencia}=props.tabla;
+    const {title,data,columnas,ruta,btnVerAsistencia,editar}=props.tabla;
     const [filtro, setFiltro] = React.useState(0);
     const downloadExcel = () => {
       const ws = XLSX.utils.json_to_sheet(data);
@@ -83,8 +83,7 @@ const Tabla = (props) => {
             {
               icon: tableIcons.Edit,
               tooltip: 'Modificar' ,
-              onClick: (event, rowData) => alert("¿deseas modificar? " + rowData.id),
-              style: {zIndex:0,position: 'absolute'}
+              onClick: (event, rowData) => actualizarTipo(rowData.id),
             },
             {
               icon: tableIcons.Delete,

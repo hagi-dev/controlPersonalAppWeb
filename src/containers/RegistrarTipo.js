@@ -1,105 +1,222 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,forwardRef} from 'react';
 import '../assets/Styles/components/RegistrarTipo.scss';
-import ComboBox from '../components/ComboBox';
+import '../assets/Styles/components/Tabla.scss';
 import Menu from '../components/Menu';
-import Tabla from '../components/Tabla';
 import Perfil from '../components/Usuario';
-import Boton from '../components/Buton';
-import perfil from '../assets/static/perfil.jpg';
 import {TextField,MenuItem} from '@material-ui/core';
+import axios from 'axios';
+import MaterialTable from 'material-table';
+import AddBox from '@material-ui/icons/AddBox';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Check from '@material-ui/icons/Check';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Clear from '@material-ui/icons/Clear';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import Edit from '@material-ui/icons/Edit';
+import FilterList from '@material-ui/icons/FilterList';
+import FirstPage from '@material-ui/icons/FirstPage';
+import LastPage from '@material-ui/icons/LastPage';
+import Remove from '@material-ui/icons/Remove';
+import SaveAlt from '@material-ui/icons/SaveAlt';
+import Search from '@material-ui/icons/Search';
+import ViewColumn from '@material-ui/icons/ViewColumn';
+import XLSX from 'xlsx';
+
+const tableIcons = {
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+};
 
 const RegistrarTipo = () => {
-    const [area, setArea] = useState('');
-    const[cargo, setCargo] = useState('');
-    const [respuesta, setRespuesta] = useState([]);
+    /**
+     * iniciando el estado de los datos 
+     */
+    const[ids, setIds] = useState(-1);
+    const[editar, setEditar] = useState(0);
+    const [data, setData] = useState([]);
+    const [filtro, setFiltro] = useState(0);
+    const [subTitle, setSubTitle] = useState('Registrar Tipo Trabajador');
+    const [consulta, setConsulta] = useState(1);
+    const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
     const [getData , setGetData ] = useState({
         area: '',
         cargo:'',
+        estado:'1'
     });
-    const data =[
-        { name: "Raj ", email: "Raj@gmail.com", phone: 7894561230, age: null, gender: "M", city: "Chennai", school:"madrid"},
-        { name: "Mohainos", email: "mohan@gmail.com", phone: 7845621590, age: 35, gender: "M", city: "Delhi", school:"madrid" },
-        { name: "Sweety", email: "sweety@gmail.com", phone: 741852912, age: 17, gender: "F", city: "Noida", school:"madrid" },
-        { name: "Vikas", email: "vikas@gmail.com", phone: 9876543210, age: 20, gender: "M", city: "Mumbai", school:"madrid" },
-        { name: "Neha", email: "neha@gmail.com", phone: 7845621301, age: 25, gender: "F", city: "Patna", school:"madrid" },
-        { name: "Mohan", email: "mohan@gmail.com", phone: 7845621590, age: 35, gender: "M", city: "Delhi", school:"madrid" },
-        { name: "Sweety", email: "sweety@gmail.com", phone: 741852912, age: 17, gender: "F", city: "Noida", school:"madrid" },
-        { name: "Vikas", email: "vikas@gmail.com", phone: 9876543210, age: 20, gender: "M", city: "Mumbai", school:"madrid" },
-        { name: "Raj" , email: "Raj@gmail.com", phone: 7894561230, age: null, gender: "M", city: "Chennai", school:"madrid"},
-        { name: "Mohan", email: "mohan@gmail.com", phone: 7845621590, age: 35, gender: "M", city: "Delhi", school:"madrid" },
-        { name: "Sweety", email: "sweety@gmail.com", phone: 741852912, age: 17, gender: "F", city: "Noida", school:"madrid" },
-        { name: "Vikas", email: "vikas@gmail.com", phone: 9876543210, age: 20, gender: "M", city: "Mumbai", school:"madrid" },
-    ];
-        
+
+    /**
+     * metodo para descargar la tabla en excel
+     */
+
+     const downloadExcel = () => {
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "datosTabla");
+        XLSX.writeFile(wb, "datosTabla.xlsx");
+      }
+    
+    /**
+     * configuracion para rellenar los datos de la tabla
+     */
+
     const columns = [
-        { title: "Name", field: "name", filterPlaceholder:"ingrese nombre" ,align:"left",
-        render: (rowData) => <div style={{display:"flex", justifyContent:"flex-start",alignItems:"center",}}><img src={perfil} style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.name}</p></div>},
-        { title: "Email", field: "email" },
-        { title: "Phone", field: "phone", align: "center"},
-        {
-          title: "Age", field: "age",
+        { title: "Area", field: "area",lookup:{Almacen:"Almacen",Ventas:"Ventas",'Marketing y diseño':'Marketing y diseño'} ,align:"left",
         },
-        { title: "Gender", field: "gender", lookup: { M: "Male", F: "Female" } },
-        { title: "City", field: "city",filterPlaceholder:"filter"},
-        { title: "School", field: "school", lookup: { madrid: "madrid", barcelona: "barcelona", london: "london" } ,selectedField:"london"},
-      ]
+        { title: "Cargo", field: "nombre",filterPlaceholder:" buscar cargo",align:"left", },
+        { title: "Estado", field: "estado",lookup:{1:'vigente',0:'no vigente'}, align: "left"},
+    ]
     const tabla={
         title:'Lista de Tipo de Trabajador',
-        data: data,
+        data: data[0],
         columnas: columns,
+        editar:'actualizarTipo',
     }
-    const configButon = {
-        title: 'Guardar',
-        ancho: '100%',
-        marginTop:'50px'
-    }
-    const areas = [
+
+    /**
+     * cargar datos en los select de area y cargo
+     */
+    const areas = 
+    [
         { nombre: 'Almacen', id:0},
         { nombre: 'Ventas',id:1},
         { nombre: 'Marketing y diseño', id:2}
-      ]
-    const cargosAlmacen = [
+    ]
+    const cargosAlmacen = 
+    [
         { nombre: 'supervisor', id:'0'},
         { nombre: 'personal',id:'1'}
     ]
-    const cargosVentas = [
+    const cargosVentas = 
+    [
         { nombre: 'asesor de ventas', id:'0'},
         { nombre: 'supervisor',id:'1'},
         { nombre: 'cajero',id:'2'}
     ]
-    const cargosDyM = [
-        { nombre: 'Marketero', id:'0'},
-        { nombre: 'Diseñador grafico',id:'1'},
-        { nombre: 'Community Manager',id:'2'}
+    const cargosDyM = 
+    [
+        { nombre: 'marketero', id:'0'},
+        { nombre: 'diseñador grafico',id:'1'},
+        { nombre: 'community Manager',id:'2'}
     ]
-    const setAddSelection1 = (e) => {
-        console.log(`este es el evento: ${e[0]}`);
-        const {name,value} = e.target;
-        setArea(e.target.value);
-        setGetData((prevState)=>({ ...prevState, [name]: value}));  
 
-    }
-    const setAddSelection2 = (e) => {
-        console.log(`este es el evento: ${e[0]}`);
-        const {name,value} = e.target;
-        setCargo(e.target.value);
-        setGetData((prevState)=>({ ...prevState, [name]: value}));  
+    /**
+     * validadores para los campos
+     */
+     const validar=(e,a)=> {
+        if (e.trim() == ""){
+         alert("debe seleccionar un valor en "+a+"");
+         return 0}
+        else{
+         alert("ingreso "+e.trim()+", es correcto!");
+         return 1;
+       }
+     }   
+    /**
+     * metodos y hooks para hacer peticiones al servidor
+     */
 
-    }
-    const enviarPost = async() => {
-            await fetch('http://127.0.0.1:3000/api/TipoTrabajador/registrar',{
-                method:'POST',
-                body: JSON.stringify(getData),
-                headers:{
-                    'Content-Type':'application/json'
-                }
+    useEffect(async ()=>{
+        if(consulta===1){
+            setConsulta(0);
+            await axios.get('http://127.0.0.1:3000/api/TipoTrabajador')
+            .then(res => {
+                setData(res.data);})
+            .catch(err => {
+                console.log(err);
             })
-            .then(response => response.json())
-            .then(data=>setRespuesta(data)).catch(err=>console.log('hubo un error: ',err)); 
-            await console.log(respuesta);
+        }
+        console.log("solo una vez??");
+    },[consulta]);
+
+    const setAddSelection1 = (e) => 
+    {
+        console.log(`este es el evento: ${e[0]}`);
+        const {name,value} = e.target;
+        setGetData((prevState)=>({ ...prevState, [name]: value}));  
+
+    }
+
+    const setAddSelection2 = (e) => 
+    {
+        console.log(`este es el evento: ${e[0]}`);
+        const {name,value} = e.target;
+        setGetData((prevState)=>({ ...prevState, [name]: value}));  
+
+    }
+
+    // traer datos GET api fetch
+    const enviarPost = async() => 
+    {
+        try {
+
+            const areas = await validar(getData.area,'area');
+            const cargos = await validar(getData.cargo,'cargo');
+
+            if(editar===0){
+
+                if(areas===1 && cargos===1){
+                    await axios.post('http://127.0.0.1:3000/api/TipoTrabajador/registrar',getData)
+                    .then(res => {
+                        setRespuesta(res.data);})
+                    .catch(err => {
+                        console.log(err);
+                    });
+                }
+            }
+            else if (editar===1){
+                 if(areas===1 && cargos===1){
+                    await axios.put(`http://127.0.0.1:3000/api/TipoTrabajador/update/${ids}`,getData)
+                    .then(res => {
+                        setRespuesta(res.data);})
+                    .catch(err => {
+                        console.log(err);
+                    });
+                    setEditar(0);
+                    setSubTitle('Registrar Tipo Trabajador');
+                } 
+            }
+        await setConsulta(1);
+        } catch (error) {
+            console.log('hubo un error: ',error);
+        }    
+    }
+
+    //metodo para modificar los datos con put axios
+    const actualizarTipo = async(id) =>
+    {       
+            await axios.get(`http://127.0.0.1:3000/api/TipoTrabajador/${id}`)
+            .then(res => {
+                setGetData(()=>({
+                    area: res.data[0]['area'],
+                    cargo:res.data[0]['cargo'],
+                    estado:'1'
+                }));
+                setSubTitle('Modificar Tipo Trabajador'); 
+            })
+            .catch(err => {
+                console.log(err)}
+            );
+            
     }
     return (
         <div className="RegistrarTipo">
+          
              <div className="RegistrarTipo__menu">
                 <Menu/> 
             </div>
@@ -112,16 +229,17 @@ const RegistrarTipo = () => {
                 </div>
                 <div className="RegistrarTipo__cuerpo-contenido">
                     <div className="RegistrarTipo__registrar">
-                        <div className="RegistrarTipo__registrar-titulo"><h2>Registrar Tipo Trabajador</h2></div>
+                        <div className="RegistrarTipo__registrar-titulo"><h2>{subTitle}</h2></div>
                         <div className="RegistrarTipo__Combos">
                             <div className="RegistrarTipo__fila">
                                 <TextField
                                     id="outlined-select-currency"
                                     select
                                     label="Area"
-                                    value={area}
+                                    value={getData&&getData.area}
+                                    required
                                     style={{width:"200%"}}
-                                    helperText="Please select your currency"
+                                    helperText=""
                                     name="area"
                                     onChange={setAddSelection1}
                                     >
@@ -136,40 +254,90 @@ const RegistrarTipo = () => {
                                 <TextField
                                     id="outlined-select-currency"
                                     select
+                                    required
                                     label="Cargo"
-                                    value={cargo}
+                                    value={getData&&getData.cargo}
                                     style={{width:"200%"}}
-                                    helperText="Please select your currency"
+                                    helperText=""
                                     name="cargo"
                                     onChange={setAddSelection2}
                                     >
-                                    {area==="Almacen"?cargosAlmacen.map((option1) => (
+                                    {getData.area==="Almacen"?cargosAlmacen.map((option1) => (
                                         <MenuItem key={option1.id} value={option1.nombre}>
                                         {option1.nombre}
                                         </MenuItem>
-                                    )) : area==="Ventas"?cargosVentas.map((option2) =>  (
+                                    )) : getData.area==="Ventas"?cargosVentas.map((option2) =>  (
                                         <MenuItem key={option2.id} value={option2.nombre}>
                                         {option2.nombre}
                                         </MenuItem>
-                                    )):cargosDyM.map((option3) =>   (
+                                    )):getData.area==="Marketing y diseño" ?cargosDyM.map((option3) =>   (
                                         <MenuItem key={option3.id} value={option3.nombre}>
                                         {option3.nombre}
                                         </MenuItem>
-                                    )) }
+                                    )) : ""}
                                 </TextField>
                             </div>
                             <div className="RegistrarTipo__fila1">
                                 <button className="button" onClick={enviarPost} style={{width:"100%"}}><h5>Guardar</h5></button>
-                                <h5>{respuesta.status}</h5>        
+                                {respuesta.message==="iniciando"? '':alert(`repuesta: ${respuesta.message}`, setRespuesta(()=>({message:"iniciando"})))}        
                             </div>
                         </div>                        
                     </div>
                     <div className="RegistrarTipo__lista" style={{margin:"0"}}>
-                        <Tabla tabla={tabla}/>
+                        {/* <Tabla tabla={tabla}/> */}
+                        <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
+                            <MaterialTable columns={columns} data={data[0]} title='lista de Tipo Trabajador'  icons={tableIcons} style={{background:'transparent'}}
+                            // StickyHeader={true}
+                            options={{
+                                sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,
+                                rowStyle:{fontFamily:"mulish" ,fontSize:"13px",border: "0px",color:"#4E4D4D",height:"30px" },
+                                headerStyle:{position: 'sticky',textAlign:'left', top: "0",color:"#7D0F2E",fontFamily:"mulish",backdropFilter: blur("2px") ,fontSize:"14px",border: "0px",background:"#E9F8F7",fontWeight:"700",zIndex:'9999' },
+                                titleStyle:{padding:"0px"},paginationType:"normal",pageSizeOptions:[4,10,20],filtering: false, showFirstLastPageButtons: false,
+                                filtering: filtro%2==0 ? false : true,maxBodyHeight: '400px'
+                            }}
+                            localization={{
+                                header: {
+                                actions: "",
+                                },
+                                rows:"fila"
+                            }}
+                            actions={[
+                                {
+                                icon: tableIcons.Filter,
+                                tooltip: 'filtrar tabla' ,
+                                onClick: () => setFiltro(filtro + 1),
+                                isFreeAction: true,
+                                
+                                },
+                                {
+                                icon: tableIcons.Export,
+                                tooltip: 'Descargar Datos' ,
+                                onClick: () => downloadExcel(),
+                                isFreeAction: true,
+                                },
+                                {
+                                icon: tableIcons.Edit,
+                                tooltip: 'Modificar' ,
+                                onClick: (event, rowData) => {actualizarTipo(rowData.id),setEditar(1),setIds(rowData.id)},
+                                },
+                                {
+                                icon: tableIcons.Delete,
+                                tooltip: 'Desactivar',
+                                onClick: (event, rowData) => confirm("¿deseas eliminar?" + rowData.id),
+                                style: {zIndex:'0',position: 'absolute'}
+                                },
+                                {
+                                icon: tableIcons.Add,
+                                tooltip: 'Nuevo Registro' ,
+                                onClick: (event, rowData) => window.location.href=ruta,
+                                isFreeAction: true,
+                                },
+                            ]}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-            {console.log(getData)}
         </div>
     )
 }
