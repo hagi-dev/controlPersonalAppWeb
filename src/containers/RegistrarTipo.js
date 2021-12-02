@@ -21,7 +21,8 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import XLSX from 'xlsx';
+import exportData from '../helpers/exportData';
+import validar from '../helpers/validador';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -47,30 +48,19 @@ const RegistrarTipo = () => {
     /**
      * iniciando el estado de los datos 
      */
+    const [data, setData] = useState([]);
+    const [subTitle, setSubTitle] = useState('Registrar Tipo Trabajador');
     const[ids, setIds] = useState(-1);
     const[editar, setEditar] = useState(0);
-    const [data, setData] = useState([]);
     const [filtro, setFiltro] = useState(0);
-    const [subTitle, setSubTitle] = useState('Registrar Tipo Trabajador');
     const [consulta, setConsulta] = useState(1);
     const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
     const [getData , setGetData ] = useState({
         area: '',
         cargo:'',
         estado:'1'
-    });
+    });    
 
-    /**
-     * metodo para descargar la tabla en excel
-     */
-
-     const downloadExcel = () => {
-        const ws = XLSX.utils.json_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "datosTabla");
-        XLSX.writeFile(wb, "datosTabla.xlsx");
-      }
-    
     /**
      * configuracion para rellenar los datos de la tabla
      */
@@ -81,12 +71,6 @@ const RegistrarTipo = () => {
         { title: "Cargo", field: "nombre",filterPlaceholder:" buscar cargo",align:"left", },
         { title: "Estado", field: "estado",lookup:{1:'vigente',0:'no vigente'}, align: "left"},
     ]
-    const tabla={
-        title:'Lista de Tipo de Trabajador',
-        data: data[0],
-        columnas: columns,
-        editar:'actualizarTipo',
-    }
 
     /**
      * cargar datos en los select de area y cargo
@@ -118,15 +102,7 @@ const RegistrarTipo = () => {
     /**
      * validadores para los campos
      */
-     const validar=(e,a)=> {
-        if (e.trim() == ""){
-         alert("debe seleccionar un valor en "+a+"");
-         return 0}
-        else{
-         alert("ingreso "+e.trim()+", es correcto!");
-         return 1;
-       }
-     }   
+       
     /**
      * metodos y hooks para hacer peticiones al servidor
      */
@@ -144,15 +120,7 @@ const RegistrarTipo = () => {
         console.log("solo una vez??");
     },[consulta]);
 
-    const setAddSelection1 = (e) => 
-    {
-        console.log(`este es el evento: ${e[0]}`);
-        const {name,value} = e.target;
-        setGetData((prevState)=>({ ...prevState, [name]: value}));  
-
-    }
-
-    const setAddSelection2 = (e) => 
+    const getSelection = (e) => 
     {
         console.log(`este es el evento: ${e[0]}`);
         const {name,value} = e.target;
@@ -189,6 +157,7 @@ const RegistrarTipo = () => {
                     });
                     setEditar(0);
                     setSubTitle('Registrar Tipo Trabajador');
+                    document.getElementById('sudTitle').style.color="#2EA39D";
                 } 
             }
         await setConsulta(1);
@@ -207,12 +176,12 @@ const RegistrarTipo = () => {
                     cargo:res.data[0]['cargo'],
                     estado:'1'
                 }));
+                document.getElementById("sudTitle").style.color="#2EA39D";
                 setSubTitle('Modificar Tipo Trabajador'); 
             })
             .catch(err => {
                 console.log(err)}
             );
-            
     }
     return (
         <div className="RegistrarTipo">
@@ -229,7 +198,7 @@ const RegistrarTipo = () => {
                 </div>
                 <div className="RegistrarTipo__cuerpo-contenido">
                     <div className="RegistrarTipo__registrar">
-                        <div className="RegistrarTipo__registrar-titulo"><h2>{subTitle}</h2></div>
+                        <div className="RegistrarTipo__registrar-titulo" id="sudTitle"><h2>{subTitle}</h2></div>
                         <div className="RegistrarTipo__Combos">
                             <div className="RegistrarTipo__fila">
                                 <TextField
@@ -241,7 +210,7 @@ const RegistrarTipo = () => {
                                     style={{width:"200%"}}
                                     helperText=""
                                     name="area"
-                                    onChange={setAddSelection1}
+                                    onChange={getSelection}
                                     >
                                     {areas.map((option) => (
                                         <MenuItem key={option.id} value={option.nombre}>
@@ -260,7 +229,7 @@ const RegistrarTipo = () => {
                                     style={{width:"200%"}}
                                     helperText=""
                                     name="cargo"
-                                    onChange={setAddSelection2}
+                                    onChange={getSelection}
                                     >
                                     {getData.area==="Almacen"?cargosAlmacen.map((option1) => (
                                         <MenuItem key={option1.id} value={option1.nombre}>
@@ -274,7 +243,7 @@ const RegistrarTipo = () => {
                                         <MenuItem key={option3.id} value={option3.nombre}>
                                         {option3.nombre}
                                         </MenuItem>
-                                    )) : ""}
+                                    )) : <MenuItem value="">''</MenuItem>}
                                 </TextField>
                             </div>
                             <div className="RegistrarTipo__fila1">
@@ -312,7 +281,7 @@ const RegistrarTipo = () => {
                                 {
                                 icon: tableIcons.Export,
                                 tooltip: 'Descargar Datos' ,
-                                onClick: () => downloadExcel(),
+                                onClick: (rowData) => exportData('datos',data[0]),
                                 isFreeAction: true,
                                 },
                                 {
@@ -347,6 +316,7 @@ const RegistrarTipo = () => {
                     </div>
                 </div>
             </div>
+            {console.log(data)}
         </div>
     )
 }

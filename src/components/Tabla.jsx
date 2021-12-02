@@ -43,12 +43,7 @@ const StateName= false;
 const Tabla = (props) => {
     const {title,data,columnas,ruta,btnVerAsistencia,editar}=props.tabla;
     const [filtro, setFiltro] = React.useState(0);
-    const downloadExcel = () => {
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "datosTabla");
-      XLSX.writeFile(wb, "datosTabla.xlsx");
-    }
+    
     return (
         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
           <MaterialTable columns={columnas} data={data} title={title}  icons={tableIcons} style={{background:'transparent'}}
