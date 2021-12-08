@@ -1,0 +1,103 @@
+.RegistrarHuella{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 17% 83%; 
+    .RegistrarHuella__menu{
+        margin: 0;
+        padding: 1vh 1.2vw;
+    }
+
+    .RegistrarHuella__cuerpo{
+
+        background-color: transparent !important;
+        width: 100%;
+        height: 100%;
+        padding: 0 20px 0 20px;
+
+        .RegistrarHuella__cuerpo-perfil{
+            height: 10%;
+            width: 24%;
+            margin: 0;
+            margin-top: 1%;
+            float: right;
+            margin-right: 1%;
+        }
+
+        .RegistrarHuella__cuerpo-titulo{
+            height: 3%;
+            margin-top: 2%;
+            font-family: 'Mulish';
+            font-weight: 900;
+            color: #7D0F2E;
+            h1{
+                font-size: 1.5rem !important;
+            }
+        }
+
+        .RegistrarHuella__cuerpo-contenido{
+            width: 100%;
+            height: 87%;
+            display: flex;
+            justify-content:flex-start;
+            align-items: center;
+        
+            .RegistrarHuella__registrar{
+                width: 28%;
+                height: 100%;
+                margin: 0;
+
+                .RegistrarHuella__registrar-titulo{
+                    width: 100%;
+                    height: 64px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    h2{
+                        font-family: 'Mulish';
+                        font-size: 1rem;
+                        font-weight: 500;
+                        color: #7D0F2E;
+                        text-align:start ;
+                        margin: 0;
+    
+                    }
+                }                
+
+                .RegistrarHuella__Combos{
+                    width: 100%;
+                    height: 60%;
+                    padding-right: 25px;
+                    border-right: 4px solid #7D0F2E;
+                    backdrop-filter: blur(2px) !important;
+
+                    .RegistrarHuella__fila{
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 10px;
+                    }
+
+                    .RegistrarHuella__fila1{
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                        height: 50px;
+                    }
+                }
+
+            }
+
+            .RegistrarHuella__lista{
+                width: 72%;
+                height: 100%;
+                margin: 0;
+                padding-left: 20px;
+                display: flex;
+                align-items: flex-start;
+            }
+        }
+    }
+}   

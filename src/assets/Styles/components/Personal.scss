@@ -1,22 +1,22 @@
-.Personal{
+.personal{
     margin: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: grid;
     grid-template-columns: 17% 83%; 
-    .Personal__menu{
+    .personal__menu{
         margin: 0;
         padding: 1vh 1.2vw;
     }
 
-    .Personal__cuerpo{
+    .personal__cuerpo{
 
         background-color: transparent !important;
         width: 100%;
         height: 100%;
-        padding: 0 20px 0 0px;
+        padding: 0 20px 0 20px;
 
-        .Personal__cuerpo-perfil{
+        .personal__cuerpo-perfil{
             height: 10%;
             width: 24%;
             margin: 0;
@@ -25,7 +25,7 @@
             margin-right: 1%;
         }
 
-        .Personal__cuerpo-titulo{
+        .personal__cuerpo-titulo{
             height: 3%;
             margin-top: 2%;
             font-family: 'Mulish';
@@ -36,11 +36,11 @@
             }
         }
 
-        .Personal__cuerpo-contenido{
+        .Contrato__cuerpo-contenido{
             width: 100%;
             height: 100%;
 
-            .Personal__lista{
+            .personal__tabla{
                 width: 100%;
                 height: 100%;
                 margin: 0;
@@ -48,5 +48,13 @@
                 align-items:flex-end
             }
         }
+        .personal__botones{
+            padding-left: 20%;
+            padding-right: 20%;
+            width: 100%;
+            display: flex;
+            margin-top: 50px;
+            justify-content: space-between;
+        }
     }
-}
+}   
