@@ -5,15 +5,14 @@ import SearchIcon from '@material-ui/icons/Search';
 import TablaHuella from '../components/TablaHuellas';
 import Menu from '../components/Menu';
 import {TextField,MenuItem} from '@material-ui/core';
-import Perfil from '../components/Usuario';
-import DateFnsUtils from '@date-io/date-fns';
 import axios from 'axios';
+import Perfil from '../components/Usuario';
 import 'date-fns';
-import {KeyboardDatePicker ,MuiPickersUtilsProvider} from '@material-ui/pickers';
 
 const RegistrarPersonal = () => {
+    const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
     const [filtro, setFiltro] = React.useState(0);
-    const [fechaNacimiento,setFechaNacimiento]=useState(new Date('2014-08-18T21:11:54'));
+    const [fechaNacimiento,setFechaNacimiento]=useState('2014-08-18');
     const [getData,setGetData] = useState({
         id: '',
         dni:'',
@@ -21,10 +20,11 @@ const RegistrarPersonal = () => {
         paterno:'',
         materno:'',
         genero:'',
-        fechaNacimiento:'01/01/2000',
+        fecha_nacimiento:'01/01/2000',
         telefono:'',
-        foto:'sdfcreghtukiyjthgrfedsfgrygt',
+        url:'sdfcreghtukiyjthgrfedsfgrygt',
         estado:'',
+        direccion:'',
         idHuellas:0
         
     });
@@ -37,7 +37,7 @@ const RegistrarPersonal = () => {
 
     const handleDateChange = (date) => {
         const fecha= document.getElementById('date').value;
-        setGetData((prevState)=>({ ...prevState, fechaNacimiento: fecha}));
+        setGetData((prevState)=>({ ...prevState,fecha_nacimiento: fecha}));
     }
 
     const metodoPost = async() => 
@@ -213,12 +213,27 @@ const RegistrarPersonal = () => {
                                         onChange={getSelection}
                                         >
                                     </TextField>
+                                </div>
+                                <div className="RegistrarPersonal__fila2">
+                                    <TextField
+                                        id="outlined-select-currency"
+                                        type="text"
+                                        label="direccion"
+                                        value={getData&&getData.direccion}
+                                        required
+                                        style={{width:"100%"}}
+                                        helperText=""
+                                        name="direccion"
+                                        onChange={getSelection}
+                                        >
+                                    </TextField>
                                 </div>                               
                             </div>                        
                     </div>
                     <div className="RegistrarPersonal__tabla">
                         <div className="RegistrarPersonal__fila">  
                             <button className="button" type="button"  onClick={sumaHuellas} style={{width:"40%"}}><h5>Agregar</h5></button>
+                            {respuesta.message==="iniciando"? '':alert(`repuesta: ${respuesta.message}`, setRespuesta(()=>({message:"iniciando"})))}
                             <button className="button" type="button" onClick={restaHuellas} style={{width:"40%"}}><h5>Restar</h5></button>   
                         </div>
                         <h1>{getData&&getData.idHuellas}</h1>

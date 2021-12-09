@@ -200,13 +200,6 @@ const RegistrarContrato = () => {
                     <Boton configButon={configButon3}/> 
                 </div> 
             </div>
-            <Modal estado={estadoModal1} cambiarEstado={cambiarEstadoModal1} alto='200px' ancho='400px'>
-                <h1 className="h1">¿ La persona no esta registrado desea registrarlo?</h1>
-                <div style={{width:"100%",height:"40px",display:"flex",justifyContent:"space-around"}}>
-                    <button className="button" style={{width:"30%",height:"30px"}}><h5>Registrar</h5></button>
-                    <button className="button" onClick={() => cambiarEstadoModal1(!estadoModal1)} style={{width:"30%",height:"30px"}}><h5>Cancelar</h5></button>
-                </div>
-            </Modal>
             {/* <Modal estado={estadoModal1} cambiarEstado={cambiarEstadoModal1}  alto='100%' ancho='90%'>
                 <RegistrarPersonal/>
             </Modal> */}

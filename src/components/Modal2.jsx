@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Modal = ({children,ancho,alto,estado,cambiarEstado}) => {
+const Modal2 = ({children,ancho,alto,estado}) => {
 	return (
 		<>
 			{estado && 
@@ -15,7 +15,7 @@ const Modal = ({children,ancho,alto,estado,cambiarEstado}) => {
 	);
 }
  
-export default Modal;
+export default Modal2;
 
 
 const Overlay = styled.div`
@@ -38,11 +38,9 @@ const ContenedorModal = styled.div`
 	position: relative;
 	border-radius: 5px;
 	box-shadow: rgba(100,100,111, 0.2) 0px 7px 29px 0px;
-    display:grid;
-	grid-template-rows: 5% 85% 10%;
+	display:grid;
+	grid-template-rows: 5% 80% 10%;
     padding: 10px;
     padding-top: 30px;
-	padding-left: 50px;
-	padding-right: 50px;
 `;
 
