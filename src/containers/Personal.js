@@ -82,7 +82,7 @@ const Personal = () => {
         render: (rowData) => <p>{ formatearFecha(rowData.fechaNacimiento)}</p>, },
         { title: "genero", field: "sexo", lookup: { M: "Masculino", F: "Femenino" }, align: "left"},
         { title: "Edad",field:'fechaNacimiento' , align: "center",
-        render: (rowData) => <p style={{display:"inline-block"}}>{hoy.getFullYear() - rowData.fechaNacimiento.split("-")[0]}</p>},
+        render: (rowData) => <p style={{display:"inline-block"}}>25</p>},
       ]
     const tabla={
         title:'Lista de Personal',
@@ -106,7 +106,7 @@ const Personal = () => {
                 <div className="personal__cuerpo-contenido">
                     <div className="personal__tabla" style={{margin:"0"}}>
                         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
-                            <MaterialTable columns={columns} data={data} title="Lista de personal"  icons={tableIcons} style={{background:'transparent'}}
+                            <MaterialTable columns={columns} data={data[0]} title="Lista de personal"  icons={tableIcons} style={{background:'transparent'}}
                             // StickyHeader={true}
                             options={{
                                 sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,

@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react' 
 import '../assets/Styles/components/RegistrarContrato.scss';
+import '../assets/Styles/components/Buton.scss';
 import ComboBox from '../components/ComboBox';
 import Menu from '../components/Menu';
 import Perfil from '../components/Usuario';
@@ -12,17 +13,14 @@ import perfil from '../assets/static/perfil.jpg';
 import TablaContrato from '../components/TablaContrato';
 import Modal from '../components/Modal';
 import RegistrarPersonal from './RegistrarPersonal';
-import '../assets/Styles/components/Buton.scss'
+import '../assets/Styles/components/Buton.scss';
+import {TextField,MenuItem} from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import 'date-fns';
+import {KeyboardDatePicker ,MuiPickersUtilsProvider} from '@material-ui/pickers';
 
 const RegistrarContrato = () => {
     const [estadoModal1, cambiarEstadoModal1] = useState(false);
-    const configInput = {
-        ancho: '100%',
-        title: 'DNI Trabajador',
-        type: 'text',
-        name: 'Dni',
-        anchoContenedor:'50%'
-    }
     const configInput2 = {
         ancho: '95%',
         title: 'Fecha de Inicio',
@@ -95,9 +93,21 @@ const RegistrarContrato = () => {
                         <div className="RegistrarContrato__registrar-titulo"><h2>Registrar Contratos</h2></div>
                             <div className="RegistrarContrato__Combos">
                                 <div className="RegistrarContrato__fila1">
-                                    <Inputs
-                                        configInput={configInput}
-                                    />
+                                    <TextField
+                                        id="outlined-select-currency"
+                                        label="Dni:"
+                                        value={''}
+                                        required
+                                        style={{width:"49%"}}
+                                        helperText=""
+                                        name="dni"
+                                        >
+                                        {/* {areas.map((option) => (
+                                            <MenuItem >
+                                              <p>hola</p>
+                                            </MenuItem>
+                                        ))} */}
+                                    </TextField>
                                     <div>
                                         <IconButton onClick={() => cambiarEstadoModal1(!estadoModal1)} aria-label="Agregar">
                                             <SearchIcon fontSize="large" />
@@ -105,35 +115,82 @@ const RegistrarContrato = () => {
                                     </div>
                                 </div> 
                                 <div className="RegistrarContrato__fila2">
-                                    <ComboBox
-                                        text = {"Area"}
-                                        todoList = {todoList}
-                                        width = {'45%'}
-                                    />
-                                    <ComboBox
-                                        text = {"Cargo"}
-                                        todoList = {todoList}
-                                        width = {'45%'}
-                                    />     
+                                    <TextField
+                                        id="outlined-select-currency"
+                                        select
+                                        label="Area:"
+                                        value={''}
+                                        required
+                                        style={{width:"49%"}}
+                                        helperText=""
+                                        name="area"
+                                        >
+                                        {/* {areas.map((option) => (
+                                            <MenuItem >
+                                              <p>hola</p>
+                                            </MenuItem>
+                                        ))} */}
+                                    </TextField>
+                                    <TextField
+                                        id="outlined-select-currency"
+                                        label="cargo"
+                                        select
+                                        value={''}
+                                        required
+                                        style={{width:"49%"}}
+                                        helperText=""
+                                        name="cargo"
+                                        >
+                                        {/* {areas.map((option) => (
+                                            <MenuItem >
+                                              <p>hola</p>
+                                            </MenuItem>
+                                        ))} */}
+                                    </TextField>    
                                 </div>  
                                 <div className="RegistrarContrato__fila3" >
-                                    <Inputs
-                                        configInput={configInput2}
-                                    /> 
-                                    <Inputs
-                                        configInput={configInput3}
+                                    <TextField
+                                    id="date"
+                                    label="fecha de inicio"
+                                    type="date"
+                                    style={{width:"49%"}}
+                                    defaultValue="2017-05-24"
+                                    InputLabelProps={{
+                                    shrink: true,
+                                    }}
+                                    />
+                                    <TextField
+                                    id="date"
+                                    label="fecha de fin"
+                                    type="date"
+                                    style={{width:"49%"}}
+                                    defaultValue="2017-05-24"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                     />
                                 </div>                                
                             </div>                        
                     </div>
                     <div className="RegistrarContrato__tabla">
                         <div className="RegistrarContrato__fila">
-                            <ComboBox
-                                text = {"Horario"}
-                                todoList = {todoList}
-                                width = {'70%'}
-                            />   
-                            <Boton configButon={configButon2}/>   
+                            <TextField
+                                id="outlined-select-currency"
+                                label="cargo"
+                                select
+                                value={''}
+                                required
+                                style={{width:"60%"}}
+                                helperText=""
+                                name="cargo"
+                                >
+                                {/* {areas.map((option) => (
+                                    <MenuItem >
+                                        <p>hola</p>
+                                    </MenuItem>
+                                ))} */}
+                            </TextField>    
+                            <button className="button" style={{width:"30%"}}>Agregar</button>   
                         </div>
                         <TablaContrato/>
                     </div>
