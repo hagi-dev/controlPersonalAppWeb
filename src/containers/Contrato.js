@@ -26,7 +26,7 @@ const Contrato = () => {
     }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:3000/api/contrato')
+        fetch('http://127.0.0.1:3000/api/contrato/listaId')
         .then(response => response.json())
         .then(data=> setData(data));
     },[]);
@@ -45,7 +45,7 @@ const Contrato = () => {
       ]
     const tabla={
         title:'Lista de Contrato',
-        data: data[0],
+        data: data,
         columnas: columns,
         ruta:"/registro%20contratos",
         btnVerAsistencia:true,
