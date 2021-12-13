@@ -21,6 +21,8 @@ import { DragHandle } from '@material-ui/icons';
 const RegistrarContrato = () => {
     const [tipoCargo, setTipoCargo] = useState([]);
     const [valorFecha, setValorFecha] = useState(false);
+    const [ultimoContrato,setUltimoContrato]=useState('no hay contratos');
+    const [penultimoContrato,setPenultimoContrato]=useState('');
     const[horario,setHorario]=useState([]);
     const [dataHorario, setDataHorario] = useState('');
     const [tipoArea,setTipoArea] = useState([]);
@@ -44,7 +46,9 @@ const RegistrarContrato = () => {
         existe: 0
     });
 
-
+    const estilos={
+        
+    }
     const getSelection=(e)=>{
         console.log(`este es el evento: ${e[0]}`);
         const {name,value} = e.target;
@@ -66,6 +70,23 @@ const RegistrarContrato = () => {
 
 
     }
+
+    const formatearFechaEspañol = (fecha1) => {
+        const fecha = new Date(fecha1);
+        let dia = fecha.getDate();
+        let anio = fecha.getFullYear();
+        let mes = fecha.getMonth() + 1;
+        if (dia < 10) {
+            dia = '0' + dia;
+        }
+        if (mes < 10) {
+            mes = '0' + mes;}
+            
+        return dia + '-' + mes +'-'+anio;
+
+
+    }
+
     useEffect(  async() => {
         fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/area')
         .then(response => response.json())
@@ -140,8 +161,6 @@ const RegistrarContrato = () => {
         if(valorFecha){
             setFechaMinima(formatearFecha(dataContrato.CON_fecha_out))
             setValorFecha(false);
-            console.log(formatearFecha(dataContrato.CON_fecha_out));
-            console.log(fechaMinima);
         }
     },[valorFecha]);
 
@@ -159,7 +178,15 @@ const RegistrarContrato = () => {
         await fetch(`http://127.0.0.1:3000/api/contrato/validate/fecha/${getData.dni}`)
             .then(response => response.json())
             .then(data=> setDataContrato(data));
-        await setValorFecha(true);        
+        await setValorFecha(true); 
+        
+        await axios.get(`http://127.0.0.1:3000/api/contrato/${getData.dni}`)
+        .then(res => {console.log(res.data[0]),
+        setUltimoContrato(`${formatearFechaEspañol(res.data[0].CON_fecha_inn)} al ${formatearFechaEspañol(res.data[0].CON_fecha_out)}`),
+        setPenultimoContrato(`${formatearFechaEspañol(res.data[1].CON_fecha_inn)} al ${formatearFechaEspañol(res.data[1].CON_fecha_out)}`)})
+        .catch(err => {
+            console.log(err);
+        });
     }
     
     const getdate1=async (e)=>{
@@ -287,14 +314,27 @@ const RegistrarContrato = () => {
                                     label="fecha de fin"
                                     type="date"
                                     style={{width:"49%"}}
-                                    defaultValue="2022-12-31"
+                                    defaultValue=""
                                     onChange={getdate2}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
                                     />
                                 </div>                                
-                            </div>                        
+                            </div>
+                            <div className="RegistrarContrato__fila4" id="fila4" >
+                                    <h1>Ultimos contratos</h1>                 
+                            </div>
+                            <div className="RegistrarContrato__fila4" id="fila4">
+                                <div className="RegistrarContrato__fila4" id="fila4">
+                                    <h2>1) inicio - termino: </h2>
+                                    <h3>{ultimoContrato}</h3>
+                                </div>
+                                <div className="RegistrarContrato__fila4" id="fila4">
+                                    <h2>{penultimoContrato==='' ? '' : '2) inicio - termino'} </h2>
+                                    <h3>{penultimoContrato}</h3>
+                                </div>                     
+                            </div>                            
                     </div>
                     <div className="RegistrarContrato__tabla">
                         <div className="RegistrarContrato__fila">
