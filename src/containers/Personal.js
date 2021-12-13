@@ -117,8 +117,7 @@ const Personal = () => {
           title: "fecha Nacimiento", field: "fechaNacimiento",width: "250px", align: "left",
         render: (rowData) => <p>{ formatoEspanol(rowData.fechaNacimiento)}</p>, },
         { title: "genero", field: "sexo", lookup: { M: "Masculino", F: "Femenino" }, align: "left"},
-        { title: "Edad",field:'fechaNacimiento' , align: "center",
-        render: (rowData) => <p style={{display:"inline-block"}}>25</p>},
+        { title: "Edad",field:'edad' , align: "left"},
       ]
 
     const handleDateChange = (date) => {

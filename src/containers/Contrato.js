@@ -69,23 +69,37 @@ const Contrato = () => {
         return anio + '/' + mes + '/' + dia;
     }
 
+    const formatearFechaEspañol = (fecha) => {
+        let fecha1= new Date(fecha);
+        let dia = fecha1.getDate();
+        let mes = fecha1.getMonth() + 1;
+        let anio = fecha1.getFullYear();
+        if (dia < 10) {
+            dia = '0' + dia;
+        }
+        if (mes < 10) {
+            mes = '0' + mes;
+        }
+        return dia + '/' + mes + '/' + anio;
+    }
+
     useEffect(() => {
-        fetch('http://127.0.0.1:3000/api/contrato/listaId')
+        fetch('http://127.0.0.1:3000/api/contratos')
         .then(response => response.json())
-        .then(data=> setData(data));
+        .then(data=> setData(data[0]));
     },[]);
         
     const columns = [
-        { title: "N°", field: "contratoid",align:"left",width: "50px" ,filtering: false},
-        { title: "Personal", field: "nombre" ,
-        render: (rowData) => <p>{`${rowData.nombre} ${rowData.apellido}`}</p>},
-        { title: "Puesto", field: "tipoTrabajador", align: "left"},
+        { title: "N°", field: "CON_id",align:"left",width: "50px" ,filtering: false},
+        { title: "Personal", field: "PER_nombre" ,
+        render: (rowData) => <p>{`${rowData.PER_nombre} ${rowData.PER_apaterno}`}</p>},
+        { title: "Puesto", field: "TTR_cargo", align: "left"},
         {
-          title: "Horario", field: "horaEntrada",
-          render: (rowData) => <p>{`${rowData.dias}: ${rowData.horaEntrada}-${rowData.horaSalida}`}</p>,width:'200px'},
-        { title: "Incio", field: "inicioContrato",render: (rowData) => <p>{ formatearFecha(rowData.inicioContrato)}</p>},
-        { title: "Finaliza", field: "finalContrato",render: (rowData) => <p>{ formatearFecha(rowData.finalContrato)}</p>},
-        { title: "Estado", field: "estado", lookup: { 0: "finalizado", 1: "vigente", 2: "cancelado" } ,},
+          title: "Horario", field: "HOR_entrada",
+          render: (rowData) => <p>{`${rowData.HOR_detalle}: ${rowData.HOR_entrada} - ${rowData.HOR_salida}`}</p>,width:'250px'},
+        { title: "Incio", field: "CON_fecha_inn",render: (rowData) => <p>{ formatearFechaEspañol(rowData.CON_fecha_inn)}</p>},
+        { title: "Finaliza", field: "CON_fecha_out",render: (rowData) => <p>{ formatearFechaEspañol(rowData.CON_fecha_out)}</p>},
+        { title: "Estado", field: "CON_estado", lookup: { 0: "finalizado", 1: "vigente", 2: "cancelado" } ,},
       ]
     const deleteCerrar= async(id) => {
         const datas={
@@ -120,9 +134,9 @@ const Contrato = () => {
         .catch(err => {
             console.log(err);
         });
-        await fetch('http://127.0.0.1:3000/api/contrato/listaId')
+        await fetch('http://127.0.0.1:3000/api/contratos')
         .then(response => response.json())
-        .then(data=> setData(data));
+        .then(data=> setData(data[0]));
         await console.log(data);
     }
     return (
