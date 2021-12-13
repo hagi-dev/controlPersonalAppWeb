@@ -1,16 +1,12 @@
 import React,{useState,useEffect} from 'react' 
 import '../assets/Styles/components/RegistrarContrato.scss';
 import '../assets/Styles/components/Buton.scss';
-import ComboBox from '../components/ComboBox';
 import axios from 'axios';
 import Menu from '../components/Menu';
 import Perfil from '../components/Usuario';
 import IconButton from '@material-ui/core/IconButton';
-import Boton from '../components/Buton';
-import Inputs from '../components/Inputs';
 import SearchIcon from '@material-ui/icons/Search';
 import '../assets/Styles/components/Tabla.scss';
-import perfil from '../assets/static/perfil.jpg';
 import TablaContrato from '../components/TablaContrato';
 import Modal2 from '../components/Modal2';
 import Modal3 from '../components/Modal2';
@@ -24,33 +20,52 @@ import { DragHandle } from '@material-ui/icons';
 
 const RegistrarContrato = () => {
     const [tipoCargo, setTipoCargo] = useState([]);
-    const [dataPersonal, setDataPersonal] = useState([]);
+    const [valorFecha, setValorFecha] = useState(false);
     const[horario,setHorario]=useState([]);
     const [dataHorario, setDataHorario] = useState('');
     const [tipoArea,setTipoArea] = useState([]);
     const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
     const idHorarios=[];
+    const [fechaMinima , setFechaMinima] = useState('');
+    const [fechaMax , setFechaMax] = useState('');
+    const [dataContrato, setDataContrato] = useState([]); 
     const [estadoModal2, cambiarEstadoModal2] = useState(false);
     const [estadoModal1, cambiarEstadoModal1] = useState(false);
     const [area,setArea] = useState('');
     const [cargo,setCargo] = useState('');
-    const [dni,setDni] = useState('');
+    const [estadoInput,setEstadoInput] = useState(true);
     const [getData,setGetData] = useState({
         id: '',
-        fechaInicioContrato:'',
+        fechaInicioContrato: '',
         fechaFinContrato:'',
         dni:'',
         idTipoTrabajador:0,
         idHorarios: [],
         existe: 0
-        
     });
+
+
     const getSelection=(e)=>{
         console.log(`este es el evento: ${e[0]}`);
         const {name,value} = e.target;
         setGetData((prevState)=>({ ...prevState, [name]: value}));  
     }
+    
+    const formatearFecha = (fecha1) => {
+        const fecha = new Date(fecha1);
+        let dia = fecha.getDate();
+        let anio = fecha.getFullYear();
+        let mes = fecha.getMonth() + 1;
+        if (dia < 10) {
+            dia = '0' + dia;
+        }
+        if (mes < 10) {
+            mes = '0' + mes;}
+            
+        return anio + '-' + mes + '-' + dia;
 
+
+    }
     useEffect(  async() => {
         fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/area')
         .then(response => response.json())
@@ -63,6 +78,7 @@ const RegistrarContrato = () => {
         fetch('http://127.0.0.1:3000/api/horario')
         .then(response => response.json())
         .then(data=> setHorario(data[0]));
+        console.log(getData&&getData.fechaFinContrato);
     },[]);
 
     const enviarPost = async () => {
@@ -83,11 +99,12 @@ const RegistrarContrato = () => {
         console.log(getData);
         cambiarEstadoModal2(false);
         await axios.post('http://127.0.0.1:3000/api/contrato/registrar',getData)
-                    .then(res => {
-                        setRespuesta(res.data);})
-                    .catch(err => {
-                        console.log(err);
-                    });
+            .then(res => {
+                setRespuesta(res.data);})
+            .catch(err => {
+                console.log(err);
+            });
+        window.location.href='/contratos';    
     }
 
     const agregarTabla = () => {
@@ -118,31 +135,52 @@ const RegistrarContrato = () => {
         });
         
     }
+
+    useEffect(()=>{
+        if(valorFecha){
+            setFechaMinima(formatearFecha(dataContrato.CON_fecha_out))
+            setValorFecha(false);
+            console.log(formatearFecha(dataContrato.CON_fecha_out));
+            console.log(fechaMinima);
+        }
+    },[valorFecha]);
+
     
     const verId=async(e)=>{
         await axios.post('http://127.0.0.1:3000/api/personal/ids',getData)
-                    .then(res => {console.log(res.data[0]),setDataPersonal(res.data[0])
-                    ,res.data[0]===undefined? cambiarEstadoModal1(true): alert("si funca jako")})
-                    .catch(err => {
-                        console.log(err);
-                    });
+            .then(res => {console.log(res.data[0]),
+            res.data[0]===undefined? cambiarEstadoModal1(true): 
+            setEstadoInput(false)
+            alert("exiate jako")})
+            .catch(err => {
+                console.log(err);
+            });
 
-
-    }
-
-    const traendoidPersonal = async (e) => {
-        await setDni(e.target.value);
-        
+        await fetch(`http://127.0.0.1:3000/api/contrato/validate/fecha/${getData.dni}`)
+            .then(response => response.json())
+            .then(data=> setDataContrato(data));
+        await setValorFecha(true);        
     }
     
-    const getdate1=(e)=>{
-        const fecha= document.getElementById('date');
+    const getdate1=async (e)=>{
+        
+        const fecha= await document.getElementById('date');
+        console.log(fecha.value);
+        const fecha2= document.getElementById('date2');
+        const fechaNew= new Date(fecha.value);
+        fechaNew.setMonth(fechaNew.getMonth()+6);
+        const fechaNew3 = await formatearFecha(fechaNew);
+        await setFechaMax(fechaNew3);
         setGetData((prevState)=>({ ...prevState, fechaInicioContrato: fecha.value}));
+        setGetData((prevState)=>({ ...prevState, fechaFinContrato: fechaNew3}));
+        console.log(fechaNew3);
+        fecha2.value=fechaNew3;
     }
 
     const getdate2=(e)=>{
         const fecha= document.getElementById('date2');
         setGetData((prevState)=>({ ...prevState, fechaFinContrato: fecha.value}));
+
 
     }
     const capturarId = (e) => {
@@ -150,7 +188,6 @@ const RegistrarContrato = () => {
     }
     return (
         <div className="RegistrarContrato">
-            {}
              <div className="RegistrarContrato__menu">
                 <Menu/> 
             </div>
@@ -173,7 +210,7 @@ const RegistrarContrato = () => {
                                         value={getData&&getData.dni}
                                         required
                                         style={{width:"49%"}}
-                                        helperText=""
+                                        helperText="primero valida tu dni"
                                         onChange={getSelection}
                                         name="dni">
                                     </TextField>
@@ -185,8 +222,10 @@ const RegistrarContrato = () => {
                                 </div> 
                                 <div className="RegistrarContrato__fila2">
                                     <TextField
-                                        id="outlined-select-currency"
+                                        id="area"
+                                        disabled
                                         select
+                                        disabled={estadoInput} 
                                         label="Area:"
                                         value={area}
                                         required
@@ -204,6 +243,7 @@ const RegistrarContrato = () => {
                                     <TextField
                                         id="tipoCargo"
                                         label="cargo"
+                                        disabled={estadoInput}
                                         select
                                         value={cargo}
                                         required
@@ -229,10 +269,12 @@ const RegistrarContrato = () => {
                                 <div className="RegistrarContrato__fila3" >
                                     <TextField
                                     id="date"
+                                    disabled={estadoInput}
                                     label="fecha de inicio"
                                     type="date"
                                     style={{width:"49%"}}
-                                    defaultValue="2017-05-24"
+                                    defaultValue= {getData&&getData.fechaInicioContrato}
+                                    InputProps={{inputProps: { min: fechaMinima} }}
                                     onChange={getdate1}
                                     InputLabelProps={{
                                     shrink: true,
@@ -240,10 +282,12 @@ const RegistrarContrato = () => {
                                     />
                                     <TextField
                                     id="date2"
+                                    disabled={estadoInput}
+                                    InputProps={{inputProps: { min: fechaMax} }}
                                     label="fecha de fin"
                                     type="date"
                                     style={{width:"49%"}}
-                                    defaultValue="2017-05-24"
+                                    defaultValue="2022-12-31"
                                     onChange={getdate2}
                                     InputLabelProps={{
                                         shrink: true,
@@ -255,9 +299,10 @@ const RegistrarContrato = () => {
                     <div className="RegistrarContrato__tabla">
                         <div className="RegistrarContrato__fila">
                             <TextField
-                                id="outlined-select-currency"
+                                id="horario"
                                 label="horario"
                                 select
+                                disabled={estadoInput}
                                 value={dataHorario}
                                 required
                                 style={{width:"60%"}}
@@ -277,17 +322,17 @@ const RegistrarContrato = () => {
                                 ))
                                 }
                             </TextField>    
-                            <button className="button" onClick={agregarTabla} style={{width:"30%"}}>Agregar</button>   
+                            <button disabled={estadoInput} className="button" id="agregarHorario" onClick={agregarTabla} style={{width:"30%"}}>Agregar</button>   
                         </div>
                         <TablaContrato/>
                     </div>
                 </div>
                 <div className="RegistrarContrato__botones">
-                    <button className="button" onClick={enviarPost} style={{width:"45%"}}>Guardar</button> 
+                    <button disabled={estadoInput} className="button" onClick={enviarPost} style={{width:"45%"}}>Guardar</button> 
                     {respuesta.message==="iniciando"? '':alert(`repuesta: ${respuesta.message}`, setRespuesta(()=>({message:"iniciando"})))}
-                    <button className="button" style={{width:"45%"}}>Cancelar</button> 
+                    <button className="button" onClick={()=>window.location.href="/contratos"} style={{width:"45%"}}>Cancelar</button> 
                 </div> 
-                {console.log(getData.existe),console.log(cargo)}
+                {console.log(getData.fechaFinContrato),console.log(cargo)}
             </div>
             
             <Modal2 estado={estadoModal1} cambiarEstado={cambiarEstadoModal1} alto='200px' ancho='400px'>
