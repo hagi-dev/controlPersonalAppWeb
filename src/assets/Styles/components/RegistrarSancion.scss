@@ -1,22 +1,22 @@
-.RegistrarTipo{
+.RegistrarSancion{
     margin: 0;
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: 17% 83%; 
-    .RegistrarTipo__menu{
+    .RegistrarSancion__menu{
         margin: 0;
         padding: 1vh 1.2vw;
     }
 
-    .RegistrarTipo__cuerpo{
+    .RegistrarSancion__cuerpo{
 
         background-color: transparent !important;
         width: 100%;
         height: 100%;
         padding: 0 20px 0 20px;
 
-        .RegistrarTipo__cuerpo-perfil{
+        .RegistrarSancion__cuerpo-perfil{
             height: 10%;
             width: 24%;
             margin: 0;
@@ -25,7 +25,7 @@
             margin-right: 1%;
         }
 
-        .RegistrarTipo__cuerpo-titulo{
+        .RegistrarSancion__cuerpo-titulo{
             height: 3%;
             margin-top: 2%;
             font-family: 'Mulish';
@@ -36,19 +36,19 @@
             }
         }
 
-        .RegistrarTipo__cuerpo-contenido{
+        .RegistrarSancion__cuerpo-contenido{
             width: 100%;
-            height: 100%;
+            height: 87%;
             display: flex;
             justify-content:flex-start;
             align-items: center;
         
-            .RegistrarTipo__registrar{
+            .RegistrarSancion__registrar{
                 width: 28%;
                 height: 100%;
                 margin: 0;
 
-                .RegistrarTipo__registrar-titulo{
+                .RegistrarSancion__registrar-titulo{
                     width: 100%;
                     height: 64px;
                     display: flex;
@@ -66,33 +66,38 @@
                     }
                 }                
 
-                .RegistrarTipo__Combos{
+                .RegistrarSancion__Combos{
                     width: 100%;
-                    height: 56%;
+                    height: 60%;
                     padding-right: 25px;
                     border-right: 4px solid #7D0F2E;
+                    backdrop-filter: blur(2px) !important;
 
-                    .RegistrarTipo__fila{
+                    .RegistrarSancion__fila{
                         width: 100%;
                         display: flex;
+                        justify-content: space-between;
                         margin-top: 10px;
                     }
 
-                    .RegistrarTipo__fila1{
-                        margin-top: 10%;
+                    .RegistrarSancion__fila1{
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                        height: 50px;
                     }
                 }
 
             }
 
-            .RegistrarTipo__lista{
+            .RegistrarSancion__lista{
                 width: 72%;
                 height: 100%;
                 margin: 0;
-                overflow: hidden;
-                padding-left: 26px;
+                padding-left: 20px;
+                display: flex;
+                align-items: flex-start;
             }
         }
     }
-}
-
+}   

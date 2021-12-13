@@ -1,0 +1,54 @@
+table {
+    position: sticky;
+    border-spacing: 0;
+    font-size: 13px;
+  }
+  
+  thead th:nth-child(1) {
+    width: 25%;
+  }
+  
+  thead th:nth-child(2) {
+    width: 25%;
+  }
+  
+  thead th:nth-child(3) {
+    width: 25%;
+  }
+  thead th:nth-child(4) {
+    width: 25%;
+  }
+  th, td {
+    padding: 5px;
+  }
+  thead th {
+    font-family: 'Mulish';
+    background-color: #E9F8F7;
+    color:#7D0F2E;
+    
+  }
+  
+  tbody td {
+    text-align: center;
+    color:#666666;
+  }
+  
+  tfoot th {
+    text-align: right;
+  }
+  tbody tr:nth-child(odd) {
+    background-color: white;
+    font-family: 'Mulish';
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: white;
+    font-family: 'Mulish';
+    
+  }
+  button{
+      background-color: #2EA39D;
+      color: white;
+      font-family: 'Mulish';
+      font-size: 13px;
+  }

@@ -13,13 +13,14 @@ const Menu = () => {
             <div className="Menu__navBar">
                 <nav>
                     <ul>
-                        <li><a href="">Home</a></li>
-                        <li><a href="">Personal</a></li>
-                        <li><a href="">Contratos</a></li>
-                        <li><a href="">Asistencias</a></li>
-                        <li><a href="">Tipo de personal</a></li>
-                        <li><a href="">Horario</a></li>
-                        <li><a href="">Sanciones </a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/personal">Personal</a></li>
+                        <li><a href="/contratos">Contratos</a></li>
+                        <li><a href="/asistencias">Asistencias</a></li>
+                        <li><a href="/permisos">Permisos</a></li>
+                        <li><a href="tipo%20trabajador">Tipo de personal</a></li>
+                        <li><a href="/horarios">Horario</a></li>
+                        <li><a href="sanciones">Sanciones </a></li>
                     </ul>
                 </nav>
             </div>

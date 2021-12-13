@@ -1,13 +1,12 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import '../assets/Styles/components/Buton.scss'
 
+
 const Buton = (props) => {
-    const ancho=props.configButon.ancho;
-    const title=props.configButon.title;
+
+    const {ancho,title,marginTop,alto,id,ejecutar}=props.configButon;
     return (
-        <div className="Conteiner1__Boton">
-            <button style={{width:ancho,height:"30px", marginTop:"10px"}}><h5>{title}</h5></button>
-        </div>
+            <button style={{width:ancho,height:alto,marginTop:marginTop}} onClick={() =>{ejecutar}}id={id} ><h5>{title}</h5></button>
     )
 }
 
