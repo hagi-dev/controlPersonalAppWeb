@@ -210,7 +210,7 @@ const Contrato = () => {
                                 icon: tableIcons.Delete,
                                 tooltip: 'Desactivar',
                                 onClick: async(event, rowData) =>  {
-                                    await setIdSeleccionado(rowData.contratoid);
+                                    await setIdSeleccionado(rowData.CON_id);
                                     await cambiarEstadoModal2(true);
                                 },
                                 },
