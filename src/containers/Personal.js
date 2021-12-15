@@ -256,7 +256,7 @@ const Personal = () => {
                     </div>
                 </div>
             </div>
-            <Modal estado={estadoModal1} cambiarEstado={cambiarEstadoModal1} alto='650px' ancho='500px'>
+            <Modal estado={estadoModal1} cambiarEstado={cambiarEstadoModal1} alto='500px' ancho='500px'>
                 <h1 style={{textAlign:"center"}} className="h1">Modificar Datos Personal</h1>
                 <div className="conternedor_formulario">
                     <TextField
@@ -361,7 +361,7 @@ const Personal = () => {
                     }}
                 />
                 </div>
-                <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around"}}>
+                <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around",alignItems:"flex-end"}}>
                     <button type='button' className="button" onClick={enviarPut} style={{width:"30%",height:"30px"}}><h5>Guardar</h5></button>
                     <button type='button' className="button" onClick={() => cambiarEstadoModal1(!estadoModal1)} style={{width:"30%",height:"30px"}}><h5>Cancelar</h5></button>
                 </div>

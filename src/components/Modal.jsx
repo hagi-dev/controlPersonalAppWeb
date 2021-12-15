@@ -22,10 +22,10 @@ const Overlay = styled.div`
 	width: 100vw;
 	height: 100vh;
 	position: fixed;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	top: 0;
-	left: 0;
 	background:  rgba(0,0,0,.5) ;
-	padding: 40px;
 	display: flex;
 	align-items:  flex-start;
 	justify-content: center;
@@ -41,7 +41,7 @@ const ContenedorModal = styled.div`
     display:grid;
 	grid-template-rows: 5% 85% 10%;
     padding: 10px;
-    padding-top: 30px;
+    padding-top: 15px;
 	padding-left: 50px;
 	padding-right: 50px;
 `;

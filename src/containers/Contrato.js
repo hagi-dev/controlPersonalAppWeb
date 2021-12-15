@@ -9,6 +9,7 @@ import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import Modal4 from '../components/Modal2';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import Clear from '@material-ui/icons/Clear';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
@@ -21,7 +22,9 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Modal3 from '../components/Modal2';
+import Modal from '../components/Modal';
 import exportData from '../helpers/exportData';
+import TablaContrato from '../components/TablaContrato';
 import validar from '../helpers/validador';
 import axios from 'axios';
 import { async } from 'validate.js';
@@ -50,11 +53,34 @@ const tableIcons = {
 
 const Contrato = () => {
     const [data, setData ] = useState([]);
+    const [tipoCargo, setTipoCargo] = useState([]);
+    const [dataHorario, setDataHorario] = useState('');
+    const idHorarios = [];
+    const [numeroContrato, setNumeroContrato] = useState('');
+    const [nombrePersonal, setNombrePersonal] = useState('');
+    const [tipoArea,setTipoArea] = useState([]);
+    const [estadoModal3, cambiarEstadoModal3] = useState(false);
     const [estadoModal2, cambiarEstadoModal2] = useState(false);
     const [idseleccionado, setIdSeleccionado] = useState(-1);
     const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
+    const [estadoModal1, cambiarEstadoModal1] = useState(false);
     const hoy = new Date();
+    const [fechaMinima , setFechaMinima] = useState('');
+    const [fechaMax , setFechaMax] = useState('');
     const [filtro, setFiltro] = React.useState(0);
+    const [area,setArea] = useState('');
+    const[horario,setHorario]=useState([]);
+    const [cargo,setCargo] = useState('');
+    const [getData,setGetData] = useState({
+        id: '',
+        fechaInicioContrato: '',
+        fechaFinContrato:'',
+        dni:'',
+        idTipoTrabajador:0,
+        idHorarios:idHorarios ,
+        estado:'1',
+        existe: 0
+    });
     const formatearFecha = (fecha) => {
         let fecha1= new Date(fecha);
         let dia = fecha1.getDate();
@@ -66,7 +92,7 @@ const Contrato = () => {
         if (mes < 10) {
             mes = '0' + mes;
         }
-        return anio + '/' + mes + '/' + dia;
+        return anio + '-' + mes + '-' + dia;
     }
 
     const formatearFechaEspañol = (fecha) => {
@@ -87,6 +113,18 @@ const Contrato = () => {
         fetch('http://127.0.0.1:3000/api/contratos')
         .then(response => response.json())
         .then(data=> setData(data[0]));
+
+        fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/area')
+        .then(response => response.json())
+        .then(data=> setTipoArea(data));
+
+        fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/cargo')
+        .then(response => response.json())
+        .then(data=> setTipoCargo(data));
+
+        fetch('http://127.0.0.1:3000/api/horario')
+        .then(response => response.json())
+        .then(data=> setHorario(data[0]));
     },[]);
         
     const columns = [
@@ -139,9 +177,95 @@ const Contrato = () => {
         .then(data=> setData(data[0]));
         await console.log(data);
     }
+
+    const cambiandoArea = async (e) => {
+        await axios.get(`http://127.0.0.1:3000/api/TipoTrabajador/${e}`)
+        .then(res => {
+            setArea((res.data[0].area)),
+            console.log("este es el area"),
+            console.log(res.data[0].area) 
+        })
+        .catch(err => {
+            console.log(err)}
+        );
+    }    
+    
+    const getdate2=(e)=>{
+        const fecha= document.getElementById('date2');
+        setGetData((prevState)=>({ ...prevState, fechaFinContrato: fecha.value}));
+
+
+    }
+
+    const getdate1=async (e)=>{
+        
+        const fecha= await document.getElementById('date');
+        console.log(fecha.value);
+        const fecha2= document.getElementById('date2');
+        const fechaNew= new Date(fecha.value);
+        fechaNew.setMonth(fechaNew.getMonth()+6);
+        const fechaNew3 = await formatearFecha(fechaNew);
+        await setFechaMax(fechaNew3);
+        setGetData((prevState)=>({ ...prevState, fechaInicioContrato: fecha.value}));
+        setGetData((prevState)=>({ ...prevState, fechaFinContrato: fechaNew3}));
+        fecha2.value=fechaNew3;
+    }
+    const agregarTabla = () => {
+        fetch(`http://127.0.0.1:3000/api/horario/${dataHorario}`)
+        .then(response => response.json())
+        .then(data=> {
+            const tabla= document.getElementById('tabla-contrato');
+            const fila = tabla.insertRow(-1);
+            const celda1 = fila.insertCell(0);
+            celda1.textContent = dataHorario;
+            const celda2 = fila.insertCell(1);
+            celda2.textContent = data[0].detalle;
+            const celda3 = fila.insertCell(2);
+            celda3.textContent = `${data[0].entrada} - ${data[0].salida}`;
+            const celda4 = fila.insertCell(3);
+            celda4.textContent = `${data[0].inicioReceso} - ${data[0].finReceso}`;
+            const celda5 = fila.insertCell(4);
+            let vDellBtn = document.createElement("button");
+            vDellBtn.textContent = "Eliminar";
+            celda5.appendChild(vDellBtn);
+
+            vDellBtn.addEventListener("click", (e) =>{
+
+                let transactionRow = e.target.parentNode.parentNode;
+                transactionRow.remove();
+        })
+        });
+        
+    }
+
+    const enviarPut = async () => {
+        const tabla= await document.getElementById('tabla-contrato');
+        const valor=await tabla.rows.length;
+        
+        for (let index = 1; index < valor; index++) {
+            idHorarios.push(tabla.rows[index].cells[0].innerHTML);
+        }
+        await setGetData((prevState)=>({ ...prevState, idHorarios: idHorarios}));
+        await console.log(getData);
+        cambiarEstadoModal3(!estadoModal3);
+        
+    }
+    const enviarPut2 = () => {
+        axios.put(`http://127.0.0.1:3000/api/contrato/update/${getData.id}`,getData)
+        .then(res => {
+            setRespuesta(res.data);})
+        .catch(err => {
+            console.log(err);
+        }); 
+
+        cambiarEstadoModal1(!estadoModal1);
+        cambiarEstadoModal3(!estadoModal3);
+
+
+        
+    }
     return (
         <div className="Contrato">
-            {console.log(data[0])}
              <div className="Contrato__menu">
                 <Menu/> 
             </div>
@@ -188,22 +312,53 @@ const Contrato = () => {
                                     icon: tableIcons.Edit,
                                     tooltip: 'Modificar' ,
                                     onClick: async (event, rowData) => {
-                                        await cambiarEstadoModal1(true)
+                                        await data.map(async (item,index) => {
+                                                if(item.CON_id==rowData.CON_id){
+                                                    await idHorarios.push(item.HOR_id);
+                                                }
+                                        });
+
                                         await setGetData(()=>({ 
-                                        id: rowData.id,
-                                        dni: rowData.dni,
-                                        nombre: rowData.nombre,
-                                        paterno: rowData.apellidoPaterno,
-                                        materno: rowData.apellidoMaterno,
-                                        genero: rowData.sexo,
-                                        fecha_nacimiento: formatearFecha(rowData.fechaNacimiento),
-                                        telefono: rowData.telefono,
-                                        url:'sdfcreghtukiyjthgrfedsfgrygt',
-                                        estado:'1',
-                                        direccion: rowData.direccion===null ? '' : rowData.direccion,
-                                        idHuellas:0
-                                        })); 
-                                    
+                                            id: rowData.CON_id,
+                                            fechaInicioContrato:formatearFecha(rowData.CON_fecha_inn) ,
+                                            fechaFinContrato:formatearFecha( rowData.CON_fecha_out),
+                                            dni: rowData.PER_dni,
+                                            idTipoTrabajador: rowData.TTR_id,
+                                            idHorarios:idHorarios,
+                                            existe: 0
+                                        }));
+                                        await setNumeroContrato(rowData.CON_id);
+                                        await setNombrePersonal(`${rowData.PER_nombre} ${rowData.PER_apaterno} ${rowData.PER_amaterno}`); 
+                                        await cambiandoArea(rowData.TTR_id);
+                                        await setCargo(rowData.TTR_id);                                    
+                                        await cambiarEstadoModal1(true);
+                                        for(let i=0;i<idHorarios.length;i++){
+                                            fetch(`http://127.0.0.1:3000/api/horario/${idHorarios[i]}`)
+                                            .then(response => response.json())
+                                            .then(data=> {
+                                                const tabla= document.getElementById('tabla-contrato');
+                                                const fila = tabla.insertRow(-1);
+                                                const celda1 = fila.insertCell(0);
+                                                celda1.textContent = idHorarios[i];
+                                                const celda2 = fila.insertCell(1);
+                                                celda2.textContent = data[0].detalle;
+                                                const celda3 = fila.insertCell(2);
+                                                celda3.textContent = `${data[0].entrada} - ${data[0].salida}`;
+                                                const celda4 = fila.insertCell(3);
+                                                celda4.textContent = `${data[0].inicioReceso} - ${data[0].finReceso}`;
+                                                const celda5 = fila.insertCell(4);
+                                                let vDellBtn = document.createElement("button");
+                                                vDellBtn.textContent = "Eliminar";
+                                                celda5.appendChild(vDellBtn);
+
+                                                vDellBtn.addEventListener("click", (e) =>{
+
+                                                    let transactionRow = e.target.parentNode.parentNode;
+                                                    transactionRow.remove();
+                                            })
+                                            });
+                                        }
+                                        
                                     },
                                 },
                                 {
@@ -234,7 +389,108 @@ const Contrato = () => {
                     </div>
                 </div>
             </div>
-            {console.log(idseleccionado)}
+            {console.log(getData)}
+            <Modal estado={estadoModal1} cambiarEstado={cambiarEstadoModal1} alto='600px' ancho='500px'>
+                <h1 style={{textAlign:"center"}} className="h1">Modificar contrato</h1>
+                <div className="conternedor_formulario">
+                    <h1>{`Contrato: ${numeroContrato}`}</h1>
+                    <h2>{`Personal: ${nombrePersonal}`}</h2>
+                    <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="Area"
+                        value={area}
+                        required
+                        style={{width:"100%"}}
+                        helperText=""
+                        onChange={(e) => setArea(e.target.value)}
+                        name="area"
+                        >
+                        {tipoArea.map((option) => (
+                            <MenuItem key={option.id} value={option.area}>
+                            {option.area}
+                            </MenuItem>
+                            ))}
+                    </TextField> 
+                    <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="cargo"
+                        value={cargo}
+                        required
+                        style={{width:"100%"}}
+                        helperText=""
+                        onChange={(e) => setCargo(e.target.value)}
+                        name="idTipoTrabajador"
+                        >
+                        {
+                        tipoCargo.map((option) =>{                                       
+                            if(area === option.area){
+                                return(
+                                    <MenuItem key={option.id} value={option.id}>
+                                    {option.cargo}
+                                    </MenuItem>
+                                )
+                            }
+                            
+                        })
+                        }     
+                    </TextField>   
+                    <TextField
+                    id="date"
+                    label="fecha de inicio"
+                    type="date"
+                    style={{width:"49%"}}
+                    defaultValue= {getData&&getData.fechaInicioContrato}
+                    InputProps={{inputProps: { min: fechaMinima} }}
+                    onChange={getdate1}
+                    InputLabelProps={{
+                    shrink: true,
+                    }}
+                    />
+                    <TextField
+                    id="date2"
+                    InputProps={{inputProps: { min: fechaMax} }}
+                    label="fecha de fin"
+                    type="date"
+                    style={{width:"49%"}}
+                    defaultValue={getData&&getData.fechaFinContrato}
+                    onChange={getdate2}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    />
+                    <TextField
+                        id="horario"
+                        label="horario"
+                        select
+                        value={dataHorario}
+                        required
+                        style={{width:"60%"}}
+                        helperText=""
+                        name="horario"
+                        onChange={(e) => {setDataHorario(e.target.value)}}
+                        >
+                            
+                        {
+                            console.log(horario.value),
+                        horario.map((option) =>(                                       
+
+                            <MenuItem key={option.id} value={option.id}>
+                                <p>{option.detalle} {option.horaEntrada} -{option.horaSalida} </p>
+                            </MenuItem>
+                            
+                        ))
+                        }
+                    </TextField>    
+                    <button  className="button" id="agregarHorario" onClick={agregarTabla} style={{width:"30%"}}>Agregar</button>   
+                <TablaContrato/>
+                </div>
+                <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around",alignItems:"flex-end"}}>
+                    <button type='button' className="button" onClick={enviarPut}  style={{width:"30%",height:"30px"}}><h5>Guardar</h5></button>
+                    <button type='button' className="button" onClick={() => cambiarEstadoModal1(!estadoModal1)} style={{width:"30%",height:"30px"}}><h5>Cancelar</h5></button>
+                </div>
+            </Modal>
             <Modal3 estado={estadoModal2} cambiarEstado={cambiarEstadoModal2} alto='200px' ancho='400px'>
                 <h1 style={{textAlign:"center"}} className="h1">¿Que desea realizar?</h1>
                 <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around"}}>
@@ -242,7 +498,14 @@ const Contrato = () => {
                     <button type='button'onClick={()=>deleteEliminar(idseleccionado)} className="button"  style={{width:"30%",height:"30px"}}><h5>eliminar contrato</h5></button>
                     <button type='button' className="button" onClick={() => cambiarEstadoModal2(!estadoModal2)} style={{width:"30%",height:"30px"}}><h5>cancelar</h5></button>
                 </div>   
-            </Modal3> 
+            </Modal3>
+            <Modal4 estado={estadoModal3} cambiarEstado={cambiarEstadoModal3} alto='200px' ancho='400px'>
+                <h1 style={{textAlign:"center"}} className="h1">estas seguro de guardar los datos</h1>
+                <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around"}}>
+                    <button type='button'onClick={enviarPut2} className="button"  style={{width:"30%",height:"30px"}}><h5>si</h5></button>
+                    <button type='button' className="button" onClick={() => cambiarEstadoModal3(!estadoModal3)} style={{width:"30%",height:"30px"}}><h5>no</h5></button>
+                </div>   
+            </Modal4> 
         </div>
     )
 }

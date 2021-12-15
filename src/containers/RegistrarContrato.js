@@ -151,7 +151,6 @@ const RegistrarContrato = () => {
 
                 let transactionRow = e.target.parentNode.parentNode;
                 transactionRow.remove();
-                fDellIDLocalStor(transactionID);
         })
         });
         
