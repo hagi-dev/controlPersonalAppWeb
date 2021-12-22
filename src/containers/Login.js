@@ -69,7 +69,7 @@ const Login = () => {
                         <h1 className={styles.h1}>
                             Login
                         </h1>
-                        <p>{error}</p>
+                        <p style={{fontFamily:"mulish",color:"yellow"}}>{error}</p>
                         <TextField label="Usuario" value={getData&&getData.usuario}  type="text" name= "usuario" onChange={getSelection} />
                         <TextField label="Contraseña" value={getData&&getData.contraseña}   onChange={getSelection}  type="password" name= "contraseña" />
                         <button>Ingresar</button>
@@ -153,13 +153,13 @@ const Form1= styled.div`
                 height:10%;
                 background-color:rgb(125,15,46);
             }
+        }
+        @media (max-width:800px){
+            width:100vw;
         }     
     }
     
     
-    @media (max-width:800px){
-        width:100vw;
-    }
 `;
 
 const Img= styled.div`
@@ -175,7 +175,6 @@ const Img= styled.div`
         position:relative;
         animation-duration: 4s;
         animation-name: example;
-        transform: translateX(0);
         flex-wrap:wrap;
         display:flex;
         justify-content:center;
