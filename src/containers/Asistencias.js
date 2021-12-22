@@ -1,9 +1,11 @@
 import React,{useState,useEffect,forwardRef} from 'react';
 import '../assets/Styles/components/Contrato.scss';
 import Menu from '../components/Menu';
+import '../assets/Styles/components/Buton.scss';
 import Perfil from '../components/Usuario';
 import '../assets/Styles/components/Tabla.scss';
 import MaterialTable from 'material-table';
+import {TextField,MenuItem} from '@material-ui/core';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -123,12 +125,12 @@ const Asistencia = () => {
                  <Perfil/>
                 </div>
                 <div className="Contrato__cuerpo-titulo">
-                    <h1>Contratos</h1>
+                    <h1>Asistencia</h1>
                 </div>
                 <div className="Contrato__cuerpo-contenido">
                     <div className="Contrato__lista" style={{margin:"0"}}>
                         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
-                            <MaterialTable columns={columns} data={data} title="Lista de personal"  icons={tableIcons} style={{background:'transparent'}}
+                            <MaterialTable columns={columns} data={data} title="Lista Asistencias"  icons={tableIcons} style={{background:'transparent'}}
                             // StickyHeader={true}
                             options={{
                                 sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,
@@ -144,6 +146,20 @@ const Asistencia = () => {
                                 rows:"fila"
                             }}
                             actions={[
+                                {
+                                    icon:()=> <TextField
+                                    id="date"
+                                    label="fecha de inicio"
+                                    type="date"
+                                    style={{width:"200px"}}
+                                    defaultValue= "2021-12-15"
+                                    onChange=''
+                                    InputLabelProps={{
+                                    shrink: true,
+                                    }}
+                                    />,
+                                    isFreeAction: true,
+                                },
                                 {
                                 icon: tableIcons.Filter,
                                 tooltip: 'filtrar tabla' ,

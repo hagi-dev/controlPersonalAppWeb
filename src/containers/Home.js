@@ -11,8 +11,17 @@ import AddCircle  from '@material-ui/icons/AddCircle';
 import '../assets/Styles/components/Tabla.scss';
 import perfil from '../assets/static/perfil.jpg';
 import mateni from '../assets/static/mati.svg'
+import Box from '@material-ui/core/Box';
+
+import DatePicker from 'sassy-datepicker';
+ 
+
 
 const Home = () => {
+
+    const onChange = (date) => {
+        console.log(date.toString());
+      };
 
     return (
         <div className="Home">
@@ -23,11 +32,12 @@ const Home = () => {
                 <div className="Home__cuerpo-perfil">
                  <Perfil/>
                 </div>
-                <div className="Home__cuerpo-contenido">
-                    <h1 style={{fontFamily:"mulish", fontWeight:"900"}}>En Mantenimiento</h1>
-                    <img src={mateni} />
-                    
-                </div>
+                <Box className="Home__cuerpo-contenido" component="span" m={1}>
+
+                    <DatePicker className='sdp' onChange={onChange} />
+
+
+                </Box>
             </div>
         </div>
     )

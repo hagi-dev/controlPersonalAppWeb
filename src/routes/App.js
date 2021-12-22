@@ -4,6 +4,7 @@ import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import RegistrarHorario from '../containers/RegistrarHorario'
 import Asistencias from '../containers/Asistencias';
 import RegistrarPermiso from '../containers/RegistrarPermiso';
+import Login from '../containers/Login';
 import RegistrarSancion from '../containers/RegistrarSancion';
 import RegistrarContrato from '../containers/RegistrarContrato';
 import RegistrarPersonal from '../containers/RegistrarPersonal';
@@ -25,6 +26,7 @@ const App = () => {
                 <Route exact path="/registro%20contratos" element={<RegistrarContrato/>} />
                 <Route exact path="/registrar%20personal" element={<RegistrarPersonal/>} />
                 <Route exact path="/personal" element={<Personal/>} />
+                <Route exact path="/login" element={<Login/>} />
                 <Route exact path="/tipo%20trabajador" element={<RegistrarTipo/>} />
                 <Route exact path="/contratos" element={<Contrato/>} />
             </Routes>

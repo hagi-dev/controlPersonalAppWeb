@@ -110,7 +110,8 @@ const Personal = () => {
         
     const columns = [
         { title: "Nombre", field: "nombre", filterPlaceholder:"ingrese nombre" ,
-        render: (rowData) => <div style={{display:"flex", justifyContent:"left",alignItems:"center"}}><img src={perfil} style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.nombre}</p></div>},
+        render: (rowData) => <div style={{display:"flex", justifyContent:"left",alignItems:"center"}}><img src={rowData.foto} style={{width:"40px", height:"40px",
+        border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.nombre}</p></div>},
         { title: "Apellidos", field: "apellidoPaterno" },
         { title: "DNI", field: "dni", align: "left"},
         {
@@ -168,7 +169,7 @@ const Personal = () => {
                 <div className="personal__cuerpo-contenido">
                     <div className="personal__tabla" style={{margin:"0"}}>
                         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
-                            <MaterialTable columns={columns} data={data[0]} title="Lista de personal"  icons={tableIcons} style={{background:'transparent'}}
+                            <MaterialTable columns={columns} data={data} title="Lista de personal"  icons={tableIcons} style={{background:'transparent'}}
                             // StickyHeader={true}
                             options={{
                                 sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,

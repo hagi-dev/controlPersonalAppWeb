@@ -1,0 +1,16 @@
+.MuiInputBase-input{
+    color: rgb(7, 7, 7) !important;
+    font-size: 1.2rem !important;
+}
+.MuiFormLabel-root{
+    color: rgb(255,255,255) !important;
+    font-family: "mulish" !important;
+    text-align: center;
+}
+
+@media screen and (max-width: 950px) {
+    .Img{
+        display: none;
+    }
+}
+    

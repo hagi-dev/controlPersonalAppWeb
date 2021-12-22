@@ -112,7 +112,7 @@ const Contrato = () => {
     useEffect(() => {
         fetch('http://127.0.0.1:3000/api/contratos')
         .then(response => response.json())
-        .then(data=> setData(data[0]));
+        .then(data=> setData(data));
 
         fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/area')
         .then(response => response.json())
@@ -448,6 +448,7 @@ const Contrato = () => {
                     shrink: true,
                     }}
                     />
+                    {console.log(data)}
                     <TextField
                     id="date2"
                     InputProps={{inputProps: { min: fechaMax} }}
