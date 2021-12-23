@@ -101,6 +101,7 @@ const RegistrarHorario = () => {
     }
 
     useEffect(  async() => {
+        localStorage.getItem('token')?"":window.location.href='/login';
         await console.log(consulta);
         console.log('useEffect');
         if(consulta===1){

@@ -1,11 +1,13 @@
 import styled from 'styled-components';
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import foto from "../assets/static/login.svg";
 import logo from "../assets/static/logo2.png";
 import "../assets/styles/components/Login.scss";
 import {TextField} from '@material-ui/core';
 import { makeStyles , createTheme, withStyles } from '@material-ui/core/styles';
 import loginServices from "../services/login";
+import Loader from '../components/Loader';
+import Cookies from 'universal-cookie';
 
 const useStyles = makeStyles((p) => ({
 
@@ -22,23 +24,31 @@ const useStyles = makeStyles((p) => ({
     }}));
 
 const Login = () => {
+    const cookies = new Cookies();
     const styles = useStyles();
     const [getData,setGetData] = useState({
         usuario:'',
         contraseña:''
     });
+    const [visibility,setVisibility] = useState("none"); 
     const [error, setError] = useState(false);
-    const [user, setUser] = useState('');
+    const [user, setUser] = useState([]);
+    const [visibleInputs, setVisibleInputs] = useState('');
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         try {
+            setVisibleInputs('none');
             console.log(getData);
+            setError("");
             const user1= await  loginServices(getData);
+            localStorage.setItem('token',user1.token);
+            localStorage.setItem('mensage',user1.message);
+            cookies.set('usuario', user1.usuario);
             setUser(user1);
             console.log(user1);
             setGetData({usuario:'',contraseña:''});
-
+            user1.message==="usuario y contraseña incorrectos" ? '' : window.location.href='/home';
                 
         } catch (error) {
             setError("ocurrio u error : " + error);
@@ -51,10 +61,17 @@ const Login = () => {
         const {name,value} = e.target;
         setGetData((prevState)=>({ ...prevState, [name]: value}));
     }
+
+    useEffect(()=>{
+        if(error || user){  
+            setVisibility("none");
+            setVisibleInputs("flex");
+            setTimeout(()=>{setError(""),setUser("")},5000);
+        }
+    },[error,user]);
     
     return (
         <Contenedor>
-
             <Header>
                 <img src={logo} className='logo' alt="logo" />
                 <ul>
@@ -64,22 +81,24 @@ const Login = () => {
                 </ul>
             </Header>
             <Form1>
-                <div style={{width:"32vw",height:"70%"}}>
+                <div style={{width:"32vw",height:"70%" }}>
                     <form onSubmit={handleSubmit} style={{width:"100%",height:"100%",padding:"0 20%"}}>
                         <h1 className={styles.h1}>
-                            Login
+                            Inicio Sesion
                         </h1>
-                        <p style={{fontFamily:"mulish",color:"yellow"}}>{error}</p>
-                        <TextField label="Usuario" value={getData&&getData.usuario}  type="text" name= "usuario" onChange={getSelection} />
-                        <TextField label="Contraseña" value={getData&&getData.contraseña}   onChange={getSelection}  type="password" name= "contraseña" />
-                        <button>Ingresar</button>
+                        <p style={{fontFamily:"mulish",color:"yellow"}}>{error||user.message}</p>
+                        <TextField style={{display:visibleInputs}}  label="Usuario" value={getData&&getData.usuario} id='usuario'  type="text" name= "usuario" onChange={getSelection} />
+                        <TextField style={{display:visibleInputs}}  label="Contraseña" value={getData&&getData.contraseña} id='contraseña'   onChange={getSelection}  type="password" name= "contraseña" />
+                        <button onClick={()=>setVisibility('block')}>Ingresar</button>
                     </form>
                 </div>
+                <Loader className="loader" visibility={visibility} />
             </Form1>
             <Img className='Img'>
                 <div>
                     <img className='img' src={foto} alt="modelo isabella"/>
-                    <p>Control de Personal</p>     
+                    <p className='Titulo'>Control de Personal</p> 
+                    <p className='cuerpo'>solo personal autorizado*</p>     
                 </div>
             </Img>
         </Contenedor>
@@ -145,13 +164,16 @@ const Form1= styled.div`
             border-radius:4%;
             box-shadow:0 5px 45px rgba(255, 255, 255, 0.3);
             button{
-                margin-top:45%; 
                 border-radius:5px;
                 font-family: "mulish";
                 font-size:1rem;
-                width:100%;
+                width:80%;
                 height:10%;
                 background-color:rgb(125,15,46);
+                position: absolute;
+                bottom: 7%;
+                left: 10%;
+                right: 0%;
             }
         }
         @media (max-width:800px){
@@ -191,13 +213,21 @@ const Img= styled.div`
             width:auto;
             height:70%;
          }
-         p{
-             font-family: roboto;
+         .Titulo{
             margin-bottom:5%;
              font-size:1.5rem;
              color: white;
              font-weight:bold;
          }
+         .cuerpo{
+             position:absolute;
+             bottom:2%;
+            font-family: mulish;
+           margin-bottom:3%;
+            font-size:0.8rem;
+            color: white;
+
+        }
 
         @media (max-width:1300px){
             width:468px;

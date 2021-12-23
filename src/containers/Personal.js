@@ -103,7 +103,7 @@ const Personal = () => {
 
     React.useEffect(() => {
         setGetValor(0);
-        fetch('http://127.0.0.1:3000/api/personal')
+        axios.get('http://192.168.100.71/:3000/api/personal')
         .then(response => response.json())
         .then(data=> setData(data));
     },[getValor]);
@@ -134,14 +134,14 @@ const Personal = () => {
     const enviarPut = async () => {
         console.log(getData);
             if(true){
-            await axios.put(`http://127.0.0.1:3000/api/personal/update/${getData.id}`,getData)
+            await axios.put(`http://192.168.100.71/:3000/api/personal/update/${getData.id}`,getData)
             .then(res => {
                 setRespuesta(res.data);})
             .catch(err => {
                 console.log(err);
             });
             }
-            await fetch('http://127.0.0.1:3000/api/personal')
+            await axios.get('http://192.168.100.71/:3000/api/personal')
             .then(response => response.json())
             .then(data=> setData(data)); 
         cambiarEstadoModal1(!estadoModal1);

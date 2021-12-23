@@ -28,6 +28,9 @@ const RegistrarPersonal = () => {
         idHuellas:0
         
     });
+    useEffect(() => {
+        localStorage.getItem('token')?"":window.location.href='/login';
+    },[]);
     const getSelection = (e) => 
     {
         console.log(`este es el evento: ${e[0]}`);

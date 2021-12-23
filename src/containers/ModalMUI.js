@@ -142,6 +142,9 @@ const useStyles = makeStyles((p) => ({
     const mOpenModal = () =>{
         setChecked(!checked)
     }
+    React.useCallbackuseEffect(()=>{
+      localStorage.getItem('token')?"":window.location.href='/login';
+  },[]);
 
     const body = (
         <div className={styles.paper}> 

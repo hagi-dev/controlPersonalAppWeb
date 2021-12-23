@@ -108,6 +108,7 @@ const RegistrarTipo = () => {
      */
 
     useEffect(async ()=>{
+        localStorage.getItem('token')?"":window.location.href='/login';
         if(consulta===1){
             setConsulta(0);
             await axios.get('http://127.0.0.1:3000/api/TipoTrabajador')

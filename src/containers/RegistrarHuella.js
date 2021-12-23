@@ -8,6 +8,9 @@ import '../assets/Styles/components/Buton.scss';
 
 
 const RegistrarHuella = () => {
+    React.useEffect(() => {
+        localStorage.getItem('token')?"":window.location.href='/login';
+    },[]);
     return (
         <div className="RegistrarHuella"> 
              <div className="RegistrarHuella__menu">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import '../assets/Styles/components/Home.scss';
 import ComboBox from '../components/ComboBox';
 import { makeStyles } from '@material-ui/styles';
@@ -12,17 +12,19 @@ import '../assets/Styles/components/Tabla.scss';
 import perfil from '../assets/static/perfil.jpg';
 import mateni from '../assets/static/mati.svg'
 import Box from '@material-ui/core/Box';
+import Cookies from 'universal-cookie';
 
 import DatePicker from 'sassy-datepicker';
- 
-
 
 const Home = () => {
-
+    const cookies = new Cookies();
+    useEffect(()=>{
+        localStorage.getItem("mensage")==="usuario y contraseña incorrectos" && localStorage.getItem("token")===undefined ? window.location.href='/login':"" ;
+        console.log(localStorage.getItem('token'));
+    },[]);
     const onChange = (date) => {
         console.log(date.toString());
       };
-
     return (
         <div className="Home">
              <div className="Home__menu">

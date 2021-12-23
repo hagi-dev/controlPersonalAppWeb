@@ -110,19 +110,20 @@ const Contrato = () => {
     }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:3000/api/contratos')
+            localStorage.getItem('token')?"":window.location.href='/login';
+        axios.get('http://192.168.100.71/:3000/api/contratos')
         .then(response => response.json())
         .then(data=> setData(data));
 
-        fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/area')
+        axios.get('http://192.168.100.71/:3000/api/tipoTrabajador/lista/area')
         .then(response => response.json())
         .then(data=> setTipoArea(data));
 
-        fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/cargo')
+        axios.get('http://192.168.100.71/:3000/api/tipoTrabajador/lista/cargo')
         .then(response => response.json())
         .then(data=> setTipoCargo(data));
 
-        fetch('http://127.0.0.1:3000/api/horario')
+        axios.get('http://192.168.100.71/:3000/api/horario')
         .then(response => response.json())
         .then(data=> setHorario(data[0]));
     },[]);
@@ -146,13 +147,13 @@ const Contrato = () => {
 
         };
         await cambiarEstadoModal2(!estadoModal2);
-        await axios.post(`http://127.0.0.1:3000/api/contrato/delete/${id}`,datas)
+        await axios.post(`http://192.168.100.71/:3000/api/contrato/delete/${id}`,datas)
         .then(res => {
             setRespuesta(res.data);})
         .catch(err => {
             console.log(err);
         });
-        await fetch('http://127.0.0.1:3000/api/contrato/listaId')
+        await axios.get('/contrato/listaId')
         .then(response => response.json())
         .then(data=> setData(data));
         await console.log(data);
@@ -166,7 +167,7 @@ const Contrato = () => {
 
         };
         await cambiarEstadoModal2(!estadoModal2);
-        await axios.post(`http://127.0.0.1:3000/api/contrato/delete/${id}`,datas)
+        await axios.post(`http://192.168.100.71/:3000/api/contrato/delete/${id}`,datas)
         .then(res => {
             setRespuesta(res.data);})
         .catch(err => {
@@ -179,7 +180,7 @@ const Contrato = () => {
     }
 
     const cambiandoArea = async (e) => {
-        await axios.get(`http://127.0.0.1:3000/api/TipoTrabajador/${e}`)
+        await axios.get(`/TipoTrabajador/${e}`)
         .then(res => {
             setArea((res.data[0].area)),
             console.log("este es el area"),
@@ -211,7 +212,7 @@ const Contrato = () => {
         fecha2.value=fechaNew3;
     }
     const agregarTabla = () => {
-        fetch(`http://127.0.0.1:3000/api/horario/${dataHorario}`)
+        axios.get(`/horario/${dataHorario}`)
         .then(response => response.json())
         .then(data=> {
             const tabla= document.getElementById('tabla-contrato');
@@ -251,7 +252,7 @@ const Contrato = () => {
         
     }
     const enviarPut2 = () => {
-        axios.put(`http://127.0.0.1:3000/api/contrato/update/${getData.id}`,getData)
+        axios.put(`http://192.168.100.71/:3000/api/contrato/update/${getData.id}`,getData)
         .then(res => {
             setRespuesta(res.data);})
         .catch(err => {
