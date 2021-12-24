@@ -12,12 +12,15 @@ import RegistrarTipo from '../containers/RegistrarTipo';
 import Contrato from '../containers/Contrato';
 import TablaContrato from '../components/TablaContrato';
 import Home from '../containers/Home';
+import Login from '../containers/Login';
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
                 <Route exact path="/" element={<Home/>} />
+                <Route exact path="/home" element={<Home/>} />
+                <Route exact path="/login" element={<Login/>} />
                 <Route exact path="/horarios" element={<RegistrarHorario/>} />
                 <Route exact path="/asistencias" element={<Asistencias/>} />
                 <Route exact path="/permisos" element={<RegistrarPermiso/>} />

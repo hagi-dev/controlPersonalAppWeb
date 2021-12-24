@@ -6,14 +6,22 @@
 .Usuario{
     width: 238px;
     height: 49px;
-    right: 1%;
+    right: 0%;
     top: 0.5%;
     display: flex; 
     align-items: center;
     position: fixed;
 
     .Usuario__navBar{
-        visibility: hidden;
+        position: absolute;
+        top: 80%;
+        ul{
+            cursor: pointer;
+            list-style: none;
+            :hover{
+                visibility: 0.7;
+            }
+        }
     }
 
     .Usuario__nombre{

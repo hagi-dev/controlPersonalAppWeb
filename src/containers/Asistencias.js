@@ -85,7 +85,8 @@ const Asistencia = () => {
     }
 
     useEffect(() => {
-      axios.post('http://127.0.0.1:3000/api/asistencia',getData)
+        localStorage.getItem("token")==='undefined' || !localStorage.getItem("token") ? window.location.href='/login' :'';
+      axios.post('/asistencia',getData)
       .then(res => {
           setData(res.data[0]);})
       .catch(err => {

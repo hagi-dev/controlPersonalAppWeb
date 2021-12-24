@@ -1,22 +1,31 @@
 import React from 'react';
 import '../assets/Styles/components/Usuario.scss';
 import perfil from '../assets/static/perfil.jpg';
+import Cookies from 'universal-cookie';
 
 const Usuario = () => {
+    const cookies = new Cookies();
+    const [visivilidad, setVisivilidad] = React.useState(false);
+    const cerrar=()=>{
+        localStorage.clear();
+        cookies.remove('usuario');
+        window.location.href = '/home';
+    }
+    const ver= () => {
+        setVisivilidad(!visivilidad);
+    }
     return (
         <div className="Usuario">
-            <div className="Usuario__navBar">
+            <div style={visivilidad ? {display:"block"}:{display:"none"}} className="Usuario__navBar">
                 <div className="Usuario__navBar__nav">
                     <nav>
                         <ul>
-                            <li><a href="">Cambiar Nombre</a></li>
-                            <li><a href=""></a>Modificar Login</li>
-                            <li><a href=""></a>Cerrar Sesión</li>
+                            <li onClick={cerrar}>Cerrar Sesión</li>
                         </ul>
                     </nav>
                 </div>
             </div>
-            <div className="Usuario__nombre">Karina</div>
+            <div onClick={ver} className="Usuario__nombre">{cookies.get("usuario")}</div>
             <div className="Usuario__imgPerfil">
                 <img src={perfil} alt="foto perfil" />
             </div>

@@ -103,9 +103,12 @@ const Personal = () => {
 
     React.useEffect(() => {
         setGetValor(0);
-        fetch('http://127.0.0.1:3000/api/personal')
-        .then(response => response.json())
-        .then(data=> setData(data));
+        axios.get('/personal')
+        .then(res => {
+            setData(res.data);})
+        .catch(err => {
+            console.log(err);
+        })
     },[getValor]);
         
     const columns = [
@@ -123,12 +126,6 @@ const Personal = () => {
     const handleDateChange = (date) => {
         const fecha= document.getElementById('date').value;
         setGetData((prevState)=>({ ...prevState,fecha_nacimiento: fecha}));
-    }
-    const tabla={
-        title:'Lista de Personal',
-        data: data[0],
-        columnas: columns,
-        ruta:"/registrar%20personal"
     }
     const enviarPut = async () => {
         console.log(getData);
@@ -154,7 +151,7 @@ const Personal = () => {
     }
     return (
         <div className="personal">
-            {console.log(data[0])}
+            {console.log("eztos son los datos del server",data)}
              <div className="personal__menu">
                 <Menu/> 
             </div>
@@ -168,7 +165,7 @@ const Personal = () => {
                 <div className="personal__cuerpo-contenido">
                     <div className="personal__tabla" style={{margin:"0"}}>
                         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
-                            <MaterialTable columns={columns} data={data[0]} title="Lista de personal"  icons={tableIcons} style={{background:'transparent'}}
+                            <MaterialTable columns={columns} data={data} title="Lista de personal"  icons={tableIcons} style={{background:'transparent'}}
                             // StickyHeader={true}
                             options={{
                                 sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,
@@ -194,7 +191,7 @@ const Personal = () => {
                                 {
                                 icon: tableIcons.Export,
                                 tooltip: 'Descargar Datos' ,
-                                onClick: () => exportData('datos',data[0]),
+                                onClick: () => exportData('datos',data),
                                 isFreeAction: true,
                                 },
                                 {
@@ -360,6 +357,7 @@ const Personal = () => {
                     shrink: true,
                     }}
                 />
+                {console.log(data)}
                 </div>
                 <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around",alignItems:"flex-end"}}>
                     <button type='button' className="button" onClick={enviarPut} style={{width:"30%",height:"30px"}}><h5>Guardar</h5></button>
