@@ -371,7 +371,7 @@ const RegistrarContrato = () => {
                     {respuesta.message==="iniciando"? '':alert(`repuesta: ${respuesta.message}`, setRespuesta(()=>({message:"iniciando"})))}
                     <button className="button" onClick={()=>window.location.href="/contratos"} style={{width:"45%"}}>Cancelar</button> 
                 </div> 
-                {console.log(getData.fechaFinContrato),console.log(cargo)}
+                {console.log(data),console.log(cargo)}
             </div>
             
             <Modal2 estado={estadoModal1} cambiarEstado={cambiarEstadoModal1} alto='200px' ancho='400px'>

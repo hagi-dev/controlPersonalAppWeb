@@ -5,7 +5,6 @@ import '../assets/Styles/components/Buton.scss';
 import Perfil from '../components/Usuario';
 import '../assets/Styles/components/Tabla.scss';
 import MaterialTable from 'material-table';
-import {TextField,MenuItem} from '@material-ui/core';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -68,7 +67,7 @@ const Asistencia = () => {
     const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
     const [filtro, setFiltro] = React.useState(0);
     const [getData,setGetData] = useState({
-      fecha: fecha2,
+    fecha: "2021-12-16",
   });
 
 
@@ -87,10 +86,12 @@ const Asistencia = () => {
     }
 
     useEffect(() => {
-        localStorage.getItem('token')?"":window.location.href='/login';
-      axios.post('http://192.168.100.71/:3000/api/asistencia',getData)
+    localStorage.getItem("token")==='undefined' || !localStorage.getItem("token") ? window.location.href='/login' :'';
+    console.log(localStorage.getItem("token"));  
+    axios.post('/asistencia',getData)
       .then(res => {
-          setData(res.data[0]);})
+          console.log(res.data[0]);
+          setData(res.data);})
       .catch(err => {
           console.log(err);
       });
@@ -148,16 +149,13 @@ const Asistencia = () => {
                             }}
                             actions={[
                                 {
-                                    icon:()=> <TextField
+                                    icon:()=> <input
                                     id="date"
                                     label="fecha de inicio"
                                     type="date"
-                                    style={{width:"200px"}}
+                                    style={{width:"200px",borderRadius:"5px",border:"1px solid #2EA39D",padding:"5px",margin:"5px"}}
                                     defaultValue= "2021-12-15"
                                     onChange=''
-                                    InputLabelProps={{
-                                    shrink: true,
-                                    }}
                                     />,
                                     isFreeAction: true,
                                 },

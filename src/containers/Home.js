@@ -19,14 +19,14 @@ import DatePicker from 'sassy-datepicker';
 const Home = () => {
     const cookies = new Cookies();
     useEffect(()=>{
-        localStorage.getItem("mensage")==="usuario y contraseña incorrectos" && localStorage.getItem("token")===undefined ? window.location.href='/login':"" ;
-        console.log(localStorage.getItem('token'));
-    },[]);
+    localStorage.getItem("token")==='undefined' || !localStorage.getItem("token") ? window.location.href='/login' :'';
+    },[localStorage]);
     const onChange = (date) => {
         console.log(date.toString());
       };
     return (
         <div className="Home">
+            {console.log(localStorage.getItem('token'))}
              <div className="Home__menu">
                 <Menu/> 
             </div>

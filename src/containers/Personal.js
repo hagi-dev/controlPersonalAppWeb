@@ -103,9 +103,13 @@ const Personal = () => {
 
     React.useEffect(() => {
         setGetValor(0);
-        axios.get('http://192.168.100.71/:3000/api/personal')
-        .then(response => response.json())
-        .then(data=> setData(data));
+        axios.get('http://127.0.0.1:3000/api/personal')
+        .then(res => {
+            console.log(res.data[0]);
+            setData(res.data);})
+        .catch(err => {
+            console.log(err);
+        });
     },[getValor]);
         
     const columns = [
@@ -134,14 +138,14 @@ const Personal = () => {
     const enviarPut = async () => {
         console.log(getData);
             if(true){
-            await axios.put(`http://192.168.100.71/:3000/api/personal/update/${getData.id}`,getData)
+            await axios.put(`http://192.168.100.71:3000/api/personal/update/${getData.id}`,getData)
             .then(res => {
                 setRespuesta(res.data);})
             .catch(err => {
                 console.log(err);
             });
             }
-            await axios.get('http://192.168.100.71/:3000/api/personal')
+            await axios.get('http://192.168.100.71:3000/api/personal')
             .then(response => response.json())
             .then(data=> setData(data)); 
         cambiarEstadoModal1(!estadoModal1);
@@ -260,7 +264,7 @@ const Personal = () => {
             <Modal estado={estadoModal1} cambiarEstado={cambiarEstadoModal1} alto='500px' ancho='500px'>
                 <h1 style={{textAlign:"center"}} className="h1">Modificar Datos Personal</h1>
                 <div className="conternedor_formulario">
-                    <TextField
+                <TextField
                         id="outlined-select-currency"
                         label="dni"
                         type="text"
@@ -271,7 +275,7 @@ const Personal = () => {
                         name="dni"
                         onChange={getSelection}
                         >
-                    </TextField>   
+                    </TextField> 
                     <TextField
                         id="outlined-select-currency"
                         label="Nombre"

@@ -1,16 +1,29 @@
 import styled from 'styled-components';
+import clsx from 'clsx';
 import React,{useState,useEffect} from 'react';
 import foto from "../assets/static/login.svg";
 import logo from "../assets/static/logo2.png";
 import "../assets/styles/components/Login.scss";
-import {TextField} from '@material-ui/core';
+import {TextField,Input,IconButton,InputAdornment,InputLabel,FormControl} from '@material-ui/core';
 import { makeStyles , createTheme, withStyles } from '@material-ui/core/styles';
 import loginServices from "../services/login";
 import Loader from '../components/Loader';
 import Cookies from 'universal-cookie';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const useStyles = makeStyles((p) => ({
 
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
+      margin: {
+        margin: p.spacing(1),
+      },
+      withoutLabel: {
+        marginTop: p.spacing(3),
+      },
     TextField:{
         color:"yellow",
         
@@ -28,8 +41,11 @@ const Login = () => {
     const styles = useStyles();
     const [getData,setGetData] = useState({
         usuario:'',
-        contraseña:''
+        contraseña:'',
+        weight: '',
+        showPassword: false,
     });
+
     const [visibility,setVisibility] = useState("none"); 
     const [error, setError] = useState(false);
     const [user, setUser] = useState([]);
@@ -48,8 +64,7 @@ const Login = () => {
             setUser(user1);
             console.log(user1);
             setGetData({usuario:'',contraseña:''});
-            user1.message==="usuario y contraseña incorrectos" ? '' : window.location.href='/home';
-                
+            localStorage.getItem("token")==='undefined' ? '' : window.location.href='/home';; 
         } catch (error) {
             setError("ocurrio u error : " + error);
             console.log(error);
@@ -60,15 +75,25 @@ const Login = () => {
     const getSelection =(e) => {
         const {name,value} = e.target;
         setGetData((prevState)=>({ ...prevState, [name]: value}));
+        setError("");
+
     }
 
     useEffect(()=>{
         if(error || user){  
+            localStorage.getItem("token")==='undefined' || !localStorage.getItem("token") ? '' : window.location.href='/home';
             setVisibility("none");
             setVisibleInputs("flex");
-            setTimeout(()=>{setError(""),setUser("")},5000);
         }
     },[error,user]);
+
+    const handleClickShowPassword = () => {
+        setGetData({ ...getData, showPassword: !getData.showPassword });
+      };
+    
+      const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+      };
     
     return (
         <Contenedor>
@@ -88,8 +113,27 @@ const Login = () => {
                         </h1>
                         <p style={{fontFamily:"mulish",color:"yellow"}}>{error||user.message}</p>
                         <TextField style={{display:visibleInputs}}  label="Usuario" value={getData&&getData.usuario} id='usuario'  type="text" name= "usuario" onChange={getSelection} />
-                        <TextField style={{display:visibleInputs}}  label="Contraseña" value={getData&&getData.contraseña} id='contraseña'   onChange={getSelection}  type="password" name= "contraseña" />
-                        <button onClick={()=>setVisibility('block')}>Ingresar</button>
+                        <FormControl className={clsx(styles.margin, styles.textField)}>
+                            <InputLabel htmlFor="standard-adornment-password">Contraseña</InputLabel>
+                            <Input  style={{display:visibleInputs}} 
+                            value={getData&&getData.contraseña} 
+                            id="standard-adornment-password"   
+                            onChange={getSelection}  
+                            type={getData.showPassword ? 'text' : 'password'} 
+                            name= "contraseña" 
+                            endAdornment={
+                                <InputAdornment position="end">
+                                <IconButton style={{bottom:"1%"}}
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                >
+                                    {getData.showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                                </InputAdornment>
+                            }/>
+                        </FormControl>
+                        <button className='enviar' onClick={()=>setVisibility('block')}>Ingresar</button>
                     </form>
                 </div>
                 <Loader className="loader" visibility={visibility} />
@@ -163,7 +207,7 @@ const Form1= styled.div`
             backdrop-filter: blur(2px);
             border-radius:4%;
             box-shadow:0 5px 45px rgba(255, 255, 255, 0.3);
-            button{
+            .enviar{
                 border-radius:5px;
                 font-family: "mulish";
                 font-size:1rem;
@@ -174,6 +218,9 @@ const Form1= styled.div`
                 bottom: 7%;
                 left: 10%;
                 right: 0%;
+            }
+            .MuiIconButton-root{
+                margin-bottom:25%;
             }
         }
         @media (max-width:800px){
