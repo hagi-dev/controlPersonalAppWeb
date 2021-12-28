@@ -1,0 +1,13 @@
+.MuiInputBase-input{
+    color: rgb(117, 117, 117)!important;
+    padding-left: 2% !important;
+}
+.MuiFormLabel-root{
+    color: rgb(233, 195, 72) !important;
+    ::after{
+        color: rgb(233, 195, 72) !important;
+    }
+}
+.MuiInput-underline:after{
+    border-bottom-color: rgb(233, 195, 72)!important;
+}

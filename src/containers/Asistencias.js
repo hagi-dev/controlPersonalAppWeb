@@ -1,5 +1,5 @@
 import React,{useState,useEffect,forwardRef} from 'react';
-import '../assets/Styles/components/Contrato.scss';
+import '../assets/Styles/components/Asistencia.scss';
 import Menu from '../components/Menu';
 import Perfil from '../components/Usuario';
 import '../assets/Styles/components/Tabla.scss';
@@ -22,6 +22,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import exportData from '../helpers/exportData';
 import validar from '../helpers/validador';
 import axios from 'axios';
+import { TextField } from '@material-ui/core';
 
 
 const tableIcons = {
@@ -62,12 +63,23 @@ const Asistencia = () => {
   } 
   const fecha2= formatearFecha(fecha1);
     const [data, setData ] = useState([]);
-    const [data2, setData2 ] = useState([]);
     const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
     const [filtro, setFiltro] = React.useState(0);
+    const [data2, setData2] = React.useState([]);
+    const [actualizar, setActualizar] = useState(false);
     const [getData,setGetData] = useState({
       fecha: fecha2,
   });
+
+  const getdate2= async (e)=>{
+    try {
+        setActualizar(true);
+        const fecha2= await document.getElementById('fechaAsistencia');
+        await setGetData((prevState)=>({ ...prevState, fecha: fecha2.value}));
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
     const formatearFechaEspañol = (fecha) => {
@@ -88,22 +100,22 @@ const Asistencia = () => {
         localStorage.getItem("token")==='undefined' || !localStorage.getItem("token") ? window.location.href='/login' :'';
       axios.post('/asistencia',getData)
       .then(res => {
-          setData(res.data[0]);})
+          setData(res.data)})
       .catch(err => {
           console.log(err);
       });
-    },[]);
+      setActualizar(false);
+    },[actualizar]);
         
     const columns = [
         { title: "#Contrato", field: "CON_id",align:"center",width: "50px" ,filtering: false},
         { title: "Personal", field: "PER_nombre" ,
         render: (rowData) => <p>{`${rowData.PER_nombre} ${rowData.PER_apaterno}`}</p>},
-        { title: "Puesto", field: "TTR_cargo", align: "left"},
         {
-          title: "Hora entrada", field: "REGE_hora_inn",
+            title: "Area", field: "TTR_area",lookup: { "Almacen": "Almacen", "Marketing y diseño": "Marketing y diseño", "Ventas": "Ventas"}
         },
-        { title: "Horas Trabajadas", field: "htrabajadas"},
-        { title: "Horas Deuda", field: "hdeuda"},
+        { title: "Puesto", field: "TTR_cargo", align: "left"},
+        { title: "observacion", field: "JLAB_observacion", align: "left"},
         { title: "asistencia", field: "JLAB_asistencia", lookup: { 0: "no asistio", 1: "asistio", 2: "feriado o domingo", 3: "permiso" } ,},
       ];
 
@@ -115,21 +127,30 @@ const Asistencia = () => {
     
   
     return (
-        <div className="Contrato">
-             <div className="Contrato__menu">
+        <div className="Asistencia">
+            {actualizar ? 
+            axios.post('/asistencia',getData)
+            .then(res => {
+                setData(res.data)})
+            .catch(err => {
+                console.log(err);
+            })
+             :''}
+            {actualizar ? setActualizar(false) :''}
+             <div className="Asistencia__menu">
                 <Menu/> 
             </div>
-            <div className="Contrato__cuerpo" style={{backgroundColor:"white",width:"100%",height:"100%"}}>
-                <div className="Contrato__cuerpo-perfil">
+            <div className="Asistencia__cuerpo" style={{backgroundColor:"white",width:"100%",height:"100%"}}>
+                <div className="Asistencia__cuerpo-perfil">
                  <Perfil/>
                 </div>
-                <div className="Contrato__cuerpo-titulo">
-                    <h1>Contratos</h1>
+                <div className="Asistencia__cuerpo-titulo">
+                    <h1>Asistencias</h1>
                 </div>
-                <div className="Contrato__cuerpo-contenido">
-                    <div className="Contrato__lista" style={{margin:"0"}}>
+                <div className="Asistencia__cuerpo-contenido">
+                    <div className="Asistencia__lista" style={{margin:"0"}}>
                         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
-                            <MaterialTable columns={columns} data={data} title="Lista de personal"  icons={tableIcons} style={{background:'transparent'}}
+                            <MaterialTable columns={columns} data={data} title="Lista de asistencia personal"  icons={tableIcons} style={{background:'transparent'}}
                             // StickyHeader={true}
                             options={{
                                 sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,
@@ -146,6 +167,12 @@ const Asistencia = () => {
                             }}
                             actions={[
                                 {
+                                icon: ()=>(<input defaultValue={getData&&getData.fecha} id='fechaAsistencia' onChange={getdate2} style={{borderRadius:"5px",border:"1px solid #2EA39D",color:"#7D0F2E",fontFamily:"mulish"}} type="date"></input>),
+                                tooltip: 'Descargar Datos' ,
+                                onClick: () => exportData('datos',data[0]),
+                                isFreeAction: true,
+                                },
+                                {
                                 icon: tableIcons.Filter,
                                 tooltip: 'filtrar tabla' ,
                                 onClick: () => setFiltro(filtro + 1),
@@ -155,7 +182,7 @@ const Asistencia = () => {
                                 {
                                 icon: tableIcons.Export,
                                 tooltip: 'Descargar Datos' ,
-                                onClick: () => exportData('datos',data[0]),
+                                onClick: () => exportData('datos',data),
                                 isFreeAction: true,
                                 },
                                 {
@@ -165,13 +192,11 @@ const Asistencia = () => {
                                 },
                             ]}
                             />
-                            {console.log(respuesta)}
                             {respuesta.message==="iniciando"? '':alert(`repuesta: ${respuesta.message}`, setRespuesta(()=>({message:"iniciando"})))}
                         </div>
                     </div>
                 </div>
             </div>
-            {console.log(data)}
         </div>
     )
 }

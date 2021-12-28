@@ -113,7 +113,7 @@ const Personal = () => {
         
     const columns = [
         { title: "Nombre", field: "nombre", filterPlaceholder:"ingrese nombre" ,
-        render: (rowData) => <div style={{display:"flex", justifyContent:"left",alignItems:"center"}}><img src={perfil} style={{width:"40px",border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.nombre}</p></div>},
+        render: (rowData) => <div style={{display:"flex", justifyContent:"left",alignItems:"center"}}><img src={rowData.foto} style={{width:"40px",height:'40px',border:"3px solid #FCDC3C",borderRadius:"50%",marginRight:"4px"}}/><p style={{display:"inline-block", width:"60px"}}>{rowData.nombre}</p></div>},
         { title: "Apellidos", field: "apellidoPaterno" },
         { title: "DNI", field: "dni", align: "left"},
         {
@@ -137,9 +137,12 @@ const Personal = () => {
                 console.log(err);
             });
             }
-            await fetch('http://127.0.0.1:3000/api/personal')
-            .then(response => response.json())
-            .then(data=> setData(data)); 
+            await axios.get('/personal')
+            .then(res => {
+                setData(res.data);})
+            .catch(err => {
+                console.log(err);
+            }); 
         cambiarEstadoModal1(!estadoModal1);
     }
 
@@ -360,7 +363,7 @@ const Personal = () => {
                 {console.log(data)}
                 </div>
                 <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around",alignItems:"flex-end"}}>
-                    <button type='button' className="button" onClick={enviarPut} style={{width:"30%",height:"30px"}}><h5>Guardar</h5></button>
+                    <button type='submit' className="button" onClick={enviarPut} style={{width:"30%",height:"30px"}}><h5>Guardar</h5></button>
                     <button type='button' className="button" onClick={() => cambiarEstadoModal1(!estadoModal1)} style={{width:"30%",height:"30px"}}><h5>Cancelar</h5></button>
                 </div>
             </Modal>

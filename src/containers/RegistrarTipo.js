@@ -66,10 +66,10 @@ const RegistrarTipo = () => {
      */
 
     const columns = [
-        { title: "Area", field: "area",lookup:{Almacen:"Almacen",Ventas:"Ventas",'Marketing y diseño':'Marketing y diseño'} ,align:"left",
+        { title: "Area", field: "TTR_area",lookup:{Almacen:"Almacen",Ventas:"Ventas",'Marketing y diseño':'Marketing y diseño'} ,align:"left",
         },
-        { title: "Cargo", field: "nombre",filterPlaceholder:" buscar cargo",align:"left", },
-        { title: "Estado", field: "estado",lookup:{1:'vigente',0:'no vigente'}, align: "left"},
+        { title: "Cargo", field: "TTR_cargo",filterPlaceholder:" buscar cargo",align:"left", },
+        { title: "Estado", field: "TTR_estado",lookup:{1:'vigente',0:'no vigente'}, align: "left"},
     ]
 
     /**
@@ -110,7 +110,7 @@ const RegistrarTipo = () => {
     useEffect(async ()=>{
         if(consulta===1){
             setConsulta(0);
-            await axios.get('http://127.0.0.1:3000/api/TipoTrabajador')
+            await axios.get('/TipoTrabajador')
             .then(res => {
                 setData(res.data);})
             .catch(err => {
@@ -139,17 +139,18 @@ const RegistrarTipo = () => {
             if(editar===0){
 
                 if(areas===1 && cargos===1){
-                    await axios.post('http://127.0.0.1:3000/api/TipoTrabajador/registrar',getData)
+                    await axios.post('/TipoTrabajador/registrar',getData)
                     .then(res => {
                         setRespuesta(res.data);})
                     .catch(err => {
                         console.log(err);
                     });
                 }
+                setGetData({area: '',cargo: ''}); 
             }
             else if (editar===1){
                  if(areas===1 && cargos===1){
-                    await axios.put(`http://127.0.0.1:3000/api/TipoTrabajador/update/${ids}`,getData)
+                    await axios.put(`/TipoTrabajador/update/${ids}`,getData)
                     .then(res => {
                         setRespuesta(res.data);})
                     .catch(err => {
@@ -169,8 +170,10 @@ const RegistrarTipo = () => {
     //metodo para modificar los datos con put axios
     const actualizarTipo = async(id) =>
     {       
-            await axios.get(`http://127.0.0.1:3000/api/TipoTrabajador/${id}`)
+            await axios.get(`/TipoTrabajador/${id}`)
             .then(res => {
+                console.log("este son los datops de ahora",id);
+                console.log("este son los datops de ahora",res.data);
                 setGetData(()=>({
                     area: res.data[0]['area'],
                     cargo:res.data[0]['cargo'],
@@ -287,13 +290,14 @@ const RegistrarTipo = () => {
                                 {
                                 icon: tableIcons.Edit,
                                 tooltip: 'Modificar' ,
-                                onClick: (event, rowData) => {actualizarTipo(rowData.id),setEditar(1),setIds(rowData.id)},
+                                onClick: (event, rowData) => {actualizarTipo(rowData.TTR_id),setEditar(1),setIds(rowData.TTR_id)},
                                 },
                                 {
                                 icon: tableIcons.Delete,
                                 tooltip: 'Desactivar',
                                 onClick: async (event, rowData) => {
-                                    await axios.delete(`http://127.0.0.1:3000/api/TipoTrabajador/delete/${rowData.id}`)
+                                    console.log("este es id enviado",rowData.TTR_id);
+                                    await axios.delete(`/TipoTrabajador/delete/${rowData.TTR_id}`)
                                     .then(res => {
                                         setRespuesta(res.data);})
                                     .catch(err => {
@@ -304,12 +308,7 @@ const RegistrarTipo = () => {
                                 },
                                 style: {zIndex:'0',position: 'absolute'}
                                 },
-                                {
-                                icon: tableIcons.Add,
-                                tooltip: 'Nuevo Registro' ,
-                                onClick: (event, rowData) => window.location.href=ruta,
-                                isFreeAction: true,
-                                },
+
                             ]}
                             />
                         </div>

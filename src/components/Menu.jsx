@@ -17,10 +17,10 @@ const Menu = () => {
                         <li><a href="/personal">Personal</a></li>
                         <li><a href="/contratos">Contratos</a></li>
                         <li><a href="/asistencias">Asistencias</a></li>
-                        <li><a href="/permisos">Permisos</a></li>
+                        {/* <li><a href="/permisos">Permisos</a></li> */}
                         <li><a href="tipo%20trabajador">Tipo de personal</a></li>
                         <li><a href="/horarios">Horario</a></li>
-                        <li><a href="sanciones">Sanciones </a></li>
+                        {/* <li><a href="sanciones">Sanciones </a></li> */}
                     </ul>
                 </nav>
             </div>

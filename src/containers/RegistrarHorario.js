@@ -104,30 +104,29 @@ const RegistrarHorario = () => {
         await console.log(consulta);
         console.log('useEffect');
         if(consulta===1){
-            fetch('http://127.0.0.1:3000/api/horario')
-        .then(response => response.json())
-        .then(data=> setData(data));
 
-        fetch('http://127.0.0.1:3000/api/tipoTrabajador')
-        .then(response => response.json())
-        .then(data=> setData2(data[0]));
+        await axios.get('/horario')
+        .then(res => {
+            setData(res.data);
+        })
+        .catch(err => console.log(err));
+
+        await axios.get('/tipoTrabajador')
+        .then(res => {
+            setData2(res.data[0]);})
+        .catch(err => console.log(err));
         }
     },[consulta]);
         
         
     const columns = [
-        { title: "Dirigido", field: "dirigido", filterPlaceholder:"ingrese nombre" ,align:"left",width:'150px',},
-        { title: "Dias", field: "detalle" ,align:"left"},
-        { title: "Horario", field: "horaEntrada",width:'250px',
-        render: (rowData) => <p>{`${rowData.horaEntrada} AM-${rowData.horaSalida} PM`}</p>},
-        { title: "Receso", field: "inicioReceso",width:'250px',
-        render: (rowData) => <p>{`${rowData.inicioReceso} PM-${rowData.finReceso} PM`}</p>},
+        { title: "Dirigido", field: "Hor_dirigido", filterPlaceholder:"ingrese nombre" ,align:"left",width:'150px',},
+        { title: "Dias", field: "HOR_detalle" ,align:"left"},
+        { title: "Horario", field: "HOR_entrada",width:'250px',
+        render: (rowData) => <p>{`${rowData.HOR_entrada} AM-${rowData.HOR_salida} PM`}</p>},
+        { title: "Receso", field: "HOR_receso_inn",width:'250px',
+        render: (rowData) => <p>{`${rowData.HOR_receso_inn} PM-${rowData.HOR_receso_out} PM`}</p>},
       ]
-    const tabla={
-        title:'Lista de Horarios',
-        data: data[0],
-        columnas: columns,
-    } 
     const getSelection = async (e) => {
         console.log(`este es el evento: ${e}`);
         const {name,value} = e.target;
@@ -151,7 +150,7 @@ const RegistrarHorario = () => {
              if(editar===0){
  
                  if(tipoTrabajador2===1 && diass===1){
-                     await axios.post('http://127.0.0.1:3000/api/horario/registrar',getData)
+                     await axios.post('/horario/registrar',getData)
                      .then(res => {
                          setRespuesta(res.data);})
                      .catch(err => {
@@ -161,7 +160,7 @@ const RegistrarHorario = () => {
              }
              else if (editar===1){
                   if(tipoTrabajador2===1 && diass===1){
-                     await axios.put(`http://127.0.0.1:3000/api/horario/update/${ids}`,getData)
+                     await axios.put(`/horario/update/${ids}`,getData)
                      .then(res => {
                          setRespuesta(res.data);})
                      .catch(err => {
@@ -171,7 +170,14 @@ const RegistrarHorario = () => {
                      setSubTitle('Registrar Horario');
                  } 
              }
+        await axios.get('/horario')
+        .then(res => {
+            setData(res.data);
+        })
+        .catch(err => console.log(err));
          await setConsulta(1);
+         setValorTipoTrabajador('');
+         setDias1('');
          console.log(consulta);
          console.log('useEffect2');
          } catch (error) {
@@ -182,9 +188,9 @@ const RegistrarHorario = () => {
      //metodo para modificar los datos con put axios
     const actualizarTipo = async(id) =>
     {       
-            await axios.get(`http://127.0.0.1:3000/api/horario/${id}`)
+            await axios.get(`/horario/${id}`)
             .then(res => {
-                console.log(res.data[0]['dirigido']);
+                console.log(res.data);
                 setGetData(()=>({
                     estado:'1',
                     dirigido: res.data[0]['dirigido'],
@@ -234,8 +240,8 @@ const RegistrarHorario = () => {
                                 onChange={e=>{getSelection(e),setValorTipoTrabajador(e.target.value)}}
                                 >
                                 {data2.map((option) => (
-                                    <MenuItem key={option.id} value={option.nombre}>
-                                    {option.nombre}
+                                    <MenuItem key={option.TTR_id} value={option.TTR_cargo}>
+                                    {option.TTR_cargo}
                                     </MenuItem>
                                 ))}
                                 </TextField>
@@ -360,13 +366,13 @@ const RegistrarHorario = () => {
                                 {
                                 icon: tableIcons.Edit,
                                 tooltip: 'Modificar' ,
-                                onClick: (event, rowData) => {actualizarTipo(rowData.id),setEditar(1),setIds(rowData.id)},
+                                onClick: (event, rowData) => {actualizarTipo(rowData.HOR_id),setEditar(1),setIds(rowData.HOR_id)},
                                 },
                                 {
                                 icon: tableIcons.Delete,
                                 tooltip: 'Desactivar',
                                 onClick: async (event, rowData) => {
-                                    await axios.delete(`http://127.0.0.1:3000/api/horario/delete/${rowData.id}`)
+                                    await axios.delete(`/horario/delete/${rowData.HOR_id}`)
                                     .then(res => {
                                         setRespuesta(res.data);})
                                     .catch(err => {
@@ -374,8 +380,12 @@ const RegistrarHorario = () => {
                                     });
                                     await setConsulta(1);
                                     await console.log(data);
+                                    await axios.get('/horario')
+                                    .then(res => {
+                                        setData(res.data);
+                                    })
+                                    .catch(err => console.log(err));
                                 },
-                                style: {zIndex:'0',position: 'absolute'}
                                 },
                                 {
                                 icon: tableIcons.Add,
@@ -389,7 +399,7 @@ const RegistrarHorario = () => {
                     </div>
                 </div>
             </div>
-            {console.log(getData)}
+            {console.log(data2),console.log(valorTipoTrabajador)}
         </div>
     )
 }

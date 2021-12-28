@@ -27,7 +27,7 @@ const Usuario = () => {
             </div>
             <div onClick={ver} className="Usuario__nombre">{cookies.get("usuario")}</div>
             <div className="Usuario__imgPerfil">
-                <img src={perfil} alt="foto perfil" />
+                <img onClick={ver} src={perfil} alt="foto perfil" />
             </div>
         </div>
     )

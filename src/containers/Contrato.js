@@ -110,80 +110,101 @@ const Contrato = () => {
     }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:3000/api/contratos')
-        .then(response => response.json())
-        .then(data=> setData(data[0]));
+        axios.get('/contratos')
+        .then(res => {
+            setData(res.data)})
+        .catch(err => {
+            console.log(err);
+        });
+        
+        axios.get('/tipoTrabajador/lista/area')
+        .then(res => {
+            setTipoArea(res.data)})
+        .catch(err => {
+            console.log(err);
+        });
 
-        fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/area')
-        .then(response => response.json())
-        .then(data=> setTipoArea(data));
+        axios.get('/tipoTrabajador/lista/cargo')
+        .then(res => {
+            setTipoCargo(res.data)})
+        .catch(err => {
+            console.log(err);
+        });
 
-        fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/cargo')
-        .then(response => response.json())
-        .then(data=> setTipoCargo(data));
-
-        fetch('http://127.0.0.1:3000/api/horario')
-        .then(response => response.json())
-        .then(data=> setHorario(data[0]));
+        axios.get('/horario')
+        .then(res => {
+            setHorario(res.data[0])})
+        .catch(err => {
+            console.log(err);
+        });
     },[]);
         
     const columns = [
         { title: "N°", field: "CON_id",align:"left",width: "50px" ,filtering: false},
+        { title: "DNI", field: "PER_dni",align:"left",filtering: true},
         { title: "Personal", field: "PER_nombre" ,
         render: (rowData) => <p>{`${rowData.PER_nombre} ${rowData.PER_apaterno}`}</p>},
         { title: "Puesto", field: "TTR_cargo", align: "left"},
         {
           title: "Horario", field: "HOR_entrada",
-          render: (rowData) => <p>{`${rowData.HOR_detalle}: ${rowData.HOR_entrada} - ${rowData.HOR_salida}`}</p>,width:'250px'},
+          render: (rowData) => <p>{`${rowData.HOR_detalle}: ${rowData.HOR_entrada} - ${rowData.HOR_salida}`}</p>,width:'250px',
+          lookup: { "L-V": "L-V", "Sabado": "Sabado" }},
         { title: "Incio", field: "CON_fecha_inn",render: (rowData) => <p>{ formatearFechaEspañol(rowData.CON_fecha_inn)}</p>},
         { title: "Finaliza", field: "CON_fecha_out",render: (rowData) => <p>{ formatearFechaEspañol(rowData.CON_fecha_out)}</p>},
         { title: "Estado", field: "CON_estado", lookup: { 0: "finalizado", 1: "vigente", 2: "cancelado" } ,},
       ]
     const deleteCerrar= async(id) => {
+        const fecha= new Date();
+        const fechaFinContratos= formatearFecha(fecha);
         const datas={
             opcion: 'T',
-            fecha:'2021-01-01'
+            fecha:fechaFinContratos
 
         };
         await cambiarEstadoModal2(!estadoModal2);
-        await axios.post(`http://127.0.0.1:3000/api/contrato/delete/${id}`,datas)
+        await axios.post(`/contrato/delete/${id}`,datas)
         .then(res => {
             setRespuesta(res.data);})
         .catch(err => {
             console.log(err);
         });
-        await fetch('http://127.0.0.1:3000/api/contrato/listaId')
-        .then(response => response.json())
-        .then(data=> setData(data));
-        await console.log(data);
+    
+        await axios.get('/contratos')
+        .then(res => {
+            setData(res.data)})
+        .catch(err => {
+            console.log(err);
+        });
         
     }
     const deleteEliminar= async(id) => {
         await cambiarEstadoModal2(!estadoModal2);
+        const fecha= new Date();
+        const fechaFinContratos= formatearFecha(fecha);
         const datas= await {
             opcion: 'D',
-            fecha: '2021-01-01'
+            fecha: fechaFinContratos
 
         };
         await cambiarEstadoModal2(!estadoModal2);
-        await axios.post(`http://127.0.0.1:3000/api/contrato/delete/${id}`,datas)
+        await axios.post(`/contrato/delete/${id}`,datas)
         .then(res => {
             setRespuesta(res.data);})
         .catch(err => {
             console.log(err);
         });
-        await fetch('http://127.0.0.1:3000/api/contratos')
-        .then(response => response.json())
-        .then(data=> setData(data[0]));
-        await console.log(data);
+        await axios.get('/contratos')
+        .then(res => {
+            setData(res.data)})
+        .catch(err => {
+            console.log(err);
+        });
     }
 
     const cambiandoArea = async (e) => {
-        await axios.get(`http://127.0.0.1:3000/api/TipoTrabajador/${e}`)
+        await axios.get(`/TipoTrabajador/${e}`)
         .then(res => {
-            setArea((res.data[0].area)),
-            console.log("este es el area"),
-            console.log(res.data[0].area) 
+            setArea((res.data[0].area)) 
         })
         .catch(err => {
             console.log(err)}
@@ -200,7 +221,6 @@ const Contrato = () => {
     const getdate1=async (e)=>{
         
         const fecha= await document.getElementById('date');
-        console.log(fecha.value);
         const fecha2= document.getElementById('date2');
         const fechaNew= new Date(fecha.value);
         fechaNew.setMonth(fechaNew.getMonth()+6);
@@ -211,9 +231,9 @@ const Contrato = () => {
         fecha2.value=fechaNew3;
     }
     const agregarTabla = () => {
-        fetch(`http://127.0.0.1:3000/api/horario/${dataHorario}`)
-        .then(response => response.json())
-        .then(data=> {
+        axios.get(`/horario/${dataHorario}`)
+        .then(res => {
+            setData(res.data)
             const tabla= document.getElementById('tabla-contrato');
             const fila = tabla.insertRow(-1);
             const celda1 = fila.insertCell(0);
@@ -221,9 +241,9 @@ const Contrato = () => {
             const celda2 = fila.insertCell(1);
             celda2.textContent = data[0].detalle;
             const celda3 = fila.insertCell(2);
-            celda3.textContent = `${data[0].entrada} - ${data[0].salida}`;
+            celda3.textContent = `${res.data[0].entrada} - ${res.data[0].salida}`;
             const celda4 = fila.insertCell(3);
-            celda4.textContent = `${data[0].inicioReceso} - ${data[0].finReceso}`;
+            celda4.textContent = `${res.data[0].inicioReceso} - ${res.data[0].finReceso}`;
             const celda5 = fila.insertCell(4);
             let vDellBtn = document.createElement("button");
             vDellBtn.textContent = "Eliminar";
@@ -234,6 +254,9 @@ const Contrato = () => {
                 let transactionRow = e.target.parentNode.parentNode;
                 transactionRow.remove();
         })
+        })
+        .catch(err => {
+            console.log(err);
         });
         
     }
@@ -245,23 +268,27 @@ const Contrato = () => {
         for (let index = 1; index < valor; index++) {
             idHorarios.push(tabla.rows[index].cells[0].innerHTML);
         }
-        await setGetData((prevState)=>({ ...prevState, idHorarios: idHorarios}));
-        await console.log(getData);
+        await setGetData((prevState)=>({ ...prevState, idHorarios: idHorarios, idTipoTrabajador: cargo}));
         cambiarEstadoModal3(!estadoModal3);
         
     }
-    const enviarPut2 = () => {
-        axios.put(`http://127.0.0.1:3000/api/contrato/update/${getData.id}`,getData)
+    const enviarPut2 =async () => {
+        console.log("estoa datos se enviara a actualizar",getData);
+        console.log(getData.id);
+        cambiarEstadoModal1(!estadoModal1);
+        cambiarEstadoModal3(!estadoModal3);
+        await axios.put(`/contrato/update/${getData.id}`,getData)
         .then(res => {
-            setRespuesta(res.data);})
+            setRespuesta(res.data),
+            console.log("esta es la respuesta",res);})
         .catch(err => {
             console.log(err);
         }); 
-
-        cambiarEstadoModal1(!estadoModal1);
-        cambiarEstadoModal3(!estadoModal3);
-
-
+        await axios.get('/contratos')
+        .then(res => {  setData(res.data)})
+        .catch(err => {
+            console.log(err);
+        });
         
     }
     return (
@@ -333,19 +360,18 @@ const Contrato = () => {
                                         await setCargo(rowData.TTR_id);                                    
                                         await cambiarEstadoModal1(true);
                                         for(let i=0;i<idHorarios.length;i++){
-                                            fetch(`http://127.0.0.1:3000/api/horario/${idHorarios[i]}`)
-                                            .then(response => response.json())
-                                            .then(data=> {
+                                            axios.get(`/horario/${idHorarios[i]}`)
+                                            .then(res=> {
                                                 const tabla= document.getElementById('tabla-contrato');
                                                 const fila = tabla.insertRow(-1);
                                                 const celda1 = fila.insertCell(0);
                                                 celda1.textContent = idHorarios[i];
                                                 const celda2 = fila.insertCell(1);
-                                                celda2.textContent = data[0].detalle;
+                                                celda2.textContent = res.data[0].detalle;
                                                 const celda3 = fila.insertCell(2);
-                                                celda3.textContent = `${data[0].entrada} - ${data[0].salida}`;
+                                                celda3.textContent = `${res.data[0].entrada} - ${res.data[0].salida}`;
                                                 const celda4 = fila.insertCell(3);
-                                                celda4.textContent = `${data[0].inicioReceso} - ${data[0].finReceso}`;
+                                                celda4.textContent = `${res.data[0].inicioReceso} - ${res.data[0].finReceso}`;
                                                 const celda5 = fila.insertCell(4);
                                                 let vDellBtn = document.createElement("button");
                                                 vDellBtn.textContent = "Eliminar";
@@ -356,14 +382,15 @@ const Contrato = () => {
                                                     let transactionRow = e.target.parentNode.parentNode;
                                                     transactionRow.remove();
                                             })
-                                            });
+                                            })
+                                            .catch(err => {console.log(err)});
                                         }
                                         
                                     },
                                 },
                                 {
                                 icon: tableIcons.Delete,
-                                tooltip: 'Desactivar',
+                                tooltip:'Eliminar' ,
                                 onClick: async(event, rowData) =>  {
                                     await setIdSeleccionado(rowData.CON_id);
                                     await cambiarEstadoModal2(true);
@@ -383,13 +410,11 @@ const Contrato = () => {
                                 },
                             ]}
                             />
-                            {console.log(respuesta)}
                             {respuesta.message==="iniciando"? '':alert(`repuesta: ${respuesta.message}`, setRespuesta(()=>({message:"iniciando"})))}
                         </div>
                     </div>
                 </div>
             </div>
-            {console.log(getData)}
             <Modal estado={estadoModal1} cambiarEstado={cambiarEstadoModal1} alto='600px' ancho='500px'>
                 <h1 style={{textAlign:"center"}} className="h1">Modificar contrato</h1>
                 <div className="conternedor_formulario">
@@ -473,11 +498,10 @@ const Contrato = () => {
                         >
                             
                         {
-                            console.log(horario.value),
                         horario.map((option) =>(                                       
 
-                            <MenuItem key={option.id} value={option.id}>
-                                <p>{option.detalle} {option.horaEntrada} -{option.horaSalida} </p>
+                            <MenuItem key={option.HOR_id} value={option.HOR_id}>
+                                <p>{option.HOR_detalle} {option.HOR_entrada} -{option.HOR_salida} </p>
                             </MenuItem>
                             
                         ))
@@ -500,7 +524,7 @@ const Contrato = () => {
                 </div>   
             </Modal3>
             <Modal4 estado={estadoModal3} cambiarEstado={cambiarEstadoModal3} alto='200px' ancho='400px'>
-                <h1 style={{textAlign:"center"}} className="h1">estas seguro de guardar los datos</h1>
+                <h1 style={{textAlign:"center"}} className="h1">¿estas seguro de guardar los datos?</h1>
                 <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around"}}>
                     <button type='button'onClick={enviarPut2} className="button"  style={{width:"30%",height:"30px"}}><h5>si</h5></button>
                     <button type='button' className="button" onClick={() => cambiarEstadoModal3(!estadoModal3)} style={{width:"30%",height:"30px"}}><h5>no</h5></button>

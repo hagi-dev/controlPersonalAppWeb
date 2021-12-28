@@ -46,17 +46,17 @@ const Login = () => {
         showPassword: false,
     });
 
-    const [visibility,setVisibility] = useState("none"); 
+    const [visivility,setVisibility] = useState("none"); 
     const [error, setError] = useState(false);
     const [user, setUser] = useState([]);
-    const [visibleInputs, setVisibleInputs] = useState('');
+    const [visibleInputs, setVisibleInputs] = useState('flex');
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         try {
             setVisibleInputs('none');
             console.log(getData);
-            setError("");
+            
             const user1= await  loginServices(getData);
             localStorage.setItem('token',user1.token);
             localStorage.setItem('mensage',user1.message);
@@ -64,9 +64,10 @@ const Login = () => {
             setUser(user1);
             console.log(user1);
             setGetData({usuario:'',contraseña:''});
-            localStorage.getItem("token")==='undefined' ? '' : window.location.href='/home';; 
+            localStorage.getItem("token")==='undefined' ? setError(user1.message) : window.location.href='/home'; 
         } catch (error) {
             setError("ocurrio u error : " + error);
+            console.log("esto paso ala errros : " + error);
             console.log(error);
         }
 
@@ -80,7 +81,7 @@ const Login = () => {
     }
 
     useEffect(()=>{
-        if(error || user){  
+        if(error||user){  
             localStorage.getItem("token")==='undefined' || !localStorage.getItem("token") ? '' : window.location.href='/home';
             setVisibility("none");
             setVisibleInputs("flex");
@@ -111,10 +112,10 @@ const Login = () => {
                         <h1 className={styles.h1}>
                             Inicio Sesion
                         </h1>
-                        <p style={{fontFamily:"mulish",color:"yellow"}}>{error||user.message}</p>
+                        <p style={{fontFamily:"mulish",color:"#8B0000",marginBottom:'2%'}}>{error}</p>
                         <TextField style={{display:visibleInputs}}  label="Usuario" value={getData&&getData.usuario} id='usuario'  type="text" name= "usuario" onChange={getSelection} />
                         <FormControl className={clsx(styles.margin, styles.textField)}>
-                            <InputLabel htmlFor="standard-adornment-password">Contraseña</InputLabel>
+                            <InputLabel style={{display:visibleInputs}} htmlFor="standard-adornment-password">Contraseña</InputLabel>
                             <Input  style={{display:visibleInputs}} 
                             value={getData&&getData.contraseña} 
                             id="standard-adornment-password"   
@@ -136,7 +137,8 @@ const Login = () => {
                         <button className='enviar' onClick={()=>setVisibility('block')}>Ingresar</button>
                     </form>
                 </div>
-                <Loader className="loader" visibility={visibility} />
+                {console.log(visivility)}
+                <Loader className="loader" visivility={visivility} />
             </Form1>
             <Img className='Img'>
                 <div>
@@ -268,7 +270,7 @@ const Img= styled.div`
          }
          .cuerpo{
              position:absolute;
-             bottom:2%;
+             bottom:3%;
             font-family: mulish;
            margin-bottom:3%;
             font-size:0.8rem;

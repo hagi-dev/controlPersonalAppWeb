@@ -86,19 +86,27 @@ const RegistrarContrato = () => {
 
 
     }
+    useEffect(()=>{
+        axios.get('/tipoTrabajador/lista/area')
+            .then(res => {
+                setTipoArea(res.data);})
+            .catch(err => {
+                console.log(err);
+            });
 
-    useEffect(  async() => {
-        fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/area')
-        .then(response => response.json())
-        .then(data=> setTipoArea(data));
+        axios.get('/tipoTrabajador/lista/cargo')
+            .then(res => {
+                setTipoCargo(res.data);})
+            .catch(err => {
+                console.log(err);
+            });
 
-        fetch('http://127.0.0.1:3000/api/tipoTrabajador/lista/cargo')
-        .then(response => response.json())
-        .then(data=> setTipoCargo(data));
-
-        fetch('http://127.0.0.1:3000/api/horario')
-        .then(response => response.json())
-        .then(data=> setHorario(data[0]));
+            axios.get('/horario')
+            .then(res => {
+                setHorario(res.data[0])})
+            .catch(err => {
+                console.log(err);
+            });
         console.log(getData&&getData.fechaFinContrato);
     },[]);
 
@@ -119,7 +127,7 @@ const RegistrarContrato = () => {
     const enviarPost2 = async () => {
         console.log(getData);
         cambiarEstadoModal2(false);
-        await axios.post('http://127.0.0.1:3000/api/contrato/registrar',getData)
+        await axios.post('/contrato/registrar',getData)
             .then(res => {
                 setRespuesta(res.data);})
             .catch(err => {
@@ -129,30 +137,32 @@ const RegistrarContrato = () => {
     }
 
     const agregarTabla = () => {
-        fetch(`http://127.0.0.1:3000/api/horario/${dataHorario}`)
-        .then(response => response.json())
-        .then(data=> {
-            const tabla= document.getElementById('tabla-contrato');
-            const fila = tabla.insertRow(-1);
-            const celda1 = fila.insertCell(0);
-            celda1.textContent = dataHorario;
-            const celda2 = fila.insertCell(1);
-            celda2.textContent = data[0].detalle;
-            const celda3 = fila.insertCell(2);
-            celda3.textContent = `${data[0].entrada} - ${data[0].salida}`;
-            const celda4 = fila.insertCell(3);
-            celda4.textContent = `${data[0].inicioReceso} - ${data[0].finReceso}`;
-            const celda5 = fila.insertCell(4);
-            let vDellBtn = document.createElement("button");
-            vDellBtn.textContent = "Eliminar";
-            celda5.appendChild(vDellBtn);
-
-            vDellBtn.addEventListener("click", (e) =>{
-
-                let transactionRow = e.target.parentNode.parentNode;
-                transactionRow.remove();
-        })
-        });
+        axios.get(`/horario/${dataHorario}`)
+            .then(res => {
+                const tabla= document.getElementById('tabla-contrato');
+                const fila = tabla.insertRow(-1);
+                const celda1 = fila.insertCell(0);
+                celda1.textContent = dataHorario;
+                const celda2 = fila.insertCell(1);
+                celda2.textContent = res.data[0].detalle;
+                const celda3 = fila.insertCell(2);
+                celda3.textContent = `${res.data[0].entrada} - ${res.data[0].salida}`;
+                const celda4 = fila.insertCell(3);
+                celda4.textContent = `${res.data[0].inicioReceso} - ${res.data[0].finReceso}`;
+                const celda5 = fila.insertCell(4);
+                let vDellBtn = document.createElement("button");
+                vDellBtn.textContent = "Eliminar";
+                celda5.appendChild(vDellBtn);
+    
+                vDellBtn.addEventListener("click", (e) =>{
+    
+                    let transactionRow = e.target.parentNode.parentNode;
+                    transactionRow.remove();
+            })
+            })
+            .catch(err => {
+                console.log(err);
+            });
         
     }
 
@@ -165,7 +175,7 @@ const RegistrarContrato = () => {
 
     
     const verId=async(e)=>{
-        await axios.post('http://127.0.0.1:3000/api/personal/ids',getData)
+        await axios.post('/personal/ids',getData)
             .then(res => {console.log(res.data[0]),
             res.data[0]===undefined? cambiarEstadoModal1(true): 
             setEstadoInput(false)
@@ -173,13 +183,17 @@ const RegistrarContrato = () => {
             .catch(err => {
                 console.log(err);
             });
-
-        await fetch(`http://127.0.0.1:3000/api/contrato/validate/fecha/${getData.dni}`)
-            .then(response => response.json())
-            .then(data=> setDataContrato(data));
+            await axios.get(`/contrato/validate/fecha/${getData.dni}`)
+            .then(res => {
+                console.log(res.data);
+                setDataContrato(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
         await setValorFecha(true); 
         
-        await axios.get(`http://127.0.0.1:3000/api/contrato/${getData.dni}`)
+        await axios.get(`/contrato/${getData.dni}`)
         .then(res => {console.log(res.data[0]),
         setUltimoContrato(`${formatearFechaEspañol(res.data[0].CON_fecha_inn)} al ${formatearFechaEspañol(res.data[0].CON_fecha_out)}`),
         setPenultimoContrato(`${formatearFechaEspañol(res.data[1].CON_fecha_inn)} al ${formatearFechaEspañol(res.data[1].CON_fecha_out)}`)})
@@ -354,8 +368,8 @@ const RegistrarContrato = () => {
                                     console.log(horario.value),
                                 horario.map((option) =>(                                       
 
-                                    <MenuItem key={option.id} value={option.id}>
-                                        <p>{option.detalle} {option.horaEntrada} -{option.horaSalida} </p>
+                                    <MenuItem key={option.HOR_id} value={option.HOR_id}>
+                                        <p>{option.HOR_detalle} {option.HOR_entrada} -{option.HOR_salida} </p>
                                     </MenuItem>
                                     
                                 ))
