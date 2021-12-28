@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import '../assets/Styles/components/Home.scss';
 import ComboBox from '../components/ComboBox';
 import { makeStyles } from '@material-ui/styles';
@@ -14,21 +14,17 @@ import mateni from '../assets/static/mati.svg'
 import Box from '@material-ui/core/Box';
 
 import DatePicker from 'sassy-datepicker';
- 
-
 
 const Home = () => {
-
+    useEffect(()=>{
+    localStorage.getItem("token")==='undefined' || !localStorage.getItem("token") ? window.location.href='/login' :'';
+    },[localStorage]);
     const onChange = (date) => {
         console.log(date.toString());
       };
-      React.useEffect(() => {
-        localStorage.getItem("token")==='undefined' || !localStorage.getItem("token") ? window.location.href='/login' :'';
-    
-    }, []);
-
     return (
         <div className="Home">
+            {console.log(localStorage.getItem('token'))}
              <div className="Home__menu">
                 <Menu/> 
             </div>
