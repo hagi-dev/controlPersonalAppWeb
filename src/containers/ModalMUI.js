@@ -132,11 +132,11 @@ const useStyles = makeStyles((p) => ({
 
 // ---------------- T A B L E ---------------------
 
- const Asistencias = () => {
+ const Asistencias = (props) => {
 
     const styles = useStyles();
     const classes = useStyles();
-    const [checked, setChecked] = React.useState(false);
+    const [checked, setChecked] = React.useState(props.state);
 
  
     const mOpenModal = () =>{

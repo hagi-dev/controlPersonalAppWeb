@@ -1,6 +1,6 @@
 const validar=(e,a)=> {
     if (e.trim() == ""){
-     alert("debe seleccionar un valor en "+a+"");
+     alert("falta datos por llenar principal los (*)");
      return 0}
     else{
      alert("ingreso "+e.trim()+", es correcto!");

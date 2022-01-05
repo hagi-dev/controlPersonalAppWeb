@@ -8,6 +8,7 @@ import perfil from '../assets/static/perfil.jpg';
 import "../assets/Styles/components/Tabla.scss";
 import MaterialTable from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -30,6 +31,7 @@ import { async } from 'validate.js';
 import {TextField,MenuItem} from '@material-ui/core';
 
 const tableIcons = {
+    MoreDetails: forwardRef((props, ref) => <MoreHorizIcon {...props} ref={ref} />),
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
     Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -130,7 +132,7 @@ const Personal = () => {
     const enviarPut = async () => {
         console.log(getData);
             if(true){
-            await axios.put(`http://127.0.0.1:3000/api/personal/update/${getData.id}`,getData)
+            await axios.put(`/personal/update/${getData.id}`,getData)
             .then(res => {
                 setRespuesta(res.data);})
             .catch(err => {
@@ -223,16 +225,18 @@ const Personal = () => {
                                 icon: tableIcons.Delete,
                                 tooltip: 'Desactivar',
                                 onClick: async(event, rowData) => {
-                                    await axios.delete(`http://127.0.0.1:3000/api/personal/delete/${rowData.id}`)
+                                    await axios.delete(`/personal/delete/${rowData.id}`)
                                     .then(res => {
                                         setRespuesta(res.data);})
                                     .catch(err => {
                                         console.log(err);
                                     });
-                                    await fetch('http://127.0.0.1:3000/api/personal')
-                                    .then(response => response.json())
-                                    .then(data=> setData(data));
-                                    await console.log(data);
+                                    await axios.get('/personal')
+                                    .then(res => {
+                                        setData(res.data);})
+                                    .catch(err => {
+                                        console.log(err);
+                                    });
                                 },
                                 style: {zIndex:'0',position: 'absolute'}
                                 },
@@ -247,6 +251,11 @@ const Personal = () => {
                                 onClick: () => setFiltro(filtro + 1),
                                 isFreeAction: true,
                                 
+                                },
+                                {
+                                tooltip: 'Ver mas',
+                                icon: tableIcons.MoreDetails,
+                                onClick: async (event, rowData) => { handleChange(rowData.CON_id,rowData.JLAB_id,rowData.PER_nombre)},
                                 },
                             ]}
                             />

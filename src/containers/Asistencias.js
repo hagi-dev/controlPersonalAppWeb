@@ -4,6 +4,7 @@ import Menu from '../components/Menu';
 import Perfil from '../components/Usuario';
 import '../assets/Styles/components/Tabla.scss';
 import MaterialTable from 'material-table';
+import Modal3 from '../components/Modal2';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -62,11 +63,26 @@ const Asistencia = () => {
       return anio + '-' + mes + '-' + dia;
   } 
   const fecha2= formatearFecha(fecha1);
+  const [data3, setData3] = useState([]);
+  const [estadoModal2, cambiarEstadoModal2] = useState(false);
     const [data, setData ] = useState([]);
     const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
     const [filtro, setFiltro] = React.useState(0);
-    const [data2, setData2] = React.useState([]);
     const [actualizar, setActualizar] = useState(false);
+    const [actualizar2, setActualizar2] = useState(false);
+    const [actualizar3, setActualizar3] = useState(false);
+    const[nombres, setNombres] = useState('');
+    const [getData2, setGetData2] = useState(
+        {
+            idContrato: '',
+            idJornada: '',
+        }
+    );
+    const [getData3, setGetData3] = useState(
+        {
+            id: '',
+        }
+    );
     const [getData,setGetData] = useState({
       fecha: fecha2,
   });
@@ -104,8 +120,14 @@ const Asistencia = () => {
       .catch(err => {
           console.log(err);
       });
+      axios.post('/movimiento',getData2)
+      .then(res => {
+          setData3(res.data)})
+      .catch(err => {
+          console.log(err);
+      });
       setActualizar(false);
-    },[actualizar]);
+    },[actualizar,actualizar3]);
         
     const columns = [
         { title: "#Contrato", field: "CON_id",align:"center",width: "50px" ,filtering: false},
@@ -119,12 +141,26 @@ const Asistencia = () => {
         { title: "asistencia", field: "JLAB_asistencia", lookup: { 0: "no asistio", 1: "asistio", 2: "feriado o domingo", 3: "permiso" } ,},
       ];
 
-      const columns2 = [
-        { title: "hora", field: "REGE_hora_inn",align:"left",width: "50px" ,filtering: false},
-        { title: "observacion", field: "JLAB_observacion" },
-        { title: "Justificacion", field: "REGE_justificacion", align: "left"},
-        ]
-    
+      const columns3 = [
+        { title: "Hora", field: "REGE_hora_inn",align:"center",width: "50px" ,filtering: false},
+        { title: "observacion", field: "REGE_observacion", align: "left"},
+        {
+            title: "justificacion", field: "REGE_justificacion", align: "left",lookup: { 0: " falta justificar", 1: "justificado", 3: "no requiere" }
+        },];
+
+        const handleChange = async (idc,idj,nombre) => {
+            setActualizar2(true);
+            setNombres(nombre);
+            console.log("este es",idc,idj);
+            await setGetData2({ idContrato: idc, idJornada: idj});
+            cambiarEstadoModal2(!estadoModal2);
+        };
+
+        const justificar=async(id2)=>{
+            setActualizar3(true);
+            await setGetData3({ id:id2});
+        }
+
   
     return (
         <div className="Asistencia">
@@ -136,7 +172,27 @@ const Asistencia = () => {
                 console.log(err);
             })
              :''}
+             {
+              actualizar2 ? 
+              axios.post('/movimiento',getData2)
+            .then(res => {
+                setData3(res.data)})
+            .catch(err => {
+                console.log(err);
+            }):''   
+             }
+             {
+              actualizar3 ? 
+              axios.put(`/updateJustificacion/${getData3.id}`)
+            .then(res => {
+                setRespuesta(res.data)})
+            .catch(err => {
+                console.log(err);
+            }):'' 
+             }
             {actualizar ? setActualizar(false) :''}
+            {actualizar3 ? setActualizar3(false) :''}
+            {actualizar2 ? setActualizar2(false) :''}
              <div className="Asistencia__menu">
                 <Menu/> 
             </div>
@@ -150,7 +206,7 @@ const Asistencia = () => {
                 <div className="Asistencia__cuerpo-contenido">
                     <div className="Asistencia__lista" style={{margin:"0"}}>
                         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
-                            <MaterialTable columns={columns} data={data} title="Lista de asistencia personal"  icons={tableIcons} style={{background:'transparent'}}
+                            <MaterialTable columns={columns} data={data} title="Lista "  icons={tableIcons} style={{background:'transparent'}}
                             // StickyHeader={true}
                             options={{
                                 sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,
@@ -181,15 +237,20 @@ const Asistencia = () => {
                                 },
                                 {
                                 icon: tableIcons.Export,
-                                tooltip: 'Descargar Datos' ,
+                                tooltip: 'Descargar Datos' ,        
                                 onClick: () => exportData('datos',data),
                                 isFreeAction: true,
                                 },
                                 {
                                 tooltip: 'ver mas detalle de registro de entrada',
-                                icon: ()=>(<button className="boton" onClick={()=>window.location.href='/asistencias'}>Ver Detalle</button> ),
-                                onClick: () => setFiltro(filtro + 1),
+                                icon: ()=>(<button className="boton">Ver Detalle</button> ),
+                                onClick: async (event, rowData) => { handleChange(rowData.CON_id,rowData.JLAB_id,rowData.PER_nombre)},
                                 },
+                                {
+                                    tooltip: 'ver mas detalle de registro de entrada',
+                                    icon: ()=>(<button className="boton">asistencia</button> ),
+                                    onClick: async (event, rowData) => { handleChange(rowData.CON_id,rowData.JLAB_id,rowData.PER_nombre)},
+                                    },
                             ]}
                             />
                             {respuesta.message==="iniciando"? '':alert(`repuesta: ${respuesta.message}`, setRespuesta(()=>({message:"iniciando"})))}
@@ -197,6 +258,30 @@ const Asistencia = () => {
                     </div>
                 </div>
             </div>
+            <Modal3 estado={estadoModal2} cambiarEstado={cambiarEstadoModal2} alto='600px' ancho='600px'>
+                <h1 style={{textAlign:"center", fontSize:"1.5rem"}} className="h1">{nombres}</h1>
+                <MaterialTable columns={columns3} data={data3} title="Lista movimientos"  icons={tableIcons} style={{width:"100%" ,ackground:'transparent'}}
+                    options={{
+                        sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,
+                        rowStyle:{fontFamily:"mulish" ,fontSize:"13px",border: "0px",color:"#4E4D4D",height:"30px" },
+                        headerStyle:{position: 'sticky',textAlign:'left', top: "0",color:"#7D0F2E",fontFamily:"mulish",backdropFilter: blur("2px") ,fontSize:"14px",border: "0px",background:"#E9F8F7",fontWeight:"700",zIndex:'9999' },
+                        titleStyle:{padding:"0px"},paginationType:"normal",pageSizeOptions:[4,10,20],filtering: false, showFirstLastPageButtons: false,
+                        filtering: filtro%2==0 ? false : true,maxBodyHeight: '400px'
+                    }}
+                    actions={[
+                        {
+                        icon: ()=>(<button type="button" style={{borderRadius:"5px",border:"1px solid #2EA39D",color:"#7D0F2E",fontFamily:"mulish"}} >justificar</button>),
+                        tooltip: 'Descargar Datos' ,
+                        onClick: async (event, rowData) => { justificar(rowData.REGE_id)},
+                        },
+                    ]}
+
+                />
+                <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"space-around"}}>
+                 <button type='button' className="button" onClick={() => cambiarEstadoModal2(!estadoModal2)} style={{width:"30%",height:"30px"}}><h5>cancelar</h5></button>
+                </div>   
+            </Modal3>
+            {console.log(data3," datos 3"),console.log("envia",getData2)}
         </div>
     )
 }

@@ -39,7 +39,7 @@ const ContenedorModal = styled.div`
 	border-radius: 5px;
 	box-shadow: rgba(100,100,111, 0.2) 0px 7px 29px 0px;
 	display:grid;
-	grid-template-rows: 43% 37% ;
+	grid-template-rows: 10% 80% 10%;
     padding: 10px;
 	align-items: center;
     padding-top: 30px;

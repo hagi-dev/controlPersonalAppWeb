@@ -179,7 +179,7 @@ const RegistrarContrato = () => {
             .then(res => {console.log(res.data[0]),
             res.data[0]===undefined? cambiarEstadoModal1(true): 
             setEstadoInput(false)
-            alert("exiate jako")})
+            alert("si existe el personal")})
             .catch(err => {
                 console.log(err);
             });

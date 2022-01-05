@@ -339,6 +339,7 @@ const Contrato = () => {
                                     icon: tableIcons.Edit,
                                     tooltip: 'Modificar' ,
                                     onClick: async (event, rowData) => {
+                                        console.log("estos son los datos",rowData);
                                         await data.map(async (item,index) => {
                                                 if(item.CON_id==rowData.CON_id){
                                                     await idHorarios.push(item.HOR_id);

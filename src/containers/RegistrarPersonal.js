@@ -4,6 +4,7 @@ import '../assets/Styles/components/Buton.scss';
 import SearchIcon from '@material-ui/icons/Search';
 import TablaHuella from '../components/TablaHuellas';
 import Menu from '../components/Menu';
+import validador from '../helpers/validador';
 import {TextField,MenuItem} from '@material-ui/core';
 import axios from 'axios';
 import Perfil from '../components/Usuario';
@@ -25,13 +26,14 @@ const RegistrarPersonal = () => {
         url:'sdfcreghtukiyjthgrfedsfgrygt',
         estado:'',
         direccion:'',
-        idHuellas:0
+        idHuellas:2
         
     });
     const getSelection = (e) => 
     {
-        console.log(`este es el evento: ${e[0]}`);
         const {name,value} = e.target;
+        console.log(`este es el nombre: ${name}`);
+        console.log(`este es el nombre: ${value}`);
         setGetData((prevState)=>({ ...prevState, [name]: value}));  
     }
 
@@ -42,8 +44,7 @@ const RegistrarPersonal = () => {
 
     const metodoPost = async() => 
     {
-
-        await axios.post('http://127.0.0.1:3000/api/personal/registrar',getData)
+        await axios.post('/personal/registrar',getData)
                     .then(res => {
                         setRespuesta(res.data);})
                     .catch(err => {
@@ -118,6 +119,8 @@ const RegistrarPersonal = () => {
                                 <div className="RegistrarPersonal__fila1">
                                     <TextField
                                         id="outlined-select-currency"
+                                        minlength="8"
+                                        maxlength="8"
                                         label="dni"
                                         type="text"
                                         value={getData&&getData.dni}
@@ -230,17 +233,9 @@ const RegistrarPersonal = () => {
                                 </div>                               
                             </div>                        
                     </div>
-                    <div className="RegistrarPersonal__tabla">
-                        <div className="RegistrarPersonal__fila">  
-                            <button className="button" type="button"  onClick={sumaHuellas} style={{width:"40%"}}><h5>Agregar</h5></button>
-                            {respuesta.message==="iniciando"? '':alert(`repuesta: ${respuesta.message}`, setRespuesta(()=>({message:"iniciando"})))}
-                            <button className="button" type="button" onClick={restaHuellas} style={{width:"40%"}}><h5>Restar</h5></button>   
-                        </div>
-                        <h1>{getData&&getData.idHuellas}</h1>
-                    </div>
                 </div>
                 <div className="RegistrarPersonal__botones">
-                    <button type="button" className="button" onClick={metodoPost} style={{width:"40%"}}><h5>Guardar</h5></button>
+                    <button type="submit" className="button" onClick={metodoPost} style={{width:"40%"}}><h5>Guardar</h5></button>
                     <button type="button" className="button" style={{width:"40%"}}><h5>Cancelar</h5></button>
                 </div>
                 <div className="RegistrarPersonal__Cerrar"><ion-icon  name="close-circle-outline"></ion-icon></div>
