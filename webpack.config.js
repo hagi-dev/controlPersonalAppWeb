@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin'); 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const isProduction = process.env.NODE_ENV === 'production'; // Definimos si estamos en producción o desarrollo
 
@@ -58,6 +59,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].css',
         }),
+        new Dotenv()
     ],
     devServer:{
         port: 80,
