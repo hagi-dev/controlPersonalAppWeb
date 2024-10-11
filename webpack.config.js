@@ -2,15 +2,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const isProduction = process.env.NODE_ENV === 'production'; // Definimos si estamos en producción o desarrollo
 
 module.exports = {
-    entry: ['babel-polyfill','./src/index.js'],
+    entry: ['core-js/stable', 'regenerator-runtime/runtime', './src/index.js'],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
         publicPath: '/'
     },
-    mode: 'development',
+    mode: isProduction ? 'production' : 'development', // Modo según entorno
     resolve: {
         extensions: ['.js', '.jsx']
     },
@@ -34,25 +35,17 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    "style-loader",
+                    isProduction ? MiniCssExtractPlugin.loader : "style-loader", // Cambiar según entorno
                     "css-loader",
                     "sass-loader",
                 ]
             },
             {
                 test: /\.(png|gif|jpg|svg|pdf)$/,
-                use:[
-                    {
-                        'loader':'file-loader',
-                        options: {
-                            name:'assets/[hash].[ext]'
-                        }
-                    }
-                ]
+                type: 'asset/resource',
             }
         ]
     },
-
     plugins: [
         new HtmlWebpackPlugin({
             template: 'public/index.html',
