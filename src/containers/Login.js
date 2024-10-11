@@ -135,7 +135,7 @@ const Login = () => {
                                 </InputAdornment>
                             }/>
                         </FormControl>
-                        <Link to="/recovery-password">
+                        <Link to="/verify-email">
                             <p style={{color:"#8B0000"}} className='text-decoration-underline d-flex justify-content-center mb-2'>¿Olvidaste tu contraseña?</p>
                         </Link>
                         <button className='enviar' onClick={()=>setVisibility('block')}>Ingresar</button>
