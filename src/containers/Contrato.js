@@ -133,7 +133,7 @@ const Contrato = () => {
 
         axios.get('/horario')
         .then(res => {
-            setHorario(res.data[0])})
+            setHorario(res.data.data)})
         .catch(err => {
             console.log(err);
         });
@@ -501,8 +501,8 @@ const Contrato = () => {
                         {
                         horario.map((option) =>(                                       
 
-                            <MenuItem key={option.HOR_id} value={option.HOR_id}>
-                                <p>{option.HOR_detalle} {option.HOR_entrada} -{option.HOR_salida} </p>
+                            <MenuItem key={option.id} value={option.id}>
+                                <p>{option.detalle} {option.entrada} -{option.salida} </p>
                             </MenuItem>
                             
                         ))

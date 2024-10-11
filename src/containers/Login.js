@@ -1,3 +1,4 @@
+
 import styled from 'styled-components';
 import clsx from 'clsx';
 import React,{useState,useEffect} from 'react';
@@ -40,8 +41,8 @@ const Login = () => {
     const cookies = new Cookies();
     const styles = useStyles();
     const [getData,setGetData] = useState({
-        usuario:'',
-        contraseña:'',
+        dni:'',
+        contrasena:'',
         weight: '',
         showPassword: false,
     });
@@ -58,6 +59,12 @@ const Login = () => {
             console.log(getData);
             
             const user1= await  loginServices(getData);
+            if(!user1.ok){
+                setError(user1.message);
+                setVisibility("none");
+                setVisibleInputs("flex");
+                return;
+            }
             localStorage.setItem('token',user1.token);
             localStorage.setItem('mensage',user1.message);
             cookies.set('usuario', user1.usuario);
@@ -113,15 +120,15 @@ const Login = () => {
                             Inicio Sesion
                         </h1>
                         <p style={{fontFamily:"mulish",color:"#8B0000",marginBottom:'2%'}}>{error}</p>
-                        <TextField style={{display:visibleInputs}}  label="Usuario" value={getData&&getData.usuario} id='usuario'  type="text" name= "usuario" onChange={getSelection} />
+                        <TextField style={{display:visibleInputs}}  label="DNI" value={getData&&getData.usuario} id='dni'  type="text" name= "dni" onChange={getSelection} />
                         <FormControl className={clsx(styles.margin, styles.textField)}>
                             <InputLabel style={{display:visibleInputs}} htmlFor="standard-adornment-password">Contraseña</InputLabel>
                             <Input  style={{display:visibleInputs}} 
-                            value={getData&&getData.contraseña} 
+                            value={getData&&getData.contrasena} 
                             id="standard-adornment-password"   
                             onChange={getSelection}  
                             type={getData.showPassword ? 'text' : 'password'} 
-                            name= "contraseña" 
+                            name= "contrasena" 
                             endAdornment={
                                 <InputAdornment position="end">
                                 <IconButton style={{bottom:"1%"}}
