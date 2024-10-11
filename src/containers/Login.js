@@ -11,6 +11,7 @@ import Loader from '../components/Loader';
 import Cookies from 'universal-cookie';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((p) => ({
 
@@ -134,6 +135,9 @@ const Login = () => {
                                 </InputAdornment>
                             }/>
                         </FormControl>
+                        <Link to="/recovery-password">
+                            <p style={{color:"#8B0000"}} className='text-decoration-underline d-flex justify-content-center mb-2'>¿Olvidaste tu contraseña?</p>
+                        </Link>
                         <button className='enviar' onClick={()=>setVisibility('block')}>Ingresar</button>
                     </form>
                 </div>
