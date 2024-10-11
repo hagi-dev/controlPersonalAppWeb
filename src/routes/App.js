@@ -33,7 +33,7 @@ const App = () => {
                 <Route exact path="/tipo%20trabajador" element={<RegistrarTipo/>} />
                 <Route exact path="/contratos" element={<Contrato/>} />
                 <Route exact path="/verify-email" element={<VerifyEmail/>} />
-                <Route exact path="/recover-password" element={<RecoveryPassword/>} />
+                <Route exact path="/recovery-password" element={<RecoveryPassword/>} />
             </Routes>
         </BrowserRouter>
     )
