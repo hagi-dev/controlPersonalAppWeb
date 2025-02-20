@@ -2,6 +2,7 @@ import React from 'react';
 import '../assets/Styles/components/Usuario.scss';
 import perfil from '../assets/static/perfil.jpg';
 import Cookies from 'universal-cookie';
+import userIcon from '../assets/static/user.svg'
 
 const Usuario = () => {
     const cookies = new Cookies();
@@ -27,7 +28,7 @@ const Usuario = () => {
             </div>
             <div onClick={ver} className="Usuario__nombre">{cookies.get("usuario")}</div>
             <div className="Usuario__imgPerfil">
-                <img onClick={ver} src={perfil} alt="foto perfil" />
+                <img onClick={ver} src={userIcon} alt="foto perfil" />
             </div>
         </div>
     )

@@ -1,26 +1,28 @@
 import Menu from "../components/Menu";
 import Perfil from "../components/Usuario";
+import { TextField, MenuItem, FormControl, FormGroup } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../assets/Styles/components/Buton.scss";
 import "../assets/Styles/components/RegistrarContrato.scss";
+import "../assets/Styles/components/Buton.scss";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import Download from "@material-ui/icons/GetApp";
-import { IconButton } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
-import { CircularProgress } from '@material-ui/core';
 
 const defaultForm = {
   idContrato: "",
   fechaInicioContrato: new Date().toISOString().split("T")[0],
+  // mas 6 meses por defecto desde hoy
   fechaFinContrato: new Date(new Date().setMonth(new Date().getMonth() + 6))
     .toISOString()
     .split("T")[0],
   dni: "",
-  idHorario: null,
+  idHorario: undefined,
   file: "",
   personalId: "",
 };
@@ -45,7 +47,7 @@ const RegistrarContrato2 = () => {
   const getSelectionFile = (e) => {
     const file = e.target.files[0];
     if (file && file.type === "application/pdf") {
-      formik.setFieldValue("file", file);
+      formik.setValues("file", file);
     } else {
       alert("Por favor, seleccione un archivo PDF.");
     }
@@ -75,12 +77,16 @@ const RegistrarContrato2 = () => {
     await axios
       .get(`/contrato/verificationPersonalAndContract/${formik.values.dni}`)
       .then((res) => {
-        console.log("vervver", res);
+        console.log("vervver",res);
         if (!res.data.status && res.data.message) {
           alert(res.data.message);
         }
         setEnableAddContract(res.data.status);
-        formik.setFieldValue("personalId", res.data.personalId);
+        console.log(res);
+        setGetData((prevState) => ({
+          ...prevState,
+          personalId: res.data.personalId,
+        }));
       });
   };
 
@@ -149,7 +155,7 @@ const RegistrarContrato2 = () => {
               ? res.data.message
               : "Contrato registrado correctamente."
           );
-          if (res.data.status) {
+          if(res.data.status){
             window.location.href = "/contratos";
           }
         })
@@ -240,34 +246,30 @@ const RegistrarContrato2 = () => {
           <h1>Contratos</h1>
         </div>
 
-        <form
-          className="RegistrarContrato__cuerpo-contenido"
-          onSubmit={formik.handleSubmit}
-        >
+        <div className="RegistrarContrato__cuerpo-contenido">
           <div className="RegistrarContrato__registrar">
             <div className="RegistrarContrato__registrar-titulo">
-              <h2>{isEdit ? "Editar contrato" : "Registrar contrato"}</h2>
+              <h2>Registrar Contratos</h2>
             </div>
             <div className="RegistrarContrato__Combos">
               {!isEdit && <p>primero valida tu dni**</p>}
-              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                <div className="RegistrarContrato__fila_33 fieldCustom">
-                  <label htmlFor="dni">Dni:</label>
-                  <input
-                    className="input-general"
-                    id="dni"
-                    type="number"
-                    disabled={isEdit && historyContact.length > 0}
-                    value={formik.values.dni}
-                    required={true}
-                    onChange={(e) => {
-                      formik.resetForm();
-                      formik.setFieldValue("dni", e.target.value);
-                    }}
-                    name="dni"
-                    style={{ width: "100%", maxWidth: "250px" }}
-                  />
-                </div>
+              <div className="RegistrarContrato__fila3">
+                <TextField
+                  id="outlined-select-currency"
+                  label="Dni:"
+                  type="number"
+                  disabled={isEdit && historyContact.length > 0}
+                  className="fieldCustom"
+                  value={formik.values.dni}
+                  required={true}
+                  error={formik.errors.dni}
+                  style={{ width: "100%", maxWidth: "250px" }}
+                  onChange={(e) => {
+                    formik.resetForm();
+                    formik.setFieldValue("dni", e.target.value);
+                  }}
+                  name="dni"
+                ></TextField>
                 {!isEdit && (
                   <div>
                     <IconButton onClick={verId} aria-label="Agregar">
@@ -285,7 +287,7 @@ const RegistrarContrato2 = () => {
                     <select
                       id="horario"
                       name="idHorario"
-                      className="input-general"
+                      className="fieldCustom"
                       value={formik.values.idHorario}
                       required={true}
                       onChange={(e) => {
@@ -327,29 +329,18 @@ const RegistrarContrato2 = () => {
                               {formatearFechaEspañol(item.fecha_inn)} -{" "}
                               {formatearFechaEspañol(item.fehcha_out)}
                             </h2>
-                            <div
-                              style={{
-                                display: "flex",
-                                gap: "4px",
-                                alignItems: "center",
-                              }}
-                            >
+                            <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                               <a
-                                href={item.file}
-                                target="_blank"
+                                href={`data:application/pdf;base64,${item.file}`}
                                 download="contrato.pdf"
                                 style={{
                                   color: "#7D0F2E",
                                   textDecoration: "underline",
                                 }}
                               >
-                                <IconButton>
-                                  <Download titleAccess="Descargar contrato" />
-                                </IconButton>
+                                <IconButton><Download titleAccess="Descargar contrato" /></IconButton>
                               </a>
-                              <IconButton
-                                onClick={() => handleDeleteContract(item.id)}
-                              >
+                              <IconButton onClick={() => handleDeleteContract(item.id)}>
                                 <DeleteOutline titleAccess="Eliminar contrato" />
                               </IconButton>
                             </div>
@@ -366,18 +357,17 @@ const RegistrarContrato2 = () => {
 
                   {(addContract || (enableAddContract && !isEdit)) && (
                     <div>
-                      <div className="RegistrarContrato__fila_33 fieldCustom">
-                        <label htmlFor="fechaInicioContrato">
-                          Fecha de inicio
-                        </label>
-                        <input
-                          className="input-general"
-                          id="fechaInicioContrato"
+                      <div className="RegistrarContrato__fila3">
+                        <TextField
+                          id="date"
+                          className="fieldCustom"
+                          label="fecha de inicio"
                           type="date"
                           name="fechaInicioContrato"
                           style={{ width: "100%", maxWidth: "250px" }}
                           value={formik.values.fechaInicioContrato}
                           required={true}
+                          // InputProps={{ inputProps: { min: fechaMinima } }}
                           onChange={(e) => {
                             console.log(e.target);
                             formik.setFieldValue(
@@ -385,19 +375,24 @@ const RegistrarContrato2 = () => {
                               e.target.value
                             );
                           }}
+                          error={formik.errors.fechaInicioContrato}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
                         />
                       </div>
-                      <div className="RegistrarContrato__fila_33 fieldCustom">
-                        <label htmlFor="fechaFinContrato">Fecha de fin</label>
-                        <input
-                          className="input-general"
-                          id="fechaFinContrato"
-                          type="date"
+                      <div className="RegistrarContrato__fila3">
+                        <TextField
+                          id="date2"
+                          className="fieldCustom"
+                          // InputProps={{ inputProps: { min: fechaMax } }}
+                          label="fecha de fin"
                           name="fechaFinContrato"
+                          type="date"
                           style={{
                             width: "100%",
                             maxWidth: "250px",
-                            fontSize: "1rem",
+                            fontSize: "1.5rem",
                           }}
                           value={formik.values.fechaFinContrato}
                           required={true}
@@ -409,6 +404,9 @@ const RegistrarContrato2 = () => {
                             );
                             console.log(formik.values);
                           }}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
                         />
                       </div>
                       <div className="RegistrarContrato__fila_33 fieldCustom">
@@ -419,10 +417,8 @@ const RegistrarContrato2 = () => {
                           Contrato (PDF):
                         </label>
                         <input
-                          className="input-general"
                           id="fieldContract"
                           type="file"
-                          required={true}
                           accept="application/pdf"
                           style={{ width: "100%", maxWidth: "250px" }}
                           onChange={getSelectionFile}
@@ -434,9 +430,15 @@ const RegistrarContrato2 = () => {
               )}
             </div>
             <div className="RegistrarContrato__botones">
-              <button className="button" type="submit" style={{ width: "45%" }} disabled={isLoading || !formik.isValid}>
-                {isLoading ? "Guardando..." : "Guardar"}
-                {isLoading && <CircularProgress size={14} style={{ marginLeft: 10 }} />}
+              <button
+                // disabled={estadoInput}
+                className="button"
+                type="button"
+                onClick={formik.handleSubmit}
+                style={{ width: "45%" }}
+                // disabled={isLoading || !formik.isValid}
+              >
+                Guardar
               </button>
               <button
                 className="button"
@@ -447,7 +449,7 @@ const RegistrarContrato2 = () => {
               </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

@@ -13,6 +13,9 @@ import Contrato from '../containers/Contrato';
 import TablaContrato from '../components/TablaContrato';
 import Home from '../containers/Home';
 import Login from '../containers/Login';
+import RegistrarContrato2 from '../containers/RegistrarContrato2';
+import './app.scss';
+import RegistrarPersonal2 from '../containers/RegistrarPersonal2';
 
 const App = () => {
     return (
@@ -25,8 +28,8 @@ const App = () => {
                 <Route exact path="/asistencias" element={<Asistencias/>} />
                 <Route exact path="/permisos" element={<RegistrarPermiso/>} />
                 <Route exact path="/sanciones" element={<RegistrarSancion/>} />
-                <Route exact path="/registro%20contratos" element={<RegistrarContrato/>} />
-                <Route exact path="/registrar%20personal" element={<RegistrarPersonal/>} />
+                <Route exact path="/registro-contratos/:idContrato" element={<RegistrarContrato/>} />
+                <Route exact path="/registrar%20personal" element={<RegistrarPersonal2/>} />
                 <Route exact path="/personal" element={<Personal/>} />
                 <Route exact path="/tipo%20trabajador" element={<RegistrarTipo/>} />
                 <Route exact path="/contratos" element={<Contrato/>} />

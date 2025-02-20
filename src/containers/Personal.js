@@ -30,6 +30,7 @@ import axios from "axios";
 import { async } from "validate.js";
 import { getData } from '../config';
 import { TextField, MenuItem } from "@material-ui/core";
+import IconoUser from "../assets/static/user.svg";
 
 const tableIcons = {
   MoreDetails: forwardRef((props, ref) => (
@@ -84,6 +85,7 @@ const Personal = () => {
     correo: "",
     idTipoPersonal: 2,
   });
+  const [tipoTrabajador, setTipoTrabajador] = useState([]);
   const hoy = new Date();
   const [filtro, setFiltro] = React.useState(0);
   const formatearFecha = (fecha) => {
@@ -100,6 +102,29 @@ const Personal = () => {
     return anio + "-" + mes + "-" + dia;
   };
 
+  const getTipoTrabajador = async () => {
+    await axios
+      .get("/TipoTrabajador")
+      .then((res) => {
+        console.log("este es el resultado de la consulta", res.data);
+        setTipoTrabajador(res.data);
+        setData((prevState) => {
+          const newDta = prevState.map((item) => {
+            return {
+              ...item,
+              idTipoPersonal: res.data.find(
+                (tipo) => tipo.id === item.idTipoPersonal
+              ).cargo,
+            }
+          });
+          return newDta;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const formatoEspanol = (fecha) => {
     let fecha1 = new Date(fecha);
     let dia = fecha1.getDate();
@@ -114,17 +139,23 @@ const Personal = () => {
     return dia + "/" + mes + "/" + anio;
   };
 
-  React.useEffect(() => {
+  const getPersonal = async () => {
     setGetValor(0);
     axios
       .get("/personal")
       .then((res) => {
         setData(res.data.data);
+        getTipoTrabajador();
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [getValor]);
+    }
+    
+
+  React.useEffect(() => {
+    getPersonal();
+  }, []);
 
   const columns = [
     {
@@ -140,7 +171,7 @@ const Personal = () => {
           }}
         >
           <img
-            src={rowData.foto}
+            src={IconoUser}
             style={{
               width: "40px",
               height: "40px",
@@ -160,7 +191,7 @@ const Personal = () => {
     {
       title: "tipo",
       field: "idTipoPersonal",
-      hidden: true,
+      align: "left",
     },
     {
       title: "fecha Nacimiento",
@@ -225,6 +256,7 @@ const Personal = () => {
   React.useEffect(() => {
     console.log("data", data);
   }, [data]);
+
   return (
     <div className="personal">
       <div className="personal__menu">

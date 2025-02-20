@@ -14,7 +14,10 @@ module.exports = {
     },
     mode: isProduction ? 'production' : 'development', // Modo según entorno
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx'],
+        fallback: {
+            os: require.resolve('os-browserify/browser'),
+          },
     },
     module: {
         rules: [

@@ -134,7 +134,7 @@ const Asistencia = () => {
         { title: "Personal", field: "PER_nombre" ,
         render: (rowData) => <p>{`${rowData.PER_nombre} ${rowData.PER_apaterno}`}</p>},
         {
-            title: "Area", field: "TTR_area",lookup: { "Almacen": "Almacen", "Marketing y diseño": "Marketing y diseño", "Ventas": "Ventas"}
+            title: "Area", field: "TTR_descripcion",lookup: { "Almacen": "Almacen", "Marketing y diseño": "Marketing y diseño", "Ventas": "Ventas"}
         },
         { title: "Puesto", field: "TTR_cargo", align: "left"},
         { title: "observacion", field: "JLAB_observacion", align: "left"},
