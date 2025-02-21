@@ -14,8 +14,8 @@ import TablaContrato from '../components/TablaContrato';
 import Home from '../containers/Home';
 import Login from '../containers/Login';
 import PersonalRegister from '../containers/PersonalRegister';
-/* import RecoveryPassword from '../containers/RecoveryPassword.jsx';
-import VerifyEmail from '../containers/VerifyEmail.jsx'; */
+import RecoveryPassword from '../containers/RecoveryPassword';
+import VerifyEmail from '../containers/VerifyEmail';
 
 const App = () => {
     return (
@@ -33,8 +33,8 @@ const App = () => {
                 <Route exact path="/personal" element={<Personal/>} />
                 <Route exact path="/tipo%20trabajador" element={<RegistrarTipo/>} />
                 <Route exact path="/contratos" element={<Contrato/>} />
-                {/* <Route exact path="/verify-email" element={<VerifyEmail/>} />
-                <Route exact path="/recovery-password" element={<RecoveryPassword/>} /> */}
+                <Route exact path="/verify-email" element={<VerifyEmail/>} />
+                <Route exact path="/recovery-password" element={<RecoveryPassword/>} />
                 <Route exact path="/personal-register" element={<PersonalRegister/>} />
             </Routes>
         </BrowserRouter>

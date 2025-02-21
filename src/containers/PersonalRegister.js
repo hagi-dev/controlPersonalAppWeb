@@ -129,7 +129,7 @@ const PersonalRegister = () => {
           <Toast.Header>
             <strong className="me-auto">Mensaje</strong>
           </Toast.Header>
-          <Toast.Body>{toastMessage}</Toast.Body>
+          <Toast.Body className="white">{toastMessage}</Toast.Body>
         </Toast>
       </div>
     </>
