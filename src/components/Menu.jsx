@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import WhatsApp from './vectors/Whatsapp';
 import Messenger from './vectors/Messenger';
 import Logo from '../assets/static/logo4.png';
@@ -13,14 +14,15 @@ const Menu = () => {
             <div className="Menu__navBar">
                 <nav>
                     <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/personal">Personal</a></li>
-                        <li><a href="/contratos">Contratos</a></li>
-                        <li><a href="/asistencias">Asistencias</a></li>
-                        {/* <li><a href="/permisos">Permisos</a></li> */}
-                        <li><a href="tipo%20trabajador">Tipo de personal</a></li>
-                        <li><a href="/horarios">Horario</a></li>
-                        {/* <li><a href="sanciones">Sanciones </a></li> */}
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/personal">Personal</Link></li>
+                        <li><Link to="/contratos">Contratos</Link></li>
+                        <li><Link to="/asistencias">Asistencias</Link></li>
+                        <li><Link to="/tipo%20trabajador">Tipo de personal</Link></li>
+                        <li><Link to="/horarios">Horario</Link></li>
+                        <li><Link to="/personal-register">Registro</Link></li>
+                        {/* <li><Link to="/sanciones">Sanciones</Link></li>
+                        <li><a href="/permisos">Permisos</a></li> */}
                     </ul>
                 </nav>
             </div>

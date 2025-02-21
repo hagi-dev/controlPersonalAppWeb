@@ -6,16 +6,16 @@ import Asistencias from '../containers/Asistencias';
 import RegistrarPermiso from '../containers/RegistrarPermiso';
 import RegistrarSancion from '../containers/RegistrarSancion';
 import RegistrarContrato from '../containers/RegistrarContrato';
-import RegistrarPersonal from '../containers/RegistrarPersonal';
+import RegistrarPersonal2 from '../containers/RegistrarPersonal2';
 import Personal from '../containers/Personal';
 import RegistrarTipo from '../containers/RegistrarTipo';
 import Contrato from '../containers/Contrato';
 import TablaContrato from '../components/TablaContrato';
 import Home from '../containers/Home';
 import Login from '../containers/Login';
-import RegistrarContrato2 from '../containers/RegistrarContrato2';
-import './app.scss';
-import RegistrarPersonal2 from '../containers/RegistrarPersonal2';
+import PersonalRegister from '../containers/PersonalRegister';
+/* import RecoveryPassword from '../containers/RecoveryPassword.jsx';
+import VerifyEmail from '../containers/VerifyEmail.jsx'; */
 
 const App = () => {
     return (
@@ -33,6 +33,9 @@ const App = () => {
                 <Route exact path="/personal" element={<Personal/>} />
                 <Route exact path="/tipo%20trabajador" element={<RegistrarTipo/>} />
                 <Route exact path="/contratos" element={<Contrato/>} />
+                {/* <Route exact path="/verify-email" element={<VerifyEmail/>} />
+                <Route exact path="/recovery-password" element={<RecoveryPassword/>} /> */}
+                <Route exact path="/personal-register" element={<PersonalRegister/>} />
             </Routes>
         </BrowserRouter>
     )
