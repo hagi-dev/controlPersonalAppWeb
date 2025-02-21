@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   ButtonGroup,
   Button,
@@ -19,6 +19,22 @@ const PersonalRegister = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("warning");
   const webcamRef = useRef(null);
+
+  useEffect(() => {
+    const getCameraPermissions = async () => {
+      try {
+        await navigator.mediaDevices.getUserMedia({ video: true });
+      } catch (err) {
+        console.error("Error accessing camera: ", err);
+        setError("No se pudo acceder a la cámara");
+        setToastMessage("No se pudo acceder a la cámara");
+        setToastType("danger");
+        setShowToast(true);
+      }
+    };
+
+    getCameraPermissions();
+  }, []);
 
   const capture = async (buttonValue) => {
     if (dni.length < 8) {
@@ -67,10 +83,7 @@ const PersonalRegister = () => {
     <>
       <Container className="mt-5">
         <Row className="justify-content-md-center pt-5">
-          <Col
-            xs={12}
-            md={6}
-            >
+          <Col xs={12} md={6}>
             {/* className="d-flex align-content-center flex-column justify-content-center gap-3" */}
             <h2 className="text-center">Control de Usuario</h2>
 
@@ -129,7 +142,7 @@ const PersonalRegister = () => {
           <Toast.Header>
             <strong className="me-auto">Mensaje</strong>
           </Toast.Header>
-          <Toast.Body>{toastMessage}</Toast.Body>
+          <Toast.Body className="white">{toastMessage}</Toast.Body>
         </Toast>
       </div>
     </>
