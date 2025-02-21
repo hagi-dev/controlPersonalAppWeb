@@ -54,7 +54,7 @@ const tableIcons = {
 
 const RegistrarHorario = () => {
     const dias=[
-        {detalle:'L-V',id:'1'},
+        {detalle:'L-S',id:'1'},
         {detalle:'Lunes',id:'2'},
         {detalle:'Martes',id:'3'},       
         {detalle:'Miercoles',id:'4'},        
@@ -77,7 +77,6 @@ const RegistrarHorario = () => {
     const [consulta, setConsulta] = useState(1);
     const [respuesta, setRespuesta] = useState({status:'hola',message:'iniciando'});
     const [getData , setGetData ] = useState({
-        dirigido: '',
         entrada: '8:00:00',
         salida: '18:00:00',
         inicioReceso: '12:00:00',
@@ -107,25 +106,25 @@ const RegistrarHorario = () => {
 
         await axios.get('/horario')
         .then(res => {
-            setData(res.data);
+            console.log("ggggggggggg", res.data.data);
+            setData(res.data.data);
         })
         .catch(err => console.log(err));
 
-        await axios.get('/tipoTrabajador')
-        .then(res => {
-            setData2(res.data[0]);})
-        .catch(err => console.log(err));
-        }
+        // await axios.get('/tipoTrabajador')
+        // .then(res => {
+        //     setData2(res.data[0]);})
+        // .catch(err => console.log(err));
+}
     },[consulta]);
         
         
     const columns = [
-        { title: "Dirigido", field: "Hor_dirigido", filterPlaceholder:"ingrese nombre" ,align:"left",width:'150px',},
-        { title: "Dias", field: "HOR_detalle" ,align:"left"},
-        { title: "Horario", field: "HOR_entrada",width:'250px',
-        render: (rowData) => <p>{`${rowData.HOR_entrada} AM-${rowData.HOR_salida} PM`}</p>},
+        { title: "Dias", field: "detalle" ,align:"left"},
+        { title: "Horario", field: "entrada",width:'250px',
+        render: (rowData) => <p>{`${rowData.entrada} AM-${rowData.salida} PM`}</p>},
         { title: "Receso", field: "HOR_receso_inn",width:'250px',
-        render: (rowData) => <p>{`${rowData.HOR_receso_inn} PM-${rowData.HOR_receso_out} PM`}</p>},
+        render: (rowData) => <p>{`${rowData.inicioReceso} PM-${rowData.finReceso} PM`}</p>},
       ]
     const getSelection = async (e) => {
         console.log(`este es el evento: ${e}`);
@@ -144,22 +143,23 @@ const RegistrarHorario = () => {
      {
          try {
  
-             const tipoTrabajador2 = await validar(getData.dirigido,'dirigido');
              const diass = await validar(getData.detalle,'dias');
  
              if(editar===0){
  
-                 if(tipoTrabajador2===1 && diass===1){
+                 if(diass===1){
                      await axios.post('/horario/registrar',getData)
                      .then(res => {
-                         setRespuesta(res.data);})
+                        if(res.data.status){
+                            alert(res.data.message)
+                        }})
                      .catch(err => {
                          console.log(err);
                      });
                  }
              }
              else if (editar===1){
-                  if(tipoTrabajador2===1 && diass===1){
+                  if(diass===1){
                      await axios.put(`/horario/update/${ids}`,getData)
                      .then(res => {
                          setRespuesta(res.data);})
@@ -228,7 +228,7 @@ const RegistrarHorario = () => {
                     <div className="RegistrarHorario__registrar">
                         <div className="RegistrarHorario__registrar-titulo"><h2>{subTitle}</h2></div>
                         <div className="RegistrarHorario__Combos">
-                            <div className="RegistrarHorario__fila">
+                            {/* <div className="RegistrarHorario__fila">
                                 <TextField
                                 id="outlined-select-currency"
                                 select
@@ -239,7 +239,7 @@ const RegistrarHorario = () => {
                                 name="dirigido"
                                 onChange={e=>{getSelection(e),setValorTipoTrabajador(e.target.value)}}
                                 >
-                                {data2.map((option) => (
+                                {data2?.map((option) => (
                                     <MenuItem key={option.TTR_id} value={option.TTR_cargo}>
                                     {option.TTR_cargo}
                                     </MenuItem>
@@ -250,7 +250,7 @@ const RegistrarHorario = () => {
                                     <AddCircle fontSize="large" />
                                     </IconButton> 
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="RegistrarHorario__fila">
                             <MuiPickersUtilsProvider style={{width:'100%'}} utils={DateFnsUtils} >
                                 <KeyboardTimePicker
@@ -334,7 +334,7 @@ const RegistrarHorario = () => {
                     <div className="RegistrarHorario__lista" style={{margin:"0"}}>
                         {/* <Tabla tabla={tabla}/> */}
                         <div className="contenedor-tabla" style={{width:"100%", height:"100%",overflow:"auto"}}>
-                            <MaterialTable columns={columns} data={data[0]} title='lista de Tipo Trabajador'  icons={tableIcons} style={{background:'transparent'}}
+                            <MaterialTable columns={columns} data={data} title='lista de Tipo Trabajador'  icons={tableIcons} style={{background:'transparent'}}
                             // StickyHeader={true}
                             options={{
                                 sorting: true,iconsSearch:false,search: false, paging:true,paginghideFilterIcons: true,pageSize:4,
@@ -399,7 +399,6 @@ const RegistrarHorario = () => {
                     </div>
                 </div>
             </div>
-            {console.log(data2),console.log(valorTipoTrabajador)}
         </div>
     )
 }

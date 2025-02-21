@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Modal2 = ({children,ancho,alto,estado}) => {
+const Modal2 = ({children,ancho,alto,estado, cambiarEstado}) => {
+
 	return (
 		<>
 			{estado && 
 				<Overlay >
 					<ContenedorModal ancho1={ancho} alto1={alto}>
+						<button onClick={() => cambiarEstado(false)} style={{position: 'absolute', top: '-15px', right: '10px', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '45px', color: 'black'}}>&times;</button>
 						{children}
 					</ContenedorModal>
 				</Overlay>
@@ -42,6 +44,5 @@ const ContenedorModal = styled.div`
 	grid-template-rows: 10% 80% 10%;
     padding: 10px;
 	align-items: center;
-    padding-top: 30px;
 `;
 
