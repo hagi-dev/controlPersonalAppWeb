@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React,{useState,useEffect} from 'react';
 import foto from "../assets/static/login.svg";
 import logo from "../assets/static/logo2.png";
-import "../assets/styles/components/Login.scss";
+import '../assets/Styles/components/Login.scss';
 import {TextField,Input,IconButton,InputAdornment,InputLabel,FormControl} from '@material-ui/core';
 import { makeStyles , createTheme, withStyles } from '@material-ui/core/styles';
 import loginServices from "../services/login";
